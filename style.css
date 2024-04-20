@@ -300,6 +300,9 @@ section {
     border-radius: 2rem;
     border: 0.1rem solid rgb(163, 163, 163);
     text-align: center;
+    flex-basis: calc(33.333% - 10px); /* Adjust the 10px to increase/decrease the gap between the items */
+    margin: 5px; /* This will add a little space between the items, adjust as needed */
+    box-sizing: border-box;
 }
 
 .section-container {
@@ -340,14 +343,6 @@ section {
     justify-content: space-around; /* or 'space-between' depending on the exact spacing you want */
     gap: 10px; /* Adjust gap as needed */
 }
-
-.details-container {
-    flex-basis: calc(33.333% - 10px); /* Adjust the 10px to increase/decrease the gap between the items */
-    padding: 1.5rem;
-    margin: 5px; /* This will add a little space between the items, adjust as needed */
-    box-sizing: border-box;
-}
-
 
 .experience-details-container {
     display: flex;
