@@ -333,18 +333,21 @@ section {
     margin-bottom: 2rem;
 }
 
-.experience-details-container {
+.experience-details-container,
+.project-details-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Or use 'space-around' for equal space distribution */
-    align-items: stretch; /* This ensures that the project containers align nicely */
+    justify-content: space-around; /* or 'space-between' depending on the exact spacing you want */
+    gap: 10px; /* Adjust gap as needed */
 }
 
 .details-container {
     flex-basis: calc(33.333% - 10px); /* Adjust the 10px to increase/decrease the gap between the items */
+    padding: 1.5rem;
     margin: 5px; /* This will add a little space between the items, adjust as needed */
     box-sizing: border-box;
 }
+
 
 .experience-details-container {
     display: flex;
@@ -485,3 +488,36 @@ footer p {
 }
 
 
+/* Fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Apply fade-in to sections */
+.section__text, .experience-details-container, .project-details-container {
+    animation: fadeIn 1s;
+}
+
+/* Button hover effect */
+.btn:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s;
+}
+
+/* Icon hover effect */
+.icon:hover {
+    transform: scale(1.2);
+    transition: transform 0.2s;
+}
+
+/* Arrow bounce animation */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-30px);}
+    60% {transform: translateY(-15px);}
+}
+
+.arrow {
+    animation: bounce 2s infinite;
+}
