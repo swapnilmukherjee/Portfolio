@@ -287,7 +287,16 @@ section {
     border-radius: 2rem;
 }
 
-.arrow {
+.arrow, .arrow1 {
+    display: block; /* Make sure the arrow is a block-level element */
+    margin: 0 auto; /* Center the arrow */
+    position: relative; /* Relative positioning */
+    top: 30px; /* Adjust this value to move the arrow down */
+    right: -41rem;
+}
+
+
+body .icon .arrow1 {
     position: absolute;
     right: -5rem;
     bottom: 2.5rem;
@@ -363,22 +372,6 @@ section {
     box-sizing: border-box;
 }
 
-
-/*.article-container {*/
-/*    display: flex;*/
-/*    text-align: initial;*/
-/*    flex-wrap: wrap;*/
-/*    flex-direction: row;*/
-/*    gap: 2.5rem;*/
-/*    justify-content: space-around;*/
-/*}*/
-
-/*article {*/
-/*    display: flex;*/
-/*    width: 10rem;*/
-/*    justify-content: space-around;*/
-/*    gap: 0.5rem;*/
-
 .article-container {
     display: flex;
     flex-wrap: wrap;
@@ -402,33 +395,62 @@ article .icon {
 
 /* PROJECTS SECTION */
 
-#projects {
-    position: relative;
 
-
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns of equal width */
+    gap: 20px; /* Space between grid items */
+    padding: 50px; /* Padding around the entire grid container */
+    justify-content: center;
+    align-items: center;
 }
 
-
-
-.color-container {
-    border-color: rgb(163, 163, 163);
-    background: rgb(250, 250, 250);
+.grid-item {
+    padding: 1.5rem;
+    background: white;
+    border-radius: 2rem;
+    border: 0.1rem solid rgb(163, 163, 163); /* Grey border */
+    text-align: center;
+    margin: 5px; /* Small space between items */
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); !* Optional: if you want to add shadow *!*/
+    transition: transform 0.3s ease; /* Smooth transition for hover effect */
 }
+
+.grid-item:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+.button-container button {
+    margin-right: 10px; /* Adjust the value as needed */
+}
+
 
 .project-img {
-    border-radius: 2rem;
-    width: 90%;
-    height: 90%;
+    width: 100%; /* Full width */
+    height: auto; /* Keep the aspect ratio */
+    border-radius: 10px; /* Rounded corners for images */
+    margin-bottom: 20px; /* Space between image and text */
 }
 
 .project-title {
-    margin: 1rem;
-    color: black;
+    margin-bottom: 15px; /* Space between title and button */
+    font-size: 1.25rem; /* Font size for the title */
 }
 
-.project-btn {
-    color: black;
+.btn.project-btn {
+    padding: 10px 20px;
+    border-radius: 2rem; /* Rounded corners for buttons */
+    background-color: #FFF;
+    cursor: pointer;
     border-color: rgb(163, 163, 163);
+    /*text-transform: uppercase; !* Optional: uppercase lettering for buttons *!*/
+    font-weight: bold; /* Optional: bold font for buttons */
+    text-decoration: none; /* Remove underline from buttons */
+    transition: background-color 0.3s, color 0.3s; /* Transition for hover effect */
+}
+
+.btn.project-btn:hover {
+    background-color: #000; /* Darker background on hover */
 }
 
 /* CONTACT */
@@ -437,6 +459,7 @@ article .icon {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    margin-top: 45rem;
     height: 70vh;
 }
 
@@ -445,8 +468,8 @@ article .icon {
     justify-content: center;
     border-radius: 2rem;
     border: rgb(53, 53, 53) 0.1rem solid;
-    border-color: rgb(163, 163, 163);
-    background: (250, 250, 250);
+    /*border-color: rgb(163, 163, 163);*/
+    /*background: (250, 250, 250);*/
     margin: 2rem auto;
     padding: 0.5rem;
 }
@@ -513,6 +536,6 @@ footer p {
     60% {transform: translateY(-15px);}
 }
 
-.arrow {
+.arrow, .arrow1 {
     animation: bounce 2s infinite;
 }
