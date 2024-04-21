@@ -221,23 +221,24 @@ section {
     gap: 1rem;
 }
 
-.btn {
-    font-weight: 600;
-    transition: all 300ms ease;
-    padding: 1rem;
-    width: 8rem;
-    border-radius: 2rem;
-}
+/*.btn {*/
+/*    font-weight: 600;*/
+/*    transition: all 300ms ease;*/
+/*    padding: 1rem;*/
+/*    width: 8rem;*/
+/*    border-radius: 2rem;*/
+/*}*/
 
-.btn-color-1,
-.btn-color-2 {
-    border: rgb(53, 53, 53) 0.1rem solid;
-}
+/*.btn-color-1,*/
+/*.btn-color-2 {*/
+/*    border: rgb(53, 53, 53) 0.1rem solid;*/
+/*}*/
 
-.btn-color-1:hover,
-.btn-color-2:hover {
-    cursor: pointer;
-}
+/*.btn-color-1:hover,*/
+/*.btn-color-2:hover {*/
+/*    cursor: pointer;*/
+/*}*/
+
 
 .btn-color-1,
 .btn-color-2:hover {
@@ -245,21 +246,54 @@ section {
     color: white;
 }
 
-.btn-color-1:hover {
-    background: rgb(0, 0, 0);
+/*.btn-color-1:hover {*/
+/*    background: rgb(0, 0, 0);*/
+/*}*/
+
+/*.btn-color-2 {*/
+/*    background: none;*/
+/*}*/
+
+/*.btn-color-2:hover {*/
+/*    border: rgb(255, 255, 255) 0.1rem solid;*/
+/*}*/
+
+/*.btn-container {*/
+/*    gap: 1rem;*/
+/*}*/
+
+.btn {
+    font-weight: 600;
+    transition: all 300ms ease;
+    padding: 1rem;
+    width: 8rem;
+    background-color: black;
+    border: none;
+    border-radius: 2rem;
+    text-align: center;
+    text-decoration-color: #FFFFFF;
+    display: inline-block; /* Important for <a> tags to allow width and padding */
+    text-decoration: none; /* Remove underline from links */
+    cursor: pointer;
+    /* ... other styles ... */
 }
 
 .btn-color-2 {
     background: none;
+    border: rgb(0, 0, 0) 0.1rem solid;
+    color: black; /* Text color */
 }
 
-.btn-color-2:hover {
-    border: rgb(255, 255, 255) 0.1rem solid;
+.btn:hover, .btn-color-2:hover {
+    /* Other hover styles like background color changes */
+    background: rgb(53, 53, 53);
+    color: white;
+
+    /* Removing underline for text */
+    text-decoration: none;
 }
 
-.btn-container {
-    gap: 1rem;
-}
+
 
 /* ABOUT SECTION */
 

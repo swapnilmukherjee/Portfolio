@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>My Portfolio</title>
     <link href="./style.css" rel="stylesheet"/>
-    <link href="./mediaqueries.css" rel="stylesheet"/>
+<!--    <link href="./mediaqueries.css" rel="stylesheet"/>-->
 </head>
 <body>
 <nav id="desktop-nav">
@@ -56,20 +56,23 @@
             </button>
         </div>
         <div id="socials-container">
-            <img
-                    alt="My LinkedIn profile"
-                    class="icon"
-                    onclick="location.href='https://linkedin.com/in/swapnilmukherjee24/'"
-                    src="./assets/linkedin.png"
-            />
+            <a href="https://linkedin.com/in/swapnilmukherjee24/" target="_blank">
+                <img
+                        alt="My LinkedIn profile"
+                        class="icon"
+                        src="./assets/linkedin.png"
+                />
+            </a>
 
-            <img
-                    alt="My Github profile"
-                    class="icon"
-                    onclick="location.href='https://github.com/swapnilmukherjee'"
-                    src="./assets/github.png"
-            />
+            <a href="https://github.com/swapnilmukherjee" target="_blank">
+                <img
+                        alt="My Github profile"
+                        class="icon"
+                        src="./assets/github.png"
+                />
+            </a>
         </div>
+
     </div>
 </section>
 <section id="about">
@@ -358,7 +361,8 @@
         <div class="grid-item">
             <img alt="Project 1" class="project-img" src="./assets/project-1.png"/>
             <h2 class="project-title">Pizzeria</h2>
-            <button class="btn btn-color-2" onclick="location.href='https://github.com/swapnilmukherjee/Pizzeria'">Github</button>
+            <a href="https://github.com/swapnilmukherjee/Pizzeria" target="_blank" class="btn btn-color-2">Github</a>
+
         </div>
 
         <!-- Project 2 -->
@@ -366,7 +370,9 @@
             <img alt="Project 2" class="project-img" src="./assets/project-2.png"/>
             <h2 class="project-title">Space Hangman</h2>
             <div class="button-container">
-            <button class="btn btn-color-2" onclick="location.href='https://github.com/swapnilmukherjee/SpaceHangman'">Github</button><br><br><button class="btn btn-color-2" onclick="location.href='https://swapnilmukherjee.pythonanywhere.com/'">Play Game</button>
+            <a href= "https://github.com/swapnilmukherjee/SpaceHangman" target="_blank" class="btn btn-color-2">Github</a>
+            <br><br>
+            <a href ="https://swapnilmukherjee.pythonanywhere.com/" target="_blank" class="btn btn-color-2">Play Game</a>
             </div>
         </div>
 
@@ -374,7 +380,7 @@
         <div class="grid-item">
             <img alt="Project 3" class="project-img" src="./assets/project-3.png"/>
             <h2 class="project-title">System Monitoring</h2>
-            <button class="btn btn-color-2" onclick="location.href='https://github.com/swapnilmukherjee/SystemMonitoringTool'">Github</button>
+            <a href= "https://github.com/swapnilmukherjee/SystemMonitoringTool" target ="_blank" class="btn btn-color-2">Github</a>
         </div>
 
         <!-- Project 4 -->
@@ -491,7 +497,7 @@
                     class="icon contact-icon"
                     src="./assets/linkedin.png"
             />
-            <p><a href="https://www.linkedin.com/in/swapnilmukherjee24/">LinkedIn</a></p>
+            <p><a href="https://www.linkedin.com/in/swapnilmukherjee24/" target="_blank">LinkedIn</a></p>
         </div>
     </div>
 </section>
@@ -508,6 +514,6 @@
     </nav>
     <p>Copyright &#169; 2024 Swapnil Mukherjee. All Rights Reserved.</p>
 </footer>
-<!--<script src="script.js"></script>-->
+<script src="script.js"></script>
 </body>
 </html>
