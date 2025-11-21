@@ -1,16 +1,87 @@
-# React + Vite
+# Swapnil Mukherjee – Identity and Access Management (IAM) Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository hosts the personal portfolio of **Swapnil Mukherjee**, an experienced Identity and Access Management (IAM) and CIAM Engineer.  
+It is a fast, fully static Single Page Application (SPA) built with React and Tailwind CSS, designed to highlight professional experience, technical skills, and project work.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Highlights
 
-## React Compiler
+- **Aesthetic and High Performance Interface**  
+  Modern dark-theme UI with smooth animations for a fast and polished experience.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Zero-Trust Identity Focus**  
+  Content prioritized to highlight hands-on expertise with Okta, Auth0, Ping, Azure AD, SAML, OIDC, MFA, and CI/CD IAM pipelines.
 
-## Expanding the ESLint configuration
+- **Detailed Experience Section**  
+  Vertical timeline with expandable modals supporting comprehensive job descriptions.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Filterable Project Gallery**  
+  Projects grouped by domain (Cybersecurity, Web Engineering, etc.) for easy review.
+
+- **Direct Access Tools**  
+  Built-in features for profile photo rendering and downloadable résumé.
+
+---
+
+## Technology Overview
+
+| Layer      | Technology                |
+|------------|----------------------------|
+| Frontend   | React (SPA)               |
+| Styling    | Tailwind CSS v4 (Zero-Config) |
+| Build Tool | Vite                       |
+| Icons      | Lucide-React               |
+| Deployment | GitHub Pages (gh-pages)    |
+
+---
+
+## Project Structure
+
+A quick reference for maintaining and updating the portfolio:
+
+```
+src/
+   App.jsx            # Main application logic and components
+   assets/            # Logos, icons, and other media
+public/
+   Resume.pdf         # Publicly served résumé
+   image.png          # Profile image or branding asset
+index.html            # Core HTML entry point
+vite.config.js        # Build + Tailwind v4 plugin configuration
+package.json          # Dependencies and deploy scripts
+```
+
+---
+
+## Deployment
+
+This project is deployed using **GitHub Pages**.
+
+Deployment scripts in `package.json`:
+
+```
+"predeploy": "npm run build",
+"deploy": "gh-pages -d dist"
+```
+
+To deploy manually:
+
+```bash
+npm run deploy
+```
+
+---
+
+## Important Notices
+
+**Repository Status**  
+This repository is maintained exclusively for professional portfolio use.
+
+**Contributions**  
+External contributions are not accepted.
+
+**Copyright**  
+All code, assets, and content in this repository are protected and may not be reused without permission.
+
+---
