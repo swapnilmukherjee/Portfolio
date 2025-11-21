@@ -35,7 +35,7 @@ import {
 
 // --- UI Components ---
 
-// Helper icon for card link
+// Helper icon for card link - Moved to top to prevent ReferenceError
 const ArrowUpRight = ({ className }) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +122,7 @@ const Card = ({ children, className = "", spotlightColor = "rgba(255,255,255,0.1
         >
             {/* Spotlight Gradient - Wide 1200px glow */}
             <div
-                className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300"
+                className="pointer-events-none absolute -inset-px transition-opacity duration-300"
                 style={{
                     opacity,
                     background: `radial-gradient(1200px circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 40%)`
@@ -443,7 +443,7 @@ Administer Linux and Red Hat servers and proxy infrastructure underpinning the I
             category: "Cybersecurity",
             color: "from-blue-600 to-indigo-600",
             shortDescription: "ML pipeline using K-Nearest Neighbour tailored for highly imbalanced credit transaction data.",
-            description: "Built a fraud detection pipeline in Python using a K-Nearest Neighbour classifier tailored for highly imbalanced transaction data. Engineered features, tuned hyperparameters, and optimized distance metrics to maximize recall and reduce false negatives. Evaluated the model using precision–recall curves and confusion matrices.",
+            description: "Built a fraud detection pipeline in Python using a K-Nearest Neighbour classifier tailored for highly imbalanced credit transaction data. Engineered features, tuned hyperparameters, and optimized distance metrics to maximize recall and reduce false negatives. Evaluated the model using precision–recall curves and confusion matrices.",
             tags: ["AI/ML", "Python", "Security"]
         }
     ]
@@ -709,6 +709,7 @@ export default function App() {
           background: rgba(5, 5, 5, 0.8);
           backdrop-filter: blur(12px);
           border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          transition: background 0.3s, border-bottom 0.5s ease; /* Ensure border transition is smooth */
         }
         /* Blur-in text animation */
         @keyframes blurIn {
@@ -753,6 +754,7 @@ export default function App() {
             </div>
 
             {/* Navigation */}
+            {/* We use a ternary check for 'scrolled' to manage the navigation's fixed style */}
             <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'glass-nav py-4' : 'bg-transparent py-8'}`}>
                 <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
                     <div
@@ -824,7 +826,7 @@ export default function App() {
                                     <ProfileImage />
                                 </div>
                             </div>
-                            <h2 className="mt-8 text-xl md:text-2xl font-medium text-gray-400 tracking-tight">
+                            <h2 className="mt-8 text-xl md:text-2xl font-medium text-gray-400 tracking-normal">
                                 Hi, I'm <span className="text-white font-semibold">{portfolioData.name}</span>
                             </h2>
                         </div>
@@ -1091,7 +1093,7 @@ export default function App() {
 
                     {/* Contact Section */}
                     <section id="contact" className="pt-32 pb-20">
-                        <div className="max-w-4xl mx-auto text-center animate-on-scroll opacity-0 translate-y-8 transition-all duration-1000 bg-gradient-to-b from-white/5 to-transparent p-12 rounded-[3rem] border border-white/5 relative overflow-hidden">
+                        <div className="max-w-4xl mx-auto text-center animate-on-scroll opacity-0 translate-y-8 transition-all duration-1000 bg-gradient-to-b from-white/5 to-transparent p-12 rounded-[3rem] relative overflow-hidden shadow-[0_0_15px_rgba(168,85,247,0.1),_0_0_0_1px_rgba(255,255,255,0.05)] transition-all duration-500">
                             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] mix-blend-overlay"></div>
                             <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 relative z-10">Ready to secure your <br /><span className="text-purple-500">infrastructure?</span></h2>
                             <p className="text-xl text-gray-400 mb-12 font-light max-w-2xl mx-auto relative z-10">
