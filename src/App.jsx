@@ -35,7 +35,7 @@ import {
 
 // --- UI Components ---
 
-// Helper icon for card link - Moved to top to prevent ReferenceError
+// Helper icon for card link
 const ArrowUpRight = ({ className }) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -51,6 +51,44 @@ const ArrowUpRight = ({ className }) => (
         <polyline points="7 7 17 7 17 17" />
     </svg>
 );
+
+// --- Custom Favicon Hook ---
+const useCustomFavicon = () => {
+    useEffect(() => {
+        // SVG configuration: "S." theme (White S, Purple Dot, Dark Background)
+        const svgIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+        <!-- Background: Dark rounded square to matches site theme and ensures visibility on light tabs -->
+        <rect width="100" height="100" rx="20" fill="#050505" />
+        
+        <!-- Letter S -->
+        <text x="45" y="75" font-family="sans-serif" font-size="80" font-weight="900" fill="white" text-anchor="middle">S</text>
+        
+        <!-- The Purple Dot -->
+        <circle cx="82" cy="70" r="9" fill="#a855f7" />
+      </svg>
+    `;
+
+        const link = document.createElement('link');
+        link.rel = 'icon';
+        link.type = 'image/svg+xml';
+        link.href = `data:image/svg+xml;base64,${btoa(svgIcon)}`;
+
+        // Remove existing favicons
+        const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
+        existingFavicons.forEach((favicon) => document.head.removeChild(favicon));
+
+        // Add new favicon
+        document.head.appendChild(link);
+
+        // Cleanup on unmount
+        return () => {
+            if (document.head.contains(link)) {
+                document.head.removeChild(link);
+            }
+        };
+    }, []);
+};
 
 const Button = ({ children, onClick, variant = 'primary', className = '', icon: Icon, disabled, href, target }) => {
     const baseStyle = "inline-flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-300 transform active:scale-95 group relative overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed tracking-tight";
@@ -454,15 +492,15 @@ const ProjectModal = ({ project, onClose }) => {
     if (!project) return null;
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
             <div
                 className="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity"
                 onClick={onClose}
             ></div>
-            <div className="relative bg-[#0A0A0A] border border-white/10 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300 flex flex-col">
+            <div className="relative bg-[#0A0A0A] border border-white/10 rounded-3xl w-full max-w-4xl max-h-[85vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300 flex flex-col">
 
                 {/* Modal Header Image */}
-                <div className={`w-full h-64 relative overflow-hidden bg-gradient-to-br ${project.color} shrink-0`}>
+                <div className={`w-full h-40 md:h-64 relative overflow-hidden bg-gradient-to-br ${project.color} shrink-0`}>
                     <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }}></div>
                     <div className="absolute inset-0 flex items-center justify-center">
                         <ProjectArt type={project.visualType} className="scale-150 opacity-50" />
@@ -471,31 +509,31 @@ const ProjectModal = ({ project, onClose }) => {
 
                     <button
                         onClick={onClose}
-                        className="absolute top-6 right-6 p-2 rounded-full bg-black/20 hover:bg-white/10 text-white/70 hover:text-white transition-colors backdrop-blur-sm"
+                        className="absolute top-4 right-4 md:top-6 md:right-6 p-2 rounded-full bg-black/20 hover:bg-white/10 text-white/70 hover:text-white transition-colors backdrop-blur-sm z-50"
                     >
                         <X className="w-6 h-6" />
                     </button>
                 </div>
 
-                <div className="p-8 md:p-10">
+                <div className="p-6 md:p-10">
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
                         <div>
                             <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-white/10 bg-white/5 text-white/80 mb-3`}>
                                 <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${project.color}`}></div>
                                 {project.category}
                             </div>
-                            <h3 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+                            <h3 className="text-2xl md:text-4xl font-bold text-white leading-tight">
                                 {project.title}
                             </h3>
                         </div>
-                        <div className="flex items-center gap-2 text-gray-500 text-sm font-mono bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+                        <div className="flex items-center gap-2 text-gray-500 text-sm font-mono bg-white/5 px-3 py-1.5 rounded-lg border border-white/5 self-start">
                             <Calendar className="w-4 h-4" />
                             {project.date}
                         </div>
                     </div>
 
                     <div className="prose prose-invert max-w-none mb-10">
-                        <p className="text-gray-300 text-lg leading-relaxed font-light whitespace-pre-line">
+                        <p className="text-gray-300 text-base md:text-lg leading-relaxed font-light whitespace-pre-line">
                             {project.description}
                         </p>
                     </div>
@@ -521,40 +559,40 @@ const ExperienceModal = ({ experience, onClose }) => {
     if (!experience) return null;
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
             <div
                 className="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity"
                 onClick={onClose}
             ></div>
-            <div className="relative bg-[#0A0A0A] border border-white/10 rounded-3xl w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300 flex flex-col">
+            <div className="relative bg-[#0A0A0A] border border-white/10 rounded-3xl w-full max-w-3xl max-h-[85vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300 flex flex-col">
 
                 {/* Modal Header with Gradient */}
-                <div className={`w-full h-32 relative overflow-hidden bg-gradient-to-r ${experience.color} shrink-0`}>
+                <div className={`w-full h-24 md:h-32 relative overflow-hidden bg-gradient-to-r ${experience.color} shrink-0`}>
                     <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
 
                     <button
                         onClick={onClose}
-                        className="absolute top-6 right-6 p-2 rounded-full bg-black/20 hover:bg-white/10 text-white/70 hover:text-white transition-colors backdrop-blur-sm"
+                        className="absolute top-4 right-4 md:top-6 md:right-6 p-2 rounded-full bg-black/20 hover:bg-white/10 text-white/70 hover:text-white transition-colors backdrop-blur-sm z-50"
                     >
                         <X className="w-6 h-6" />
                     </button>
                 </div>
 
-                <div className="p-8 md:p-10 -mt-12 relative z-10">
+                <div className="p-6 md:p-10 -mt-10 md:-mt-12 relative z-10">
                     <div className="inline-block p-4 rounded-2xl bg-[#0A0A0A] border border-white/10 shadow-2xl mb-6">
                         <Briefcase className="w-8 h-8 text-white" />
                     </div>
 
                     <div className="mb-8">
-                        <h3 className="text-3xl font-bold text-white leading-tight mb-2">
+                        <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight mb-2">
                             {experience.role}
                         </h3>
                         <div className="flex flex-wrap items-center gap-3 text-lg text-gray-300">
                             <span className="font-medium">{experience.company}</span>
                             {experience.contractInfo && (
                                 <>
-                                    <span className="w-1 h-1 rounded-full bg-gray-500"></span>
-                                    <span className="text-gray-500 text-base italic">{experience.contractInfo}</span>
+                                    <span className="hidden md:inline w-1 h-1 rounded-full bg-gray-500"></span>
+                                    <span className="text-gray-500 text-sm md:text-base italic block w-full md:w-auto">{experience.contractInfo}</span>
                                 </>
                             )}
                         </div>
@@ -565,7 +603,7 @@ const ExperienceModal = ({ experience, onClose }) => {
                     </div>
 
                     <div className="prose prose-invert max-w-none mb-10">
-                        <div className="text-gray-300 text-lg leading-relaxed font-light whitespace-pre-line">
+                        <div className="text-gray-300 text-base md:text-lg leading-relaxed font-light whitespace-pre-line">
                             {experience.description}
                         </div>
                     </div>
@@ -589,6 +627,14 @@ const ExperienceModal = ({ experience, onClose }) => {
 // --- Main App ---
 
 export default function App() {
+    // Initialize Custom Favicon
+    useCustomFavicon();
+
+    // Set Page Title
+    useEffect(() => {
+        document.title = "Swapnil Mukherjee";
+    }, []);
+
     const [activeSection, setActiveSection] = useState('home');
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
@@ -815,7 +861,7 @@ export default function App() {
             <div className="relative z-10">
 
                 {/* Hero Section */}
-                <section id="home" className="min-h-screen flex items-center justify-center pt-20">
+                <section id="home" className="min-h-screen flex items-center justify-center pt-32 md:pt-40">
                     <div className="max-w-5xl mx-auto px-6 text-center">
 
                         {/* Name & Photo Header */}
@@ -866,7 +912,7 @@ export default function App() {
                 <main className="max-w-7xl mx-auto px-6 space-y-32 pb-32">
 
                     {/* About Section */}
-                    <section id="about" className="pt-20">
+                    <section id="about" className="pt-28 md:pt-32">
                         <div className="max-w-6xl mx-auto animate-on-scroll opacity-0 translate-y-8 transition-all duration-1000">
                             <div className="text-center mb-16">
                                 <h2 className="text-4xl font-bold text-white mb-6">About Me</h2>
@@ -911,7 +957,7 @@ export default function App() {
                     </section>
 
                     {/* Experience Section */}
-                    <section id="experience" className="pt-32">
+                    <section id="experience" className="pt-28 md:pt-32">
                         <SectionTitle title="Experience" subtitle="Professional trajectory in Identity & Access Management." />
 
                         <div className="space-y-8 relative before:absolute before:inset-0 before:ml-5 md:before:ml-[50%] before:-translate-x-px before:h-full before:w-px before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
@@ -963,7 +1009,7 @@ export default function App() {
                     </section>
 
                     {/* Projects Section */}
-                    <section id="projects" className="pt-20">
+                    <section id="projects" className="pt-28 md:pt-32">
                         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
                             <SectionTitle title="Selected Work" subtitle="Engineering secure and scalable digital solutions." />
 
@@ -1045,7 +1091,7 @@ export default function App() {
                     </section>
 
                     {/* Education Section */}
-                    <section id="education" className="pt-20">
+                    <section id="education" className="pt-28 md:pt-32">
                         <SectionTitle title="Education" />
                         <div className="grid md:grid-cols-2 gap-6">
                             {portfolioData.education.map((edu, index) => (
@@ -1071,7 +1117,7 @@ export default function App() {
                     </section>
 
                     {/* Certifications Section */}
-                    <section id="certifications" className="pt-20">
+                    <section id="certifications" className="pt-28 md:pt-32">
                         <SectionTitle title="Certifications" />
                         <div className="flex flex-wrap justify-center gap-4 animate-on-scroll opacity-0 translate-y-8">
                             {portfolioData.certifications.map((cert, idx) => (
