@@ -497,7 +497,7 @@ const ProjectModal = ({ project, onClose }) => {
                 className="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity"
                 onClick={onClose}
             ></div>
-            <div className="relative bg-[#0A0A0A] border border-white/10 rounded-3xl w-full max-w-4xl max-h-[85vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300 flex flex-col">
+            <div className="relative bg-[#0A0A0A] border border-white/10 rounded-3xl w-full max-w-4xl max-h-[85vh] shadow-2xl animate-in zoom-in-95 duration-300 flex flex-col overflow-hidden">
 
                 {/* Modal Header Image */}
                 <div className={`w-full h-40 md:h-64 relative overflow-hidden bg-gradient-to-br ${project.color} shrink-0`}>
@@ -515,7 +515,8 @@ const ProjectModal = ({ project, onClose }) => {
                     </button>
                 </div>
 
-                <div className="p-6 md:p-10">
+                {/* Scrollable Content Area */}
+                <div className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-10 bg-[#0A0A0A]">
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
                         <div>
                             <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-white/10 bg-white/5 text-white/80 mb-3`}>
@@ -564,7 +565,7 @@ const ExperienceModal = ({ experience, onClose }) => {
                 className="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity"
                 onClick={onClose}
             ></div>
-            <div className="relative bg-[#0A0A0A] border border-white/10 rounded-3xl w-full max-w-3xl max-h-[85vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300 flex flex-col">
+            <div className="relative bg-[#0A0A0A] border border-white/10 rounded-3xl w-full max-w-3xl max-h-[85vh] shadow-2xl animate-in zoom-in-95 duration-300 flex flex-col overflow-hidden">
 
                 {/* Modal Header with Gradient */}
                 <div className={`w-full h-24 md:h-32 relative overflow-hidden bg-gradient-to-r ${experience.color} shrink-0`}>
@@ -578,7 +579,8 @@ const ExperienceModal = ({ experience, onClose }) => {
                     </button>
                 </div>
 
-                <div className="p-6 md:p-10 -mt-10 md:-mt-12 relative z-10">
+                {/* Scrollable Content Area */}
+                <div className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-10 -mt-10 md:-mt-12 relative z-10 bg-[#0A0A0A]">
                     <div className="inline-block p-4 rounded-2xl bg-[#0A0A0A] border border-white/10 shadow-2xl mb-6">
                         <Briefcase className="w-8 h-8 text-white" />
                     </div>
@@ -754,8 +756,9 @@ export default function App() {
         .glass-nav {
           background: rgba(5, 5, 5, 0.8);
           backdrop-filter: blur(12px);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-          transition: background 0.3s, border-bottom 0.5s ease; /* Ensure border transition is smooth */
+          /* border-bottom removed to fix harsh line on mobile, added shadow instead for depth */
+          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+          transition: background 0.3s, box-shadow 0.5s ease; 
         }
         /* Blur-in text animation */
         @keyframes blurIn {
@@ -774,6 +777,23 @@ export default function App() {
           background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
             linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
           mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        /* --- Global & Custom Scrollbar Styling (Refined) --- */
+        /* Targets both the main page and any element with .custom-scrollbar */
+        ::-webkit-scrollbar, .custom-scrollbar::-webkit-scrollbar {
+          width: 6px; /* Sleeker width */
+        }
+        ::-webkit-scrollbar-track, .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent; /* Transparent track for floating effect */
+        }
+        
+        ::-webkit-scrollbar-thumb, .custom-scrollbar::-webkit-scrollbar-thumb {
+          background-color: rgba(255, 255, 255, 0.2); /* Subtle grey */
+          border-radius: 20px; /* Perfectly round ends */
+        }
+        ::-webkit-scrollbar-thumb:hover, .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background-color: rgba(168, 85, 247, 0.6); /* Purple accent on hover */
         }
       `}</style>
 
@@ -857,7 +877,7 @@ export default function App() {
                 )}
             </nav>
 
-            {/* Content Wrapper */}
+            {/* Content Wrapper - Corrected Structure: Only wrapping the scrollable page content */}
             <div className="relative z-10">
 
                 {/* Hero Section */}
@@ -980,7 +1000,9 @@ export default function App() {
                                             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-2 relative z-10">
                                                 <h3 className="text-xl font-bold text-white group-hover:text-purple-300 transition-colors flex items-center gap-2">
                                                     {job.role}
-                                                    <Maximize2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity text-gray-400" />
+                                                    {/* Added ArrowUpRight icon for mobile indication */}
+                                                    <ArrowUpRight className="w-4 h-4 text-gray-500 md:hidden ml-2" />
+                                                    <Maximize2 className="hidden md:block w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity text-gray-400" />
                                                 </h3>
                                                 <span className="text-xs font-mono text-gray-500 mt-1 lg:mt-0 bg-black/30 px-2 py-1 rounded border border-white/5">{job.period}</span>
                                             </div>
@@ -1170,19 +1192,19 @@ export default function App() {
                         </div>
                     </div>
                 </footer>
+            </div> {/* End of Content Wrapper (z-10) - This fixes the layering issue */}
 
-                {/* Project Details Modal */}
-                <ProjectModal
-                    project={selectedProject}
-                    onClose={() => setSelectedProject(null)}
-                />
+            {/* Project Details Modal (Outside z-10 wrapper) */}
+            <ProjectModal
+                project={selectedProject}
+                onClose={() => setSelectedProject(null)}
+            />
 
-                {/* Experience Details Modal */}
-                <ExperienceModal
-                    experience={selectedExperience}
-                    onClose={() => setSelectedExperience(null)}
-                />
-            </div>
+            {/* Experience Details Modal (Outside z-10 wrapper) */}
+            <ExperienceModal
+                experience={selectedExperience}
+                onClose={() => setSelectedExperience(null)}
+            />
         </div>
     );
 }
