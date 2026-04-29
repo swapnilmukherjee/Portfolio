@@ -151,3 +151,4 @@ The resume PDF is served as a static asset at `/Swapnil_Mukherjee_Resume.pdf`.
 
 ## License
 Personal portfolio. Code is fine for inspiration — copy whatever's useful.
+Vercel staging deployment trigger.
