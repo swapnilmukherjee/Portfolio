@@ -1,20 +1,22 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowUpRight, Calendar } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { Reveal } from "./reveal";
-import { SpotlightCard } from "./spotlight-card";
-import { getIcon } from "@/lib/icons";
-import contentJson from "@/data/content.json";
+import type { Project } from "@/data/content-types";
 import { cn } from "@/lib/cn";
 
 const CATEGORIES = ["All", "Cybersecurity", "Web Engineering", "Automation & IoT", "AI & Data"] as const;
 type Category = (typeof CATEGORIES)[number];
 
-export function Projects() {
-  const { projects } = contentJson;
+const reveal = {
+  initial: { opacity: 0, y: 28, filter: "blur(8px)" },
+  whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+  viewport: { once: true, margin: "-80px" },
+  transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
+};
+
+export function Projects({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState<Category>("All");
   const [showAll, setShowAll] = useState(false);
 
@@ -26,115 +28,135 @@ export function Projects() {
   const visible = showAll ? filtered : filtered.slice(0, 6);
 
   return (
-    <section id="projects" className="relative scroll-mt-24 py-24 sm:py-32">
-      <div className="mx-auto max-w-6xl px-6">
-        <Reveal>
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">03 — Projects</p>
-              <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight text-text sm:text-5xl">
-                Selected <span className="text-gradient">work</span>.
-              </h2>
-              <p className="mt-4 max-w-xl text-sm text-muted sm:text-base">
-                A mix of identity, security research, and full-stack engineering — built across grad school and personal time.
-              </p>
-            </div>
+    <section id="projects" className="relative z-[2] py-32 sm:py-44">
+      <div className="mx-auto max-w-[1320px] px-6 sm:px-8">
+        <motion.div {...reveal} className="mb-6">
+          <span className="eyebrow">03 / Projects</span>
+        </motion.div>
 
-            <div className="flex flex-wrap gap-1.5">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => {
-                    setActive(cat);
-                    setShowAll(false);
-                  }}
-                  className={cn(
-                    "rounded-full border px-3 py-1.5 text-xs font-medium transition",
-                    active === cat
-                      ? "border-accent/60 bg-accent/15 text-text"
-                      : "border-border/60 bg-bg-elevated/40 text-muted hover:border-border hover:text-text"
-                  )}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
-        </Reveal>
+        <div className="mb-12 grid items-end gap-12 lg:grid-cols-[1fr_0.55fr] lg:gap-14">
+          <motion.h2 {...reveal} className="display-section">
+            Selected <b className="ir-text">work.</b>
+          </motion.h2>
+          <motion.p {...reveal} className="max-w-[360px] text-base leading-[1.65] text-text/55">
+            A mix of identity, security research, and full-stack engineering, built across grad school and personal time.
+          </motion.p>
+        </div>
 
-        <motion.div layout className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Filters */}
+        <motion.div {...reveal} className="mb-8 flex flex-wrap gap-2">
+          {CATEGORIES.map((cat) => {
+            const count = cat === "All" ? projects.length : projects.filter((p) => p.category === cat).length;
+            const isActive = active === cat;
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => {
+                  setActive(cat);
+                  setShowAll(false);
+                }}
+                className={cn(
+                  "glass rounded-full px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.18em] transition",
+                  isActive
+                    ? "text-text-strong"
+                    : "text-text/55 hover:text-text/92"
+                )}
+                style={
+                  isActive
+                    ? {
+                        borderColor: "transparent",
+                        background:
+                          "linear-gradient(135deg, rgb(var(--grad-1) / 0.25), rgb(var(--grad-2) / 0.25))",
+                      }
+                    : undefined
+                }
+              >
+                {cat} <span className="text-text/30">· {count}</span>
+              </button>
+            );
+          })}
+        </motion.div>
+
+        {/* Grid */}
+        <motion.div
+          {...reveal}
+          className="grid overflow-hidden rounded-[28px] border border-white/[0.08] gap-px bg-white/[0.08] sm:grid-cols-2 lg:grid-cols-3"
+        >
           <AnimatePresence mode="popLayout">
-            {visible.map((p, i) => {
-              const Icon = getIcon(p.icon);
-              return (
-                <motion.div
-                  key={p.id}
-                  layout
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.4, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <SpotlightCard className="flex h-full flex-col p-0">
-                    {/* Visual */}
-                    <div className={cn("relative h-40 overflow-hidden bg-gradient-to-br", p.color)}>
-                      <div className="absolute inset-0 bg-noise opacity-40" />
-                      <div className="absolute inset-0 grid place-items-center">
-                        <Icon className="h-14 w-14 text-white/90 drop-shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3" />
-                      </div>
-                      <span className="absolute left-3 top-3 rounded-md bg-black/30 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-white backdrop-blur">
-                        {p.category}
-                      </span>
-                    </div>
-
-                    {/* Body */}
-                    <div className="flex flex-1 flex-col p-6">
-                      <div className="flex items-start justify-between gap-3">
-                        <h3 className="text-base font-semibold tracking-tight text-text">{p.title}</h3>
-                        <ArrowUpRight className="h-4 w-4 shrink-0 text-muted transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-text" />
-                      </div>
-                      <p className="mt-2 line-clamp-3 text-sm text-text/75">{p.summary}</p>
-
-                      <div className="mt-auto pt-5">
-                        <div className="flex items-center justify-between border-t border-border/50 pt-3">
-                          <div className="flex flex-wrap gap-1.5">
-                            {p.tags.slice(0, 3).map((tag) => (
-                              <span
-                                key={tag}
-                                className="rounded-md bg-bg/50 px-1.5 py-0.5 text-[10px] font-medium text-muted"
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
-                          <span className="inline-flex items-center gap-1 font-mono text-[10px] text-muted">
-                            <Calendar className="h-3 w-3" /> {p.date}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </SpotlightCard>
-                </motion.div>
-              );
-            })}
+            {visible.map((p, i) => (
+              <Card key={p.id} project={p} index={i} />
+            ))}
           </AnimatePresence>
         </motion.div>
 
         {filtered.length > 6 && (
-          <Reveal>
-            <div className="mt-10 flex justify-center">
-              <button
-                type="button"
-                onClick={() => setShowAll((v) => !v)}
-                className="rounded-full border border-border/70 bg-bg-elevated/60 px-6 py-2.5 text-xs font-medium uppercase tracking-widest text-text transition hover:border-accent/40 hover:bg-accent/10"
-              >
-                {showAll ? "Show less" : `View all ${filtered.length} projects`}
-              </button>
-            </div>
-          </Reveal>
+          <div className="mt-10 flex justify-center">
+            <button
+              type="button"
+              onClick={() => setShowAll((v) => !v)}
+              className="glass rounded-full px-6 py-2.5 font-mono text-[11px] uppercase tracking-[0.18em] text-text/92 transition hover:bg-white/[0.07]"
+            >
+              {showAll ? "Show less" : `View all ${filtered.length} projects`}
+            </button>
+          </div>
         )}
       </div>
     </section>
+  );
+}
+
+function Card({ project, index }: { project: Project; index: number }) {
+  return (
+    <motion.article
+      layout
+      initial={{ opacity: 0, y: 18, filter: "blur(6px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+      transition={{ duration: 0.55, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }}
+      className="group relative flex min-h-[280px] flex-col gap-4 bg-bg p-9 transition-colors duration-300 hover:bg-surface"
+      onMouseMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        e.currentTarget.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
+        e.currentTarget.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
+      }}
+    >
+      {/* Spotlight */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        style={{
+          background:
+            "radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgb(var(--grad-1) / 0.15), transparent 40%)",
+        }}
+      />
+
+      <div className="relative flex items-start justify-between">
+        <span
+          className="font-mono text-[10px] uppercase tracking-[0.2em]"
+          style={{ color: "rgb(var(--grad-2))" }}
+        >
+          {project.category}
+        </span>
+        <span className="font-mono text-[11px] text-text/30">/ {String(index + 1).padStart(2, "0")}</span>
+      </div>
+
+      <h3 className="relative text-[32px] font-light leading-[1.05] tracking-tight text-text-strong">
+        {project.title}
+      </h3>
+
+      <p className="relative flex-1 text-[14px] leading-[1.55] text-text/55">{project.summary}</p>
+
+      <div className="relative flex items-center justify-between border-t border-white/[0.08] pt-4 font-mono text-[10px] text-text/55">
+        <div className="flex gap-1.5">
+          {project.tags.slice(0, 3).map((t, i) => (
+            <span key={t}>
+              {t}
+              {i < Math.min(project.tags.length, 3) - 1 ? <span className="px-1">·</span> : null}
+            </span>
+          ))}
+        </div>
+        <span>{project.date}</span>
+      </div>
+    </motion.article>
   );
 }

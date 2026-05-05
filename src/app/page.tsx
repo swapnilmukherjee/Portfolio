@@ -7,25 +7,35 @@ import { Hero } from "@/components/hero";
 import { Nav } from "@/components/nav";
 import { Projects } from "@/components/projects";
 import { Skills } from "@/components/skills";
+import { SpatialStage } from "@/components/spatial-stage";
 import { Track } from "@/components/track";
-import contentJson from "@/data/content.json";
 
-export default function HomePage() {
+import { getContent } from "@/lib/content";
+
+export const revalidate = 300;
+
+export default async function HomePage() {
+  const content = await getContent();
+  const { profile, experience, projects, skills, education, certifications } = content;
+
   return (
     <>
-      <Nav resumeHref={contentJson.profile.resume} />
+      {/* Ambient identity graph behind every section */}
+      <SpatialStage />
+
+      <Nav resumeHref={profile.resume} />
 
       <main className="relative">
-        <Hero />
-        <About />
-        <Experience />
-        <Projects />
-        <Skills />
-        <Education />
-        <Contact />
+        <Hero profile={profile} />
+        <About profile={profile} />
+        <Experience experience={experience} />
+        <Projects projects={projects} />
+        <Skills skills={skills} />
+        <Education education={education} certifications={certifications} />
+        <Contact profile={profile} />
       </main>
 
-      <Footer />
+      <Footer profile={profile} />
       <Track page="home" />
     </>
   );

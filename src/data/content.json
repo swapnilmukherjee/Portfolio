@@ -4,9 +4,9 @@
     "firstName": "Swapnil",
     "title": "Technical Consultant @ Okta",
     "tagline": "Identity, secured.",
-    "headline": "I build the identity layer behind modern apps — from CIAM at scale to Auth0 for AI agents.",
-    "shortBio": "Technical Consultant at Okta helping enterprises ship secure CIAM with Auth0 — including the new identity patterns AI agents demand.",
-    "about": "I'm a Technical Consultant at Okta, focused on Auth0 for customer identity (CIAM) and the emerging space of identity for AI agents. Before Okta I led CIAM engineering at Fifth Third Bank, where I shipped the end-to-end Auth0 → Ping migration for the Newline commercial banking platform with zero unplanned downtime. Earlier, as Cardinal Health's Okta SME, I federated 100+ apps and operated workforce identity for 22,000+ users in a regulated healthcare environment. My day-to-day lives in OAuth 2.0, OIDC, SAML, SCIM, JavaScript-based identity logic (Actions, Hooks, Workflows), and Terraform-driven CI/CD — all aligned to Zero Trust.",
+    "headline": "I build the identity layer behind modern apps, from CIAM at scale to IAM for AI agents.",
+    "shortBio": "Technical Consultant at Okta helping enterprises design and deploy secure CIAM and IAM architectures, including identity patterns for AI agents, OAuth/OIDC, MFA, and Zero Trust access.",
+    "about": "I am a Technical Consultant at Okta focused on CIAM, Auth0, and IAM architecture for AI agents. I help enterprise customers design secure authentication, authorization, MFA, federation, and extensibility patterns across web, mobile, SPA, and API workloads. Previously, I owned production Auth0 operations for Fifth Third Bank's Newline platform and planned the target-state migration architecture to Ping Identity with zero unplanned downtime. Earlier at Cardinal Health, I supported 22,000+ workforce identities, federated 100+ applications, and worked across Okta, SailPoint, CyberArk, Active Directory, OAuth 2.0, OpenID Connect, SAML, SCIM, Terraform, CI/CD, and Zero Trust controls.",
     "location": "Charlotte, North Carolina",
     "email": "swapnilmukherjee.jobs@gmail.com",
     "publicEmail": "swapnilmukherjee.jobs@gmail.com",
@@ -20,41 +20,115 @@
     "resume": "/Swapnil_Mukherjee_Resume.pdf"
   },
   "highlights": [
-    { "label": "Years in identity", "value": "5+", "detail": "CIAM & workforce IAM" },
-    { "label": "Apps federated", "value": "100+", "detail": "B2E, B2B, B2C across Okta, Auth0, Ping" },
-    { "label": "Identities operated", "value": "22k+", "detail": "Workforce + customer at scale" },
-    { "label": "Platforms", "value": "Okta · Auth0 · Ping", "detail": "Hands-on across all three" }
+    {
+      "label": "Years in identity",
+      "value": "5+",
+      "detail": "CIAM & workforce IAM"
+    },
+    {
+      "label": "Apps federated",
+      "value": "100+",
+      "detail": "B2E, B2B, B2C across Okta and Auth0"
+    },
+    {
+      "label": "Identities operated",
+      "value": "22k+",
+      "detail": "Workforce + customer at scale"
+    },
+    {
+      "label": "Platforms",
+      "value": "Okta · Auth0 · IAM",
+      "detail": "CIAM, workforce IAM, and AI identity"
+    }
   ],
   "skills": [
     {
-      "category": "Identity Platforms & IGA",
+      "category": "CIAM & Customer Identity",
       "icon": "shield",
-      "items": ["Okta Workforce Identity", "Okta Customer Identity", "Auth0", "Auth0 for AI Agents", "PingFederate", "PingDirectory", "SailPoint IdentityIQ", "CyberArk"]
+      "items": [
+        "Auth0",
+        "Okta Customer Identity",
+        "Universal Login",
+        "Organizations",
+        "Actions / Rules / Hooks",
+        "MFA",
+        "Attack Protection",
+        "Custom Domains"
+      ]
     },
     {
-      "category": "Protocols & Standards",
+      "category": "Workforce IAM & IGA",
       "icon": "key",
-      "items": ["OAuth 2.0", "OpenID Connect", "SAML 2.0", "SCIM", "LDAP", "JWT", "TLS", "PKI fundamentals"]
+      "items": [
+        "Okta Workforce Identity",
+        "Single Sign-On",
+        "Lifecycle Management",
+        "SailPoint IdentityIQ",
+        "CyberArk PAM",
+        "Active Directory",
+        "LDAP",
+        "Joiner-Mover-Leaver"
+      ]
     },
     {
-      "category": "CIAM, SSO & Access",
+      "category": "Protocols & Authorization",
       "icon": "lock",
-      "items": ["Universal Login", "Organizations", "MFA & Adaptive Auth", "Attack Protection", "RBAC / ABAC", "PAM", "Zero Trust", "Conditional Access"]
+      "items": [
+        "OAuth 2.0",
+        "OpenID Connect",
+        "SAML 2.0",
+        "SCIM",
+        "JWT",
+        "RBAC",
+        "ABAC",
+        "Token Design",
+        "API Authorization"
+      ]
     },
     {
-      "category": "IAM Engineering",
+      "category": "AI Identity & Zero Trust",
+      "icon": "activity",
+      "items": [
+        "IAM for AI Agents",
+        "Auth0 for AI Agents",
+        "Agent Authorization",
+        "Delegated Access",
+        "Consent Patterns",
+        "Fine-Grained Access",
+        "Zero Trust",
+        "Adaptive Access"
+      ]
+    },
+    {
+      "category": "Engineering & Automation",
       "icon": "code",
-      "items": ["JavaScript", "Auth0 Actions / Rules / Hooks", "Ping policies & flows", "Okta Inline Hooks", "Okta Workflows", "REST APIs", "Postman", "CLI tools"]
-    },
-    {
-      "category": "Automation & IaC",
-      "icon": "terminal",
-      "items": ["Terraform", "GitHub Actions", "Jenkins", "CI/CD for IAM config", "Python", "Flask"]
+      "items": [
+        "JavaScript",
+        "TypeScript",
+        "Python",
+        "REST APIs",
+        "Terraform",
+        "GitHub Actions",
+        "Jenkins",
+        "CI/CD for IAM Config"
+      ]
     },
     {
       "category": "Observability & Compliance",
-      "icon": "activity",
-      "items": ["Splunk", "Dynatrace", "New Relic", "NIST 800-53", "SOC 2", "ISO 27001", "PCI DSS", "SOX", "GLBA", "GDPR", "HIPAA"]
+      "icon": "terminal",
+      "items": [
+        "Splunk",
+        "Dynatrace",
+        "New Relic",
+        "Audit Logging",
+        "NIST 800-53",
+        "SOC 2",
+        "ISO 27001",
+        "HIPAA",
+        "SOX",
+        "GLBA",
+        "GDPR"
+      ]
     }
   ],
   "experience": [
@@ -69,38 +143,52 @@
       "type": "Full-time",
       "color": "from-blue-500 to-indigo-600",
       "accent": "rgba(59, 130, 246, 0.25)",
-      "summary": "Implementing and optimizing Auth0 for customer identity — and helping customers design secure identity patterns for AI agents and agentic workflows.",
+      "summary": "Technical Consultant supporting enterprise Auth0 and CIAM implementations, with a focus on secure authentication, authorization, extensibility, and IAM patterns for AI agents.",
       "highlights": [
-        "Partner with customers to implement and optimize Auth0 for CIAM use cases across web, mobile, SPA, and API workloads.",
-        "SME for Auth0 for AI Agents — advise customers on secure identity patterns for emerging AI and agentic workflows.",
-        "Provide guidance on Universal Login, Organizations, Actions, MFA, Attack Protection, RBAC, and social/enterprise IdP integrations.",
-        "Drive customer onboarding, architecture reviews, deployment planning, configuration guidance, and troubleshooting across Auth0 environments.",
-        "Advise on OAuth 2.0, OIDC, and SAML patterns; troubleshoot tenant configuration, login flows, token behavior, extensibility, and federation.",
-        "Collaborate with Sales, Solutions Engineering, Support, and Product to unblock customer challenges and drive adoption."
+        "Lead customer architecture sessions for Auth0 CIAM across web, mobile, SPA, API, B2B, and B2C workloads, translating business requirements into secure implementation plans.",
+        "Advise on IAM for AI agents, including agent authorization, delegated access, token exchange patterns, consent, scoped API access, and secure user-to-agent interactions.",
+        "Implement and optimize Universal Login, Organizations, Actions, MFA, Attack Protection, RBAC, custom domains, and enterprise/social identity provider integrations.",
+        "Troubleshoot OAuth 2.0, OpenID Connect, SAML, token claims, sessions, redirects, extensibility code, and federation issues across production Auth0 tenants.",
+        "Partner with Sales, Solutions Engineering, Support, and Product to unblock deployments, improve adoption, and feed customer requirements back into platform teams.",
+        "Create reusable implementation guidance for CIAM security, Zero Trust access, API authorization, and operational readiness."
       ],
-      "tags": ["Auth0", "CIAM", "AI Agents", "OAuth 2.0", "OIDC", "SAML"]
+      "tags": [
+        "Auth0",
+        "CIAM",
+        "IAM for AI Agents",
+        "OAuth 2.0",
+        "OIDC",
+        "SAML"
+      ]
     },
     {
       "id": "fifth-third",
-      "role": "Security Engineer II — CIAM",
+      "role": "Security Engineer II, CIAM",
       "company": "Fifth Third Bank",
       "contractInfo": "Contractor via CBTS",
       "logo": "fifth-third",
       "period": "Jun 2024 – Dec 2025",
-      "location": "Remote, USA",
+      "location": "Charlotte, NC · Remote",
       "type": "Contract",
       "color": "from-emerald-500 to-teal-600",
       "accent": "rgba(16, 185, 129, 0.25)",
-      "summary": "CIAM engineer for the Newline commercial banking platform. Set up and owned the Auth0 tenant in production, then later architected the end-to-end migration to Ping Identity with zero unplanned downtime.",
+      "summary": "CIAM engineer for the Newline commercial banking platform. Owned production Auth0 operations, hardened authentication flows, and planned the target-state migration architecture from Auth0 to Ping Identity with zero unplanned downtime.",
       "highlights": [
-        "Set up and owned the Auth0 tenant in production for Newline — tenant configuration, custom domains, application onboarding, and day-two operations for external customers and internal staff.",
-        "Designed and operated SSO/MFA journeys with OAuth 2.0, OIDC, and SAML on Auth0 first and Ping Identity later, aligned to Zero Trust and the bank's internal security standards.",
-        "Architected the end-to-end migration from Auth0 to Ping Identity / PingDirectory — gap analysis, attribute and claim mapping, schema design, user profile migration, application re-onboarding, and cutover testing — with zero unplanned downtime and no customer-facing regressions.",
-        "Built and maintained custom Auth0 Actions, Rules, and Hooks plus equivalent Ping policies and flows in JavaScript and REST APIs for token enrichment, registration, credential recovery, and step-up auth.",
-        "Implemented CI/CD for identity config using GitHub, Jenkins, and Terraform — version-controlled, auditable, and approval-gated promotions across environments.",
-        "Refined joiner–mover–leaver logic and access patterns with HR, security, and app teams, reducing access discrepancies, CIAM incidents, and audit findings."
+        "Owned production Auth0 tenant operations for Newline, including tenant configuration, custom domains, application onboarding, release support, and day-two operations.",
+        "Designed and operated SSO and MFA journeys using OAuth 2.0, OpenID Connect, and SAML, aligned to Zero Trust principles and financial-services security standards.",
+        "Planned and architected the Auth0-to-Ping Identity migration strategy, covering gap analysis, target-state design, schema planning, attribute mapping, claim design, user profile migration, app re-onboarding, and cutover testing.",
+        "Built Auth0 Actions, Rules, and Hooks in JavaScript and REST APIs for token enrichment, registration, credential recovery, and step-up authentication.",
+        "Implemented Terraform-based CI/CD for IAM configuration using GitHub and Jenkins, creating version-controlled, auditable, approval-gated promotion paths across environments.",
+        "Partnered with application, infrastructure, HR, and security teams to improve lifecycle access patterns, reduce CIAM incidents, and support audit readiness."
       ],
-      "tags": ["Auth0", "PingFederate", "PingDirectory", "Terraform", "Zero Trust"]
+      "tags": [
+        "Auth0",
+        "CIAM",
+        "OAuth 2.0",
+        "OIDC",
+        "SAML",
+        "Terraform"
+      ]
     },
     {
       "id": "cardinal",
@@ -109,20 +197,27 @@
       "contractInfo": "Consultant via TCS",
       "logo": "cardinal",
       "period": "Jul 2020 – Aug 2022",
-      "location": "Kolkata, India",
+      "location": "Kolkata, India · Remote",
       "type": "Consultant",
       "color": "from-rose-500 to-red-600",
       "accent": "rgba(244, 63, 94, 0.25)",
-      "summary": "Okta SME for a regulated healthcare enterprise. Operated SSO for 22,000+ identities and federated 100+ apps with Active Directory and Okta.",
+      "summary": "Okta SME and IAM platform engineer for a regulated healthcare enterprise, supporting 22,000+ workforce identities, 100+ federated applications, and core access governance workflows.",
       "highlights": [
-        "Okta subject matter expert and IAM platform engineer for 22,000+ workforce identities across on-prem and cloud apps.",
-        "Led 8 engineers through migrating legacy on-prem applications to Okta-based identity services — federating 100+ B2E, B2B, and B2C apps.",
-        "Operated SailPoint IdentityIQ for account aggregation, connector configuration, and joiner–mover–leaver workflows across AD, Okta, and key enterprise systems.",
-        "Partnered with CyberArk and SailPoint teams to define privileged access patterns, reducing unmanaged and orphaned admin access.",
-        "Administered Linux/Red Hat servers and proxy infra underpinning the IAM stack; automated upgrade routines that stabilized SSO during change windows.",
-        "Deployed and tuned MFA / adaptive MFA across legacy and cloud platforms aligned to SOC 2, ISO 27001, and HIPAA."
+        "Served as Okta subject matter expert for 22,000+ workforce identities across cloud, on-prem, B2E, B2B, and B2C application environments.",
+        "Led an 8-engineer team through migration of legacy applications to Okta-based SSO, federating 100+ applications with SAML and Active Directory integrations.",
+        "Operated SailPoint IdentityIQ for account aggregation, connector configuration, access governance, and joiner-mover-leaver workflows across AD, Okta, and enterprise systems.",
+        "Partnered with CyberArk and SailPoint teams to improve privileged access patterns, reduce unmanaged administrator access, and strengthen identity governance controls.",
+        "Supported Linux and Red Hat infrastructure, proxy services, and IAM platform operations, automating upgrade routines and reducing change-window risk.",
+        "Deployed and tuned MFA and adaptive access policies across legacy and cloud platforms aligned to HIPAA, SOC 2, ISO 27001, and enterprise security requirements."
       ],
-      "tags": ["Okta", "SailPoint IIQ", "CyberArk", "SAML", "MFA"]
+      "tags": [
+        "Okta",
+        "SailPoint IIQ",
+        "CyberArk",
+        "SAML",
+        "MFA",
+        "Identity Governance"
+      ]
     },
     {
       "id": "nokia",
@@ -135,12 +230,17 @@
       "type": "Internship",
       "color": "from-sky-500 to-blue-600",
       "accent": "rgba(14, 165, 233, 0.25)",
-      "summary": "Built JavaScript and Python automation for internal network tools — my first taste of secure API design and credential handling.",
+      "summary": "Software development intern building automation and internal tooling for network operations, with an early focus on secure APIs, logging, and credential handling.",
       "highlights": [
-        "Built JS and Python automation scripts and internal APIs to streamline deployment and environment configuration for internal network tools.",
-        "Designed early routines for logging, health checks, credential handling, and access control that still inform my IAM engineering work."
+        "Built JavaScript and Python automation scripts and internal APIs to streamline deployment, environment setup, and operational workflows for network tooling.",
+        "Designed routines for logging, health checks, credential handling, and access control, building a foundation for later IAM and security engineering work."
       ],
-      "tags": ["JavaScript", "Python", "Automation"]
+      "tags": [
+        "JavaScript",
+        "Python",
+        "Automation",
+        "APIs"
+      ]
     }
   ],
   "education": [
@@ -162,13 +262,58 @@
     }
   ],
   "certifications": [
-    { "name": "AWS Cloud Technology Consultant Specialization", "issuer": "AWS", "status": "earned" },
-    { "name": "AWS for Developers: Identity Access Management (IAM)", "issuer": "LinkedIn Learning", "status": "earned" },
-    { "name": "Google Cloud Platform for Enterprise", "issuer": "LinkedIn Learning", "status": "earned" },
-    { "name": "Introduction to Cloud Identity", "issuer": "Google", "status": "earned" },
-    { "name": "Web Security: OAuth and OpenID Connect", "issuer": "LinkedIn Learning", "status": "earned" },
-    { "name": "Azure for Architects: Design for Identity and Security", "issuer": "LinkedIn Learning", "status": "earned" },
-    { "name": "Microsoft Azure: Identity and Access Management", "issuer": "LinkedIn Learning", "status": "earned" }
+    {
+      "name": "Auth0 Certified Developer",
+      "issuer": "Okta / Auth0",
+      "status": "in-progress",
+      "expected": "May 2026"
+    },
+    {
+      "name": "CISSP, Certified Information Systems Security Professional",
+      "issuer": "(ISC)²",
+      "status": "in-progress",
+      "expected": "Q3 2026"
+    },
+    {
+      "name": "Secure AI Workflows with Auth0 for AI Agents",
+      "issuer": "Okta",
+      "status": "earned"
+    },
+    {
+      "name": "AWS Cloud Technology Consultant Specialization",
+      "issuer": "AWS",
+      "status": "earned"
+    },
+    {
+      "name": "AWS for Developers: Identity Access Management (IAM)",
+      "issuer": "LinkedIn Learning",
+      "status": "earned"
+    },
+    {
+      "name": "Google Cloud Platform for Enterprise",
+      "issuer": "LinkedIn Learning",
+      "status": "earned"
+    },
+    {
+      "name": "Introduction to Cloud Identity",
+      "issuer": "Google",
+      "status": "earned"
+    },
+    {
+      "name": "Web Security: OAuth and OpenID Connect",
+      "issuer": "LinkedIn Learning",
+      "status": "earned"
+    },
+    {
+      "name": "Azure for Architects: Design for Identity and Security",
+      "issuer": "LinkedIn Learning",
+      "status": "earned"
+    },
+    {
+      "name": "Microsoft Azure: Identity and Access Management",
+      "issuer": "LinkedIn Learning",
+      "status": "earned"
+    }
   ],
   "projects": [
     {
@@ -180,7 +325,12 @@
       "color": "from-cyan-500 to-blue-600",
       "summary": "Smart carpooling platform with route-matching algorithms and full-stack user management.",
       "description": "End-to-end platform that matches travelers with overlapping itineraries to cut cost and emissions. Built user registration, trip-matching, and a CMS-backed admin layer; layered in market-research-driven personas and a CI/CD pipeline for smooth deploys.",
-      "tags": ["JavaScript", "Python", "CMS", "CI/CD"]
+      "tags": [
+        "JavaScript",
+        "Python",
+        "CMS",
+        "CI/CD"
+      ]
     },
     {
       "id": "fast-fuzzer",
@@ -191,7 +341,12 @@
       "color": "from-purple-500 to-pink-600",
       "summary": "Advanced fuzzing framework that surfaces blind spots in firmware specifications and legacy systems.",
       "description": "Evolved the SAFIREFUZZ framework into a fuzzer that fuses specification, code, and test-suite signals to expose SPEC blind spots in firmware. Resolved core bugs and added legacy-system integrations.",
-      "tags": ["Fuzzing", "Python", "C++", "Security Research"]
+      "tags": [
+        "Fuzzing",
+        "Python",
+        "C++",
+        "Security Research"
+      ]
     },
     {
       "id": "pizzeria",
@@ -201,8 +356,12 @@
       "icon": "pizza",
       "color": "from-red-500 to-orange-600",
       "summary": "Java + SQL backend simulating store operations, inventory, and order processing.",
-      "description": "OO-designed Java framework with a structured SQL schema for a simulated pizza chain — modular, scalable, and capable of handling multiple order types and inventory flows.",
-      "tags": ["Java", "SQL", "AWS RDS"]
+      "description": "OO-designed Java framework with a structured SQL schema for a simulated pizza chain, modular, scalable, and capable of handling multiple order types and inventory flows.",
+      "tags": [
+        "Java",
+        "SQL",
+        "AWS RDS"
+      ]
     },
     {
       "id": "drown",
@@ -213,7 +372,12 @@
       "color": "from-rose-500 to-red-600",
       "summary": "Executed the DROWN attack against SSLv2 servers to recover keys and demonstrate protocol risk.",
       "description": "Performed a full DROWN (Decrypting RSA with Obsolete and Weakened eNcryption) assessment: brute-forced SSLv2 to recover the server's private key, then implemented mitigation strategies.",
-      "tags": ["Cryptography", "RSA", "C", "TLS"]
+      "tags": [
+        "Cryptography",
+        "RSA",
+        "C",
+        "TLS"
+      ]
     },
     {
       "id": "space-hangman",
@@ -224,7 +388,12 @@
       "color": "from-violet-500 to-fuchsia-600",
       "summary": "Flask + HTML5 web game that wires multiple external APIs into a celestial Hangman.",
       "description": "Reimagined Hangman with a space theme. Flask backend, HTML5/CSS frontend, and several external APIs woven in to keep gameplay dynamic.",
-      "tags": ["Python", "Flask", "HTML5", "CSS"]
+      "tags": [
+        "Python",
+        "Flask",
+        "HTML5",
+        "CSS"
+      ]
     },
     {
       "id": "sysmon",
@@ -234,8 +403,12 @@
       "icon": "activity",
       "color": "from-emerald-500 to-teal-600",
       "summary": "Python CLI for real-time tracking of CPU, memory, and network metrics with anomaly alerts.",
-      "description": "Built around psutil for collection and matplotlib for live visualization, the tool surfaces CPU load, memory pressure, and network activity — with alerting for anomalous behavior.",
-      "tags": ["Python", "psutil", "Monitoring"]
+      "description": "Built around psutil for collection and matplotlib for live visualization, the tool surfaces CPU load, memory pressure, and network activity, with alerting for anomalous behavior.",
+      "tags": [
+        "Python",
+        "psutil",
+        "Monitoring"
+      ]
     },
     {
       "id": "voicerx",
@@ -245,8 +418,12 @@
       "icon": "mic",
       "color": "from-teal-500 to-emerald-600",
       "summary": "Voice-driven EMR interface using Amazon Alexa to automate clinical data entry.",
-      "description": "An Alexa-powered voice UI for Electronic Medical Records that automates data entry and updates so clinicians can interact with EMRs via voice — streamlining workflows and reducing administrative burden.",
-      "tags": ["Alexa API", "HCI", "Healthcare"]
+      "description": "An Alexa-powered voice UI for Electronic Medical Records that automates data entry and updates so clinicians can interact with EMRs via voice, streamlining workflows and reducing administrative burden.",
+      "tags": [
+        "Alexa API",
+        "HCI",
+        "Healthcare"
+      ]
     },
     {
       "id": "healthfit",
@@ -257,7 +434,11 @@
       "color": "from-lime-500 to-green-600",
       "summary": "Wellness app providing personalized daily caloric targets via REST APIs.",
       "description": "Python + REST application that recommends daily caloric intake based on a user's weight management goals, backed by research-grounded heuristics and OAuth-secured endpoints.",
-      "tags": ["Python", "REST", "OAuth"]
+      "tags": [
+        "Python",
+        "REST",
+        "OAuth"
+      ]
     },
     {
       "id": "tweetfeel",
@@ -268,7 +449,11 @@
       "color": "from-sky-500 to-blue-600",
       "summary": "NLP sentiment engine using RNNs to extract emotional structure from tweets.",
       "description": "End-to-end NLP pipeline: text preprocessing, embeddings, and recurrent neural networks to surface emotional structure from tweet streams.",
-      "tags": ["Python", "NLP", "RNN"]
+      "tags": [
+        "Python",
+        "NLP",
+        "RNN"
+      ]
     },
     {
       "id": "neural-style",
@@ -278,8 +463,12 @@
       "icon": "palette",
       "color": "from-pink-500 to-rose-600",
       "summary": "Deep-learning app that fuses content and style images for art and therapeutic use.",
-      "description": "Implemented neural style transfer in Python — combining a content image with the style of a reference image via deep networks and optimization — with explorations into therapeutic applications.",
-      "tags": ["Python", "Deep Learning", "Computer Vision"]
+      "description": "Implemented neural style transfer in Python, combining a content image with the style of a reference image via deep networks and optimization, with explorations into therapeutic applications.",
+      "tags": [
+        "Python",
+        "Deep Learning",
+        "Computer Vision"
+      ]
     },
     {
       "id": "iot-automation",
@@ -289,8 +478,12 @@
       "icon": "cpu",
       "color": "from-amber-500 to-orange-600",
       "summary": "Java-based NodeMCU firmware enabling remote control of traditional appliances.",
-      "description": "NodeMCU + Java firmware that brings legacy appliances onto the network at low cost — a take on accessible smart-home retrofitting.",
-      "tags": ["IoT", "Java", "NodeMCU"]
+      "description": "NodeMCU + Java firmware that brings legacy appliances onto the network at low cost, a take on accessible smart-home retrofitting.",
+      "tags": [
+        "IoT",
+        "Java",
+        "NodeMCU"
+      ]
     },
     {
       "id": "fraud",
@@ -301,7 +494,11 @@
       "color": "from-blue-500 to-indigo-600",
       "summary": "ML pipeline using K-Nearest Neighbour tuned for highly imbalanced credit-transaction data.",
       "description": "Built a KNN-based fraud detector with custom feature engineering, hyperparameter tuning, and tailored distance metrics. Evaluated with precision-recall curves and confusion matrices to maximize recall.",
-      "tags": ["Python", "KNN", "ML"]
+      "tags": [
+        "Python",
+        "KNN",
+        "ML"
+      ]
     }
   ]
 }

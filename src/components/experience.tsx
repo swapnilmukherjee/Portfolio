@@ -1,118 +1,117 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Briefcase, ChevronDown, MapPin } from "lucide-react";
+import { motion } from "framer-motion";
+import type { Experience as ExpType } from "@/data/content-types";
 
-import { Reveal } from "./reveal";
-import { SpotlightCard } from "./spotlight-card";
-import contentJson from "@/data/content.json";
-import { cn } from "@/lib/cn";
+const reveal = {
+  initial: { opacity: 0, y: 28, filter: "blur(8px)" },
+  whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+  viewport: { once: true, margin: "-80px" },
+  transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
+};
 
-export function Experience() {
-  const { experience } = contentJson;
-  const [openId, setOpenId] = useState<string | null>(experience[0]?.id ?? null);
-
+export function Experience({ experience }: { experience: ExpType[] }) {
   return (
-    <section id="experience" className="relative scroll-mt-24 py-24 sm:py-32">
-      <div className="mx-auto max-w-6xl px-6">
-        <Reveal>
-          <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">02 — Experience</p>
-          <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight text-text sm:text-5xl">
-            Where I&rsquo;ve <span className="text-gradient">built things</span>.
-          </h2>
-          <p className="mt-4 max-w-xl text-sm text-muted sm:text-base">
-            Five years operating customer and workforce identity at scale — across financial services, healthcare, and now the platform side at Okta.
-          </p>
-        </Reveal>
+    <section id="experience" className="relative z-[2] py-32 sm:py-44">
+      <div className="mx-auto max-w-[1320px] px-6 sm:px-8">
+        <motion.div {...reveal} className="mb-6">
+          <span className="eyebrow">02 / Experience</span>
+        </motion.div>
 
-        <div className="mt-14 space-y-4">
-          {experience.map((job, idx) => {
-            const open = openId === job.id;
-            return (
-              <Reveal key={job.id} delay={idx * 0.05}>
-                <SpotlightCard className="overflow-hidden p-0">
-                  <button
-                    type="button"
-                    onClick={() => setOpenId(open ? null : job.id)}
-                    className="flex w-full items-start gap-5 p-6 text-left sm:p-8"
-                    aria-expanded={open}
-                  >
-                    <div
-                      className={cn(
-                        "grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white shadow-sm",
-                        job.color
-                      )}
-                    >
-                      <Briefcase className="h-5 w-5" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-baseline justify-between gap-2">
-                        <h3 className="text-lg font-semibold tracking-tight text-text sm:text-xl">
-                          {job.role}{" "}
-                          <span className="text-muted">·</span>{" "}
-                          <span className="text-text/90">{job.company}</span>
-                        </h3>
-                        <span className="font-mono text-xs text-muted">{job.period}</span>
-                      </div>
-                      <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">
-                        {job.contractInfo ? (
-                          <span className="italic">{job.contractInfo}</span>
-                        ) : null}
-                        <span className="inline-flex items-center gap-1">
-                          <MapPin className="h-3 w-3" /> {job.location}
-                        </span>
-                        <span>{job.type}</span>
-                      </div>
-                      <p className="mt-3 text-sm text-text/80 sm:text-base">{job.summary}</p>
-
-                      <div className="mt-4 flex flex-wrap gap-1.5">
-                        {job.tags.slice(0, 6).map((tag) => (
-                          <span
-                            key={tag}
-                            className="rounded-md border border-border/60 bg-bg/50 px-2 py-0.5 text-[11px] font-medium text-muted"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <ChevronDown
-                      className={cn(
-                        "mt-1 h-4 w-4 shrink-0 text-muted transition-transform duration-300",
-                        open && "rotate-180 text-text"
-                      )}
-                    />
-                  </button>
-
-                  <AnimatePresence initial={false}>
-                    {open && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                        className="overflow-hidden"
-                      >
-                        <div className="border-t border-border/50 px-6 pb-8 pt-6 sm:px-8">
-                          <ul className="space-y-3">
-                            {job.highlights.map((line, i) => (
-                              <li key={i} className="flex items-start gap-3 text-sm leading-relaxed text-text/85 sm:text-[15px]">
-                                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent" />
-                                <span>{line}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </SpotlightCard>
-              </Reveal>
-            );
-          })}
+        <div className="mb-16 grid items-end gap-12 lg:grid-cols-[1fr_0.55fr] lg:gap-14">
+          <motion.h2 {...reveal} className="display-section">
+            Five years,
+            <br />
+            <b className="ir-text">four chapters.</b>
+          </motion.h2>
+          <motion.p {...reveal} className="max-w-[360px] text-base leading-[1.65] text-text/55">
+            Customer and workforce identity at scale, financial services, healthcare, and now Auth0 platform consulting.
+          </motion.p>
         </div>
+
+        {experience.map((job, i) => (
+          <Row key={job.id} job={job} index={i} />
+        ))}
       </div>
     </section>
+  );
+}
+
+function Row({ job, index }: { job: ExpType; index: number }) {
+  return (
+    <motion.article
+      {...reveal}
+      className="grid grid-cols-1 gap-10 border-t border-white/[0.08] py-14 lg:grid-cols-[0.75fr_2.25fr] lg:gap-16 lg:py-16 last:border-b"
+    >
+      {/* Left meta column */}
+      <div>
+        <div className="lg:sticky lg:top-28">
+          <div
+            className="font-light leading-[0.9] tracking-tighter"
+            style={{
+              fontSize: "clamp(72px, 9vw, 124px)",
+              background: "linear-gradient(135deg, rgb(var(--grad-1)), rgb(var(--grad-2)))",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              color: "transparent",
+              letterSpacing: "-0.06em",
+            }}
+          >
+            {String(index + 1).padStart(2, "0")}
+          </div>
+          <div className="mt-5 font-mono text-[11px] uppercase tracking-[0.2em] text-text/55">{job.period}</div>
+          <div className="mt-1.5 font-mono text-[11px] text-text/30">{job.location}</div>
+        </div>
+      </div>
+
+      {/* Right content column */}
+      <div>
+        <h3 className="text-[clamp(28px,3.2vw,44px)] font-light leading-[1.05] tracking-tight text-text-strong">
+          {job.role}
+        </h3>
+        <p className="mt-2 text-base text-text/55">
+          <strong className="font-medium text-text/92">{job.company}</strong>
+          {job.contractInfo ? <span> · {job.contractInfo}</span> : <span> · {job.type}</span>}
+        </p>
+        <p className="mt-5 max-w-[720px] text-base leading-[1.65] text-text/92">{job.summary}</p>
+
+        <ul className="mt-8 flex flex-col gap-3.5 border-t border-white/[0.08] pt-7">
+          {job.highlights.map((line, i) => (
+            <motion.li
+              key={i}
+              initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-15% 0px -10% 0px" }}
+              transition={{ duration: 0.75, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+              className="grid grid-cols-[32px_1fr] gap-3 text-[15px] leading-[1.6] text-text/92"
+            >
+              <span
+                className="pt-1 font-mono text-[11px]"
+                style={{
+                  background: "linear-gradient(135deg, rgb(var(--grad-1)), rgb(var(--grad-2)))",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                  color: "transparent",
+                }}
+              >
+                {String(i + 1).padStart(3, "0")}
+              </span>
+              <span>{line}</span>
+            </motion.li>
+          ))}
+        </ul>
+
+        <div className="mt-7 flex flex-wrap gap-2">
+          {job.tags.map((t) => (
+            <span
+              key={t}
+              className="glass rounded-md px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-text/55"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+    </motion.article>
   );
 }

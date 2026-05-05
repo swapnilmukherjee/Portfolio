@@ -1,0 +1,2 @@
+Drop your headshot in this folder as `headshot.jpg` (or .png, update the path in src/components/hero.tsx).
+The photo you sent in chat couldn't be saved automatically because it came as a pasted image, not a file upload.
