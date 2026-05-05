@@ -14,6 +14,7 @@ might add later. Reads use the pooled URL.
 Falls back gracefully:
 - If no POSTGRES_URL is set, every helper raises `DBNotConfigured` and the API
   uses the JSON file shipped in the repo. This makes local dev painless.
+- In production, the CMS writes directly to the `portfolio_content` row.
 """
 from __future__ import annotations
 

@@ -42,8 +42,8 @@ async function fetchFromPostgres(): Promise<Content | null> {
     await client.connect();
 
     try {
-      // Ensure schema exists, first deploy should hit /api/admin/sync, but if
-      // the table got dropped we self-heal here rather than 500ing.
+      // Ensure schema exists. The build-time seed normally creates this, but
+      // if the table got dropped we self-heal here rather than 500ing.
       await client.query(`
         CREATE TABLE IF NOT EXISTS portfolio_content (
           key         TEXT PRIMARY KEY,

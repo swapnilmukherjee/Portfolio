@@ -41,7 +41,7 @@ export function Contact({ profile }: { profile: Profile }) {
       const json = (await res.json().catch(() => ({}))) as { detail?: string };
       if (!res.ok) {
         setStatus("error");
-        setMessage(json?.detail || "Something went wrong sending your message.");
+        setMessage("Message could not be sent right now. Please email me directly.");
         return;
       }
       setStatus("ok");
@@ -49,7 +49,7 @@ export function Contact({ profile }: { profile: Profile }) {
       form.reset();
     } catch {
       setStatus("error");
-      setMessage("Network error. Please try emailing directly.");
+      setMessage("Message could not be sent right now. Please email me directly.");
     }
   }
 

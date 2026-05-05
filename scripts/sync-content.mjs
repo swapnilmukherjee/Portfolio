@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
- * Build-time hook: pushes src/data/content.json into Postgres.
+ * Build-time hook: seeds src/data/content.json into Postgres only when empty.
  * Runs from `npm run build` via the prebuild script.
  *
  * Skips silently if POSTGRES_URL isn't set (local dev) — Postgres is optional.
+ * Once the CMS has saved content, this script leaves that Postgres row alone.
  */
 
 import { readFileSync } from "node:fs";
@@ -48,18 +49,26 @@ try {
     );
   `);
 
+  const existing = await client.query(
+    "SELECT 1 FROM portfolio_content WHERE key = $1 LIMIT 1",
+    ["main"]
+  );
+
+  if (existing.rowCount && existing.rowCount > 0) {
+    console.log("[sync-content] Content row already exists — leaving CMS/Postgres content unchanged.");
+    process.exit(0);
+  }
+
   await client.query(
     `
     INSERT INTO portfolio_content (key, data, updated_at)
     VALUES ($1, $2::jsonb, NOW())
-    ON CONFLICT (key) DO UPDATE
-      SET data = EXCLUDED.data,
-          updated_at = NOW();
+    ON CONFLICT (key) DO NOTHING;
     `,
     ["main", JSON.stringify(data)]
   );
 
-  console.log(`[sync-content] Synced ${Object.keys(data).length} top-level keys to Postgres.`);
+  console.log(`[sync-content] Seeded ${Object.keys(data).length} top-level keys to Postgres.`);
 } catch (err) {
   console.warn(`[sync-content] Sync failed (non-fatal): ${err.message}`);
   // Exit 0 so the build doesn't fail just because Postgres is down.

@@ -20,7 +20,7 @@ Personal portfolio for **Swapnil Mukherjee**, Technical Consultant at Okta.
 │   ├── Swapnil_Mukherjee_Resume.pdf
 │   └── headshot.jpg                  Drop your portrait here
 ├── scripts/
-│   └── sync-content.mjs              Build-time hook: syncs content.json → Postgres
+│   └── sync-content.mjs              Build-time hook: seeds content.json into Postgres when empty
 ├── src/
 │   ├── app/                          Next.js App Router (layout, page, sitemap, robots)
 │   ├── components/
@@ -34,7 +34,7 @@ Personal portfolio for **Swapnil Mukherjee**, Technical Consultant at Okta.
 │   │   ├── education.tsx             Education + In-progress / Earned certs
 │   │   ├── contact.tsx               Form posting to /api/contact
 │   │   └── footer.tsx
-│   ├── data/content.json             Source content (committed in repo, synced to DB on build)
+│   ├── data/content.json             Seed content and local-dev fallback
 │   ├── data/content-types.ts         TypeScript schema
 │   └── lib/content.ts                Server-only Postgres-first content loader
 ├── .env.example
@@ -50,15 +50,12 @@ Personal portfolio for **Swapnil Mukherjee**, Technical Consultant at Okta.
 
 ## Architecture in one paragraph
 
-`src/data/content.json` is the canonical source. On every Vercel build, the
-**`prebuild` hook** (`scripts/sync-content.mjs`) writes that JSON into a
-single-row Postgres table (`portfolio_content` keyed on `'main'`). At
-runtime, **the home page is a React Server Component** that calls
-`getContent()` (in `src/lib/content.ts`) which reads the row directly from
-Postgres. The result is cached at the React/request level and revalidated
-every 5 minutes by Next.js. Postgres is the source of truth at runtime;
-JSON is only the build-time seed and the local-dev fallback. So the workflow
-is still "edit JSON → commit → push", but production reads from the DB.
+Postgres is the live content source. The `/admin` CMS edits the single
+`portfolio_content` row keyed on `main`, and the homepage reads that row
+through `getContent()` in `src/lib/content.ts`. `src/data/content.json` is a
+seed and local-dev fallback. The `prebuild` hook (`scripts/sync-content.mjs`)
+only seeds Postgres when the row is empty, so future deploys do not overwrite
+CMS edits.
 
 ---
 
@@ -97,9 +94,9 @@ git push -u origin main --force
    | `RESEND_API_KEY`      | `re_...`                                  |
    | `CONTACT_TO_EMAIL`    | `swapnilmukherjee.jobs@gmail.com`         |
    | `CONTACT_FROM_EMAIL`  | `Portfolio <onboarding@resend.dev>`       |
-   | `ADMIN_SYNC_TOKEN`    | `openssl rand -hex 32` (optional)         |
+   | `ADMIN_SYNC_TOKEN`    | `openssl rand -hex 32`                    |
 
-4. **Redeploy.** The first build's `prebuild` step seeds the `portfolio_content` table. Subsequent deploys overwrite it with whatever's in `content.json`.
+4. **Redeploy.** The first build's `prebuild` step seeds the `portfolio_content` table. After that, use `/admin` to edit content.
 5. Project → **Analytics → Enable Web Analytics** (free).
 
 > **Local dev without Postgres:** without `POSTGRES_URL`, `getContent()` falls back to reading `src/data/content.json` from disk. So `npm run dev` just works.
@@ -134,38 +131,50 @@ vercel dev
 
 ---
 
-## 5 — Updating content (the day-to-day workflow)
+## 5 — Updating content in the CMS
 
-All copy lives in **`src/data/content.json`**. Edit it, then:
+Open:
+
+```text
+https://your-domain.com/admin
+```
+
+Sign in with `ADMIN_SYNC_TOKEN`. The CMS lets you edit:
+
+- Profile, hero copy, about copy, social links, resume path, and contact details
+- Highlights and metrics
+- Work experience, bullets, tags, role dates, and locations
+- Skills and skill groups
+- Education and certifications
+- Projects, categories, descriptions, icons, colors, and tags
+
+Click **Save content**. In Vercel, saves go to Postgres and the homepage is
+revalidated immediately. Locally, if no Postgres URL is configured, saves write
+to `src/data/content.json` and `api/content.json`.
+
+### Local JSON fallback
 
 ```bash
-cp src/data/content.json api/content.json   # keep the FastAPI side in sync
-git add . && git commit -m "Update content"
-git push
+npm run dev
+# visit http://localhost:3000/admin
+# local fallback token is: dev-admin, unless ADMIN_SYNC_TOKEN is set
 ```
 
-Vercel auto-deploys. The `prebuild` script re-syncs `portfolio_content` in Postgres. Within ~5 minutes (or immediately on hard reload after the deploy completes), the live site reflects the change.
+If you edit JSON by hand, keep both files in sync:
 
-### Adding / flipping certifications
-
-In `src/data/content.json`, find the `certifications` array. Each item:
-
-```json
-{ "name": "Auth0 Certified Developer", "issuer": "Okta · Auth0", "status": "in-progress", "expected": "May 2026" }
+```bash
+cp src/data/content.json api/content.json
 ```
 
-When you pass the exam, swap two fields:
+### Certifications
 
-```json
-{ "name": "Auth0 Certified Developer", "issuer": "Okta · Auth0", "status": "earned" }
-```
+In the CMS, set a certification to `In progress` and fill `Expected`, or set it
+to `Earned`. The site automatically places it in the right section.
 
-Same for CISSP. Commit, push — the cert moves from the dashed "In Progress" rail into the "Earned" grid automatically. No code changes needed.
+### Important
 
-### Updating your role
-
-In the `experience` array, edit the `okta` entry's `role`, `period`, `summary`, `highlights`, and `tags`. Push.
-
+Do not call `/api/admin/sync` after making CMS edits unless you intentionally
+want to overwrite Postgres from the bundled JSON seed.
 ---
 
 ## 6 — API endpoints
@@ -181,7 +190,7 @@ In the `experience` array, edit the `okta` entry's `role`, `period`, `summary`, 
 | GET    | `/api/track`          | Increment a page-view counter (`?page=home`)           |
 | POST   | `/api/track-project`  | Increment a project click (`{"id": "..."}`)            |
 | GET    | `/api/stats`          | Aggregate analytics (views + project clicks)           |
-| POST   | `/api/admin/sync`     | Manually re-sync `content.json` → Postgres (token-gated) |
+| POST   | `/api/admin/sync`     | Emergency JSON seed sync into Postgres (token-gated)     |
 | GET    | `/api/docs`           | Auto-generated OpenAPI docs                            |
 
 ---

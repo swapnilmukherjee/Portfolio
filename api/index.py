@@ -4,7 +4,8 @@ FastAPI backend deployed as Vercel Serverless Functions under /api.
 
 Storage strategy
 ----------------
-- Source of truth for content lives in `content.json` (synced from src/data/content.json).
+- Source of truth for content lives in the `portfolio_content` Postgres row.
+- The bundled `content.json` file is only a seed and local-dev fallback.
 - On startup (cold start), the API reads from Postgres if `POSTGRES_URL` is configured
   and falls back to the bundled JSON otherwise. This makes local dev frictionless and
   keeps prod fast (Postgres is ~one extra ms per cold start).
@@ -251,10 +252,10 @@ async def contact(payload: ContactPayload, request: Request) -> ContactResponse:
             )
         if r.status_code >= 400:
             print(f"[contact] Resend error {r.status_code}: {r.text}")
-            raise HTTPException(status_code=502, detail="Email service rejected the request.")
+            raise HTTPException(status_code=502, detail="Message could not be sent right now. Please email me directly.")
     except httpx.HTTPError as exc:
         print(f"[contact] Resend transport error: {exc}")
-        raise HTTPException(status_code=502, detail="Could not reach the email service.") from exc
+        raise HTTPException(status_code=502, detail="Message could not be sent right now. Please email me directly.") from exc
 
     return ContactResponse(ok=True, detail="Thanks, your message is on its way.")
 
