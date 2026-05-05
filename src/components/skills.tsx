@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import type { SkillGroup } from "@/data/content-types";
+import { CarouselIndicator, useSnapCarousel } from "@/components/carousel-indicator";
 
 const reveal = {
   initial: { opacity: 0, y: 28, filter: "blur(8px)" },
@@ -11,6 +12,8 @@ const reveal = {
 };
 
 export function Skills({ skills }: { skills: SkillGroup[] }) {
+  const carousel = useSnapCarousel(skills.length, String(skills.length));
+
   return (
     <section id="skills" className="relative z-[2] py-32 sm:py-44">
       <div className="mx-auto max-w-[1320px] px-6 sm:px-8">
@@ -30,11 +33,14 @@ export function Skills({ skills }: { skills: SkillGroup[] }) {
         <div className="relative">
           <motion.div
             {...reveal}
+            ref={carousel.ref}
+            onScroll={carousel.onScroll}
             className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-6 pb-6 no-scrollbar sm:-mx-8 sm:px-8 md:gap-5 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible lg:p-0 lg:pb-0"
           >
             {skills.map((g) => (
               <div
                 key={g.category}
+                data-carousel-item="true"
                 className="min-h-[280px] w-[86vw] max-w-[420px] shrink-0 snap-start scroll-ml-6 rounded-[26px] bg-surface p-6 sm:w-[56vw] sm:scroll-ml-8 md:w-[46vw] lg:min-h-0 lg:w-auto lg:max-w-none lg:shrink lg:snap-none lg:scroll-ml-0 lg:rounded-[28px] lg:p-8"
               >
                 <div
@@ -57,11 +63,12 @@ export function Skills({ skills }: { skills: SkillGroup[] }) {
             ))}
           </motion.div>
 
-          <div aria-hidden className="mt-1 flex justify-center gap-1.5 lg:hidden">
-            <span className="h-1.5 w-8 rounded-full bg-white/25" />
-            <span className="h-1.5 w-2 rounded-full bg-white/15" />
-            <span className="h-1.5 w-2 rounded-full bg-white/15" />
-          </div>
+          <CarouselIndicator
+            count={skills.length}
+            activeIndex={carousel.activeIndex}
+            progress={carousel.progress}
+            onSelect={carousel.scrollToIndex}
+          />
         </div>
       </div>
     </section>
