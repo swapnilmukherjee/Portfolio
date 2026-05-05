@@ -82,18 +82,19 @@ export function Projects({ projects }: { projects: Project[] }) {
         </motion.div>
 
         <div className="relative">
-          <motion.div
-            {...reveal}
-            data-carousel-scroller="true"
-            ref={carousel.ref}
-            onScroll={carousel.onScroll}
-            className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-6 pb-6 no-scrollbar sm:-mx-8 sm:px-8 md:gap-5 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible lg:p-0 lg:pb-0"
-          >
-            <AnimatePresence mode="popLayout">
-              {visible.map((p, i) => (
-                <Card key={p.id} project={p} index={i} />
-              ))}
-            </AnimatePresence>
+          <motion.div {...reveal}>
+            <div
+              data-carousel-scroller="true"
+              ref={carousel.ref}
+              onScroll={carousel.onScroll}
+              className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-6 no-scrollbar touch-pan-x sm:-mx-8 sm:px-8 md:gap-5 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible lg:p-0 lg:pb-0 lg:touch-auto"
+            >
+              <AnimatePresence mode="popLayout">
+                {visible.map((p, i) => (
+                  <Card key={p.id} project={p} index={i} />
+                ))}
+              </AnimatePresence>
+            </div>
           </motion.div>
 
           <CarouselIndicator
@@ -130,7 +131,7 @@ const Card = forwardRef<HTMLElement, { project: Project; index: number }>(functi
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
       transition={{ duration: 0.55, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative flex min-h-[300px] w-[86vw] max-w-[420px] shrink-0 snap-start scroll-ml-6 flex-col gap-4 overflow-hidden rounded-[26px] bg-surface p-6 transition-colors duration-300 sm:w-[56vw] sm:scroll-ml-8 md:w-[46vw] lg:min-h-[280px] lg:w-auto lg:max-w-none lg:shrink lg:snap-none lg:scroll-ml-0 lg:rounded-[28px] lg:p-9"
+      className="group relative flex w-[82vw] max-w-[380px] shrink-0 snap-start scroll-ml-6 flex-col gap-3 overflow-hidden rounded-[22px] bg-surface p-5 transition-colors duration-300 sm:w-[52vw] sm:scroll-ml-8 md:w-[44vw] lg:min-h-[280px] lg:w-auto lg:max-w-none lg:shrink lg:snap-none lg:scroll-ml-0 lg:rounded-[28px] lg:gap-4 lg:p-9"
       onMouseMove={(e) => {
         const r = e.currentTarget.getBoundingClientRect();
         e.currentTarget.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
@@ -156,13 +157,13 @@ const Card = forwardRef<HTMLElement, { project: Project; index: number }>(functi
         <span className="font-mono text-[11px] text-text/30">/ {String(index + 1).padStart(2, "0")}</span>
       </div>
 
-      <h3 className="relative text-[28px] font-light leading-[1.08] tracking-normal text-text-strong sm:text-[30px] lg:text-[32px]">
+      <h3 className="relative text-[22px] font-light leading-[1.08] tracking-normal text-text-strong sm:text-[26px] lg:text-[32px]">
         {project.title}
       </h3>
 
-      <p className="relative flex-1 text-[14px] leading-[1.55] text-text/55">{project.summary}</p>
+      <p className="relative flex-1 text-[13px] leading-[1.5] text-text/55 lg:text-[14px] lg:leading-[1.55]">{project.summary}</p>
 
-      <div className="relative flex items-start justify-between gap-4 border-t border-white/[0.08] pt-4 font-mono text-[10px] text-text/55">
+      <div className="relative flex items-start justify-between gap-4 border-t border-white/[0.08] pt-3 font-mono text-[10px] text-text/55 lg:pt-4">
         <div className="flex min-w-0 flex-wrap gap-x-1.5 gap-y-1">
           {project.tags.slice(0, 3).map((t, i) => (
             <span key={t}>

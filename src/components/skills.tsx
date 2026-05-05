@@ -31,37 +31,38 @@ export function Skills({ skills }: { skills: SkillGroup[] }) {
         </div>
 
         <div className="relative">
-          <motion.div
-            {...reveal}
-            data-carousel-scroller="true"
-            ref={carousel.ref}
-            onScroll={carousel.onScroll}
-            className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-6 pb-6 no-scrollbar sm:-mx-8 sm:px-8 md:gap-5 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible lg:p-0 lg:pb-0"
-          >
-            {skills.map((g) => (
-              <div
-                key={g.category}
-                data-carousel-item="true"
-                className="min-h-[280px] w-[86vw] max-w-[420px] shrink-0 snap-start scroll-ml-6 rounded-[26px] bg-surface p-6 sm:w-[56vw] sm:scroll-ml-8 md:w-[46vw] lg:min-h-0 lg:w-auto lg:max-w-none lg:shrink lg:snap-none lg:scroll-ml-0 lg:rounded-[28px] lg:p-8"
-              >
+          <motion.div {...reveal}>
+            <div
+              data-carousel-scroller="true"
+              ref={carousel.ref}
+              onScroll={carousel.onScroll}
+              className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-6 no-scrollbar touch-pan-x sm:-mx-8 sm:px-8 md:gap-5 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible lg:p-0 lg:pb-0 lg:touch-auto"
+            >
+              {skills.map((g) => (
                 <div
-                  className="font-mono text-[10px] uppercase tracking-[0.22em]"
-                  style={{ color: "rgb(var(--grad-2))" }}
+                  key={g.category}
+                  data-carousel-item="true"
+                  className="min-h-[280px] w-[86vw] max-w-[420px] shrink-0 snap-start scroll-ml-6 rounded-[26px] bg-surface p-6 sm:w-[56vw] sm:scroll-ml-8 md:w-[46vw] lg:min-h-0 lg:w-auto lg:max-w-none lg:shrink lg:snap-none lg:scroll-ml-0 lg:rounded-[28px] lg:p-8"
                 >
-                  {g.category}
+                  <div
+                    className="font-mono text-[10px] uppercase tracking-[0.22em]"
+                    style={{ color: "rgb(var(--grad-2))" }}
+                  >
+                    {g.category}
+                  </div>
+                  <div className="mt-5 flex flex-wrap gap-1.5">
+                    {g.items.map((item) => (
+                      <span
+                        key={item}
+                        className="glass rounded-md px-3 py-1.5 text-[12px] leading-5 text-text/92"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <div className="mt-5 flex flex-wrap gap-1.5">
-                  {g.items.map((item) => (
-                    <span
-                      key={item}
-                      className="glass rounded-md px-3 py-1.5 text-[12px] leading-5 text-text/92"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </motion.div>
 
           <CarouselIndicator
