@@ -4,6 +4,7 @@ import { forwardRef, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import type { Project } from "@/data/content-types";
+import { CarouselIndicator, useSnapCarousel } from "@/components/carousel-indicator";
 import { cn } from "@/lib/cn";
 
 const CATEGORIES = ["All", "Cybersecurity", "Web Engineering", "Automation & IoT", "AI & Data"] as const;
@@ -26,6 +27,8 @@ export function Projects({ projects }: { projects: Project[] }) {
   );
 
   const visible = showAll ? filtered : filtered.slice(0, 6);
+  const carouselKey = `${active}-${showAll}-${visible.length}`;
+  const carousel = useSnapCarousel(visible.length, carouselKey);
 
   return (
     <section id="projects" className="relative z-[2] py-32 sm:py-44">
@@ -81,6 +84,8 @@ export function Projects({ projects }: { projects: Project[] }) {
         <div className="relative">
           <motion.div
             {...reveal}
+            ref={carousel.ref}
+            onScroll={carousel.onScroll}
             className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-6 pb-6 no-scrollbar sm:-mx-8 sm:px-8 md:gap-5 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible lg:p-0 lg:pb-0"
           >
             <AnimatePresence mode="popLayout">
@@ -90,11 +95,12 @@ export function Projects({ projects }: { projects: Project[] }) {
             </AnimatePresence>
           </motion.div>
 
-          <div aria-hidden className="mt-1 flex justify-center gap-1.5 lg:hidden">
-            <span className="h-1.5 w-8 rounded-full bg-white/25" />
-            <span className="h-1.5 w-2 rounded-full bg-white/15" />
-            <span className="h-1.5 w-2 rounded-full bg-white/15" />
-          </div>
+          <CarouselIndicator
+            count={visible.length}
+            activeIndex={carousel.activeIndex}
+            progress={carousel.progress}
+            onSelect={carousel.scrollToIndex}
+          />
         </div>
 
         {filtered.length > 6 && (
@@ -117,6 +123,7 @@ const Card = forwardRef<HTMLElement, { project: Project; index: number }>(functi
   return (
     <motion.article
       ref={ref}
+      data-carousel-item="true"
       layout
       initial={{ opacity: 0, y: 18, filter: "blur(6px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}

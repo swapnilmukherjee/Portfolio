@@ -143,7 +143,7 @@ export function Hero({ profile }: { profile: Profile }) {
             initial={{ opacity: 1, scale: 1 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto w-[min(72vw,280px)] sm:w-full sm:max-w-[360px] md:max-w-[390px] lg:mx-0 lg:max-w-[420px] lg:justify-self-end"
+            className="mx-auto w-[min(62vw,220px)] sm:w-full sm:max-w-[300px] md:max-w-[330px] lg:mx-0 lg:max-w-[345px] lg:justify-self-end xl:max-w-[360px]"
           >
             <PortraitCard ref={portraitRef} name={profile.name} />
           </motion.div>
@@ -169,21 +169,13 @@ const PortraitCard = forwardRef<HTMLDivElement, { name: string }>(function Portr
   return (
     <div
       ref={ref}
-      className="glass-strong relative aspect-[4/5] w-full overflow-hidden rounded-[28px] shadow-[inset_0_1px_0_rgb(255_255_255/0.18),0_40px_90px_-10px_rgb(0_0_0/0.6)]"
+      className="relative aspect-[4/5] w-full overflow-hidden rounded-[30px] bg-surface/75 backdrop-blur-xl"
       style={{
         transform: "rotateX(var(--prx, 0deg)) rotateY(var(--pry, 0deg))",
         transition: "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
         transformStyle: "preserve-3d",
       }}
     >
-      {/* Side label */}
-      <span
-        className="absolute -left-7 top-[30%] font-mono text-[10px] uppercase tracking-[0.22em] text-text/30"
-        style={{ transform: "rotate(-90deg)", transformOrigin: "left top" }}
-      >
-        Charlotte · NC
-      </span>
-
       {/* Placeholder underneath */}
       <div
         className="absolute inset-0 grid place-items-center text-[120px] font-light tracking-tighter text-text/30"
@@ -203,12 +195,31 @@ const PortraitCard = forwardRef<HTMLDivElement, { name: string }>(function Portr
         height={1024}
         loading="eager"
         decoding="async"
-        className="absolute inset-0 z-[1] h-full w-full object-cover"
-        style={{ filter: "saturate(1.05) contrast(1.02)" }}
+        className="absolute inset-0 z-[1] h-full w-full object-cover opacity-[0.92]"
+        style={{
+          filter: "grayscale(0.12) saturate(0.72) contrast(0.94) brightness(1.01)",
+          objectPosition: "50% 42%",
+        }}
+      />
+
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-[2]"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 18%, transparent 0%, transparent 40%, rgb(var(--bg) / 0.22) 82%), linear-gradient(135deg, rgb(var(--grad-1) / 0.24), transparent 46%, rgb(var(--grad-2) / 0.18))",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-[3]"
+        style={{
+          background: "linear-gradient(180deg, rgb(var(--surface) / 0.10), transparent 38%, rgb(var(--surface) / 0.30))",
+        }}
       />
 
       {/* Bottom HUD */}
-      <div className="absolute inset-x-4 bottom-4 z-[2] flex items-center justify-between rounded-2xl border border-white/10 bg-black/55 px-[18px] py-[14px] backdrop-blur-xl">
+      <div className="absolute inset-x-4 bottom-4 z-[4] flex items-center justify-between rounded-2xl bg-surface/70 px-[18px] py-[14px] backdrop-blur-xl">
         <div>
           <div
             className="font-mono text-[10px] uppercase tracking-[0.22em]"
@@ -216,8 +227,8 @@ const PortraitCard = forwardRef<HTMLDivElement, { name: string }>(function Portr
           >
             Now
           </div>
-          <div className="mt-1 text-sm font-semibold text-white">Technical Consultant</div>
-          <div className="mt-0.5 text-xs text-white/70">Okta · Auth0</div>
+          <div className="mt-1 text-sm font-semibold text-text-strong">Technical Consultant</div>
+          <div className="mt-0.5 text-xs text-text/60">Okta · Auth0</div>
         </div>
       </div>
     </div>
