@@ -138,14 +138,14 @@ export function Hero({ profile }: { profile: Profile }) {
             </motion.div>
           </div>
 
-          {/* Integrated portrait */}
+          {/* Headshot */}
           <motion.div
             initial={{ opacity: 1, scale: 1 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto mt-2 w-full max-w-[250px] sm:max-w-[300px] md:max-w-[340px] lg:mt-0 lg:max-w-[500px] lg:justify-self-end xl:max-w-[540px]"
+            className="relative mx-auto mt-2 w-full max-w-[230px] sm:max-w-[280px] md:max-w-[320px] lg:mt-0 lg:max-w-[360px] lg:justify-self-end xl:max-w-[390px]"
           >
-            <PortraitScene ref={portraitRef} name={profile.name} />
+            <PortraitCard ref={portraitRef} name={profile.name} title={profile.title} />
           </motion.div>
         </div>
 
@@ -165,84 +165,99 @@ export function Hero({ profile }: { profile: Profile }) {
   );
 }
 
-const PortraitScene = forwardRef<HTMLDivElement, { name: string }>(function PortraitScene({ name }, ref) {
+const PortraitCard = forwardRef<HTMLDivElement, { name: string; title: string }>(function PortraitCard({ name, title }, ref) {
   return (
-    <div
-      ref={ref}
-      className="relative aspect-square w-full lg:aspect-[5/4]"
-      style={{
-        transform: "rotateX(var(--prx, 0deg)) rotateY(var(--pry, 0deg))",
-        transition: "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
-        transformStyle: "preserve-3d",
-      }}
-    >
+    <div className="relative aspect-[4/5] w-full">
+      {/* Ambient glow — static, no animation to avoid repaints */}
       <div
         aria-hidden
-        className="absolute inset-[-14%] rounded-full blur-2xl"
+        className="absolute inset-[-14%] rounded-[50px]"
         style={{
           background:
-            "radial-gradient(circle at 48% 36%, rgb(var(--grad-2) / 0.24), transparent 34%), radial-gradient(circle at 58% 64%, rgb(var(--grad-1) / 0.20), transparent 42%), radial-gradient(circle at 28% 70%, rgb(var(--grad-3) / 0.15), transparent 38%)",
+            "radial-gradient(circle at 52% 16%, rgb(var(--grad-2) / 0.22), transparent 36%), radial-gradient(circle at 22% 82%, rgb(var(--grad-1) / 0.18), transparent 40%), radial-gradient(circle at 80% 60%, rgb(var(--grad-3) / 0.10), transparent 32%)",
+          filter: "blur(28px)",
         }}
       />
 
+      {/* Tilt container — ref lives here for the mousemove effect */}
       <div
-        className="absolute inset-0 overflow-hidden rounded-full lg:inset-x-[-4%] lg:inset-y-[-2%] lg:rounded-[44%]"
+        ref={ref}
+        className="absolute inset-0"
         style={{
-          WebkitMaskImage:
-            "radial-gradient(ellipse at 50% 42%, black 0%, black 43%, rgba(0,0,0,0.78) 58%, transparent 79%)",
-          maskImage:
-            "radial-gradient(ellipse at 50% 42%, black 0%, black 43%, rgba(0,0,0,0.78) 58%, transparent 79%)",
+          transform: "rotateX(var(--prx, 0deg)) rotateY(var(--pry, 0deg))",
+          transition: "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
+          transformStyle: "preserve-3d",
         }}
       >
+        {/* Photo frame */}
         <div
-          aria-hidden
-          className="absolute inset-0"
+          className="absolute inset-0 overflow-hidden rounded-[30px] p-2 backdrop-blur-xl sm:rounded-[34px] sm:p-2.5"
           style={{
+            border: "1px solid transparent",
             background:
-              "linear-gradient(145deg, rgb(var(--surface) / 0.85), rgb(var(--surface-2) / 0.40)), radial-gradient(circle at 52% 34%, rgb(var(--grad-2) / 0.22), transparent 38%)",
+              "linear-gradient(rgb(var(--surface) / 0.8), rgb(var(--surface) / 0.8)) padding-box, " +
+              "linear-gradient(135deg, rgb(var(--grad-1) / 0.55), rgb(var(--grad-3) / 0.35) 50%, rgb(var(--grad-2) / 0.50)) border-box",
+            boxShadow: "0 28px 90px -50px rgb(var(--text) / 0.34)",
           }}
-        />
+        >
+          <div className="relative h-full overflow-hidden rounded-[24px] bg-surface-2 sm:rounded-[28px]">
+            <img
+              src="/headshot.jpg"
+              alt={name}
+              width={1024}
+              height={1024}
+              loading="eager"
+              decoding="async"
+              className="h-full w-full object-cover"
+              style={{
+                filter: "saturate(1.06) contrast(1.02) brightness(1.0)",
+                objectPosition: "50% 36%",
+              }}
+            />
 
-        <img
-          src="/headshot.jpg"
-          alt={name}
-          width={1024}
-          height={1024}
-          loading="eager"
-          decoding="async"
-          className="absolute inset-0 h-full w-full object-cover opacity-[0.84]"
-          style={{
-            filter: "grayscale(0.22) saturate(0.64) contrast(0.92) brightness(1.04)",
-            objectPosition: "50% 36%",
-          }}
-        />
+            {/* Iridescent colour wash — very subtle screen blend */}
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(150deg, rgb(var(--grad-1) / 0.12) 0%, transparent 45%, rgb(var(--grad-2) / 0.09) 100%)",
+                mixBlendMode: "screen",
+              }}
+            />
 
+            {/* Bottom dissolve — photo fades into the card surface */}
+            <div
+              aria-hidden
+              className="absolute inset-x-0 bottom-0"
+              style={{
+                height: "42%",
+                background:
+                  "linear-gradient(to bottom, transparent 0%, rgb(var(--surface) / 0.55) 65%, rgb(var(--surface) / 0.92) 100%)",
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Name badge */}
         <div
-          aria-hidden
-          className="absolute inset-0"
+          className="absolute -bottom-5 left-1/2 flex w-[86%] -translate-x-1/2 items-center gap-3 rounded-2xl bg-surface/90 px-4 py-3 backdrop-blur-xl"
           style={{
-            background:
-              "linear-gradient(90deg, rgb(var(--bg) / 0.36), transparent 26%, transparent 64%, rgb(var(--bg) / 0.42)), linear-gradient(180deg, transparent 44%, rgb(var(--bg) / 0.38) 100%)",
+            boxShadow:
+              "0 18px 70px -44px rgb(var(--text) / 0.45), 0 0 0 1px rgb(var(--line) / 0.07)",
           }}
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-80"
-          style={{
-            background:
-              "radial-gradient(circle at 62% 26%, rgb(var(--grad-2) / 0.16), transparent 34%), radial-gradient(circle at 34% 72%, rgb(var(--grad-1) / 0.18), transparent 42%)",
-          }}
-        />
+        >
+          <span
+            aria-hidden
+            className="h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-400"
+            style={{ boxShadow: "0 0 0 4px rgb(52 211 153 / 0.16)" }}
+          />
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold text-text-strong">{name}</p>
+            <p className="truncate text-xs text-text/55">{title}</p>
+          </div>
+        </div>
       </div>
-
-      <div
-        aria-hidden
-        className="absolute bottom-[8%] left-1/2 h-[1px] w-[78%] -translate-x-1/2"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent, rgb(var(--grad-1) / 0.38), rgb(var(--grad-2) / 0.38), transparent)",
-        }}
-      />
     </div>
   );
 });

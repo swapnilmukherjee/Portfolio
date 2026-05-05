@@ -106,34 +106,19 @@ export function CarouselIndicator({
   if (count <= 1) return null;
 
   return (
-    <div className="mt-2 flex flex-col items-center gap-2 lg:hidden" aria-label="Carousel position" aria-live="polite">
-      <div className="flex items-center gap-3">
-        <span className="font-mono text-[10px] text-text/35">{String(activeIndex + 1).padStart(2, "0")}</span>
-        <div className="relative h-1.5 w-36 overflow-hidden rounded-full bg-text/10" aria-hidden="true">
-          <span
-            className="absolute inset-y-0 rounded-full bg-text/50 transition-[left] duration-100 ease-out"
-            style={{
-              left: `${progress * (100 - 100 / count)}%`,
-              width: `${100 / count}%`,
-            }}
-          />
-        </div>
-        <span className="font-mono text-[10px] text-text/25">{String(count).padStart(2, "0")}</span>
-      </div>
-      <div className="flex justify-center gap-1.5">
-        {Array.from({ length: count }, (_, index) => (
-          <button
-            key={index}
-            type="button"
-            onClick={() => onSelect(index)}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              activeIndex === index ? "w-5 bg-text/35" : "w-2 bg-text/12 hover:bg-text/25"
-            }`}
-            aria-label={`Go to card ${index + 1}`}
-            aria-current={activeIndex === index ? "true" : undefined}
-          />
-        ))}
-      </div>
+    <div className="mt-4 flex justify-center gap-1.5 lg:hidden" aria-label="Carousel position" aria-live="polite">
+      {Array.from({ length: count }, (_, index) => (
+        <button
+          key={index}
+          type="button"
+          onClick={() => onSelect(index)}
+          className={`h-2 rounded-full transition-all duration-300 ${
+            activeIndex === index ? "w-5 bg-text/35" : "w-2 bg-text/12 hover:bg-text/25"
+          }`}
+          aria-label={`Go to card ${index + 1}`}
+          aria-current={activeIndex === index ? "true" : undefined}
+        />
+      ))}
     </div>
   );
 }
