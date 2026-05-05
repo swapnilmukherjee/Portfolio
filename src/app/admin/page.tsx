@@ -9,6 +9,8 @@ import { loginAction, logoutAction, saveContentAction } from "./actions";
 import { AdminEditor } from "./admin-editor";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 export const metadata: Metadata = {
   title: "Portfolio CMS",
@@ -24,7 +26,7 @@ type AdminPageProps = {
 
 const errorText: Record<string, string> = {
   login: "That admin token did not match.",
-  save: "Content could not be saved. Check the server logs for details.",
+  save: "Content could not be saved. Confirm Postgres is configured for this Vercel environment.",
   session: "Your admin session expired. Please sign in again.",
 };
 
@@ -66,6 +68,11 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             {status.usesDevToken && (
               <p className="mb-4 rounded-2xl border border-cyan-300/30 bg-cyan-400/10 px-4 py-3 text-sm text-cyan-100">
                 Local dev token: <span className="font-mono">{status.devToken}</span>
+              </p>
+            )}
+            {status.missingDatabase && (
+              <p className="mb-4 rounded-2xl border border-amber-300/30 bg-amber-400/10 px-4 py-3 text-sm text-amber-100">
+                Set POSTGRES_URL or DATABASE_URL for this Vercel environment before saving content.
               </p>
             )}
             <label htmlFor="token" className="mb-2 block font-mono text-[11px] uppercase tracking-[0.2em] text-white/55">
@@ -134,6 +141,11 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             {searchParams.error
               ? errorText[searchParams.error] ?? "Something went wrong."
               : savedText[searchParams.saved ?? ""] ?? "Saved."}
+          </div>
+        )}
+        {status.missingDatabase && (
+          <div className="mb-5 rounded-2xl border border-amber-300/30 bg-amber-400/10 px-4 py-3 text-sm text-amber-100">
+            CMS saves need POSTGRES_URL or DATABASE_URL in this Vercel environment. Add it to Preview for staging, and to Production for main.
           </div>
         )}
 

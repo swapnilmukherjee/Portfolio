@@ -33,6 +33,7 @@ export function Skills({ skills }: { skills: SkillGroup[] }) {
         <div className="relative">
           <motion.div
             {...reveal}
+            data-carousel-scroller="true"
             ref={carousel.ref}
             onScroll={carousel.onScroll}
             className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-6 pb-6 no-scrollbar sm:-mx-8 sm:px-8 md:gap-5 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible lg:p-0 lg:pb-0"
