@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { forwardRef, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import type { Project } from "@/data/content-types";
@@ -78,17 +78,24 @@ export function Projects({ projects }: { projects: Project[] }) {
           })}
         </motion.div>
 
-        {/* Grid */}
-        <motion.div
-          {...reveal}
-          className="grid overflow-hidden rounded-[28px] border border-white/[0.08] gap-px bg-white/[0.08] sm:grid-cols-2 lg:grid-cols-3"
-        >
-          <AnimatePresence mode="popLayout">
-            {visible.map((p, i) => (
-              <Card key={p.id} project={p} index={i} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        <div className="relative">
+          <motion.div
+            {...reveal}
+            className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-6 pb-6 no-scrollbar sm:-mx-8 sm:px-8 md:gap-5 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible lg:p-0 lg:pb-0"
+          >
+            <AnimatePresence mode="popLayout">
+              {visible.map((p, i) => (
+                <Card key={p.id} project={p} index={i} />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+
+          <div aria-hidden className="mt-1 flex justify-center gap-1.5 lg:hidden">
+            <span className="h-1.5 w-8 rounded-full bg-white/25" />
+            <span className="h-1.5 w-2 rounded-full bg-white/15" />
+            <span className="h-1.5 w-2 rounded-full bg-white/15" />
+          </div>
+        </div>
 
         {filtered.length > 6 && (
           <div className="mt-10 flex justify-center">
@@ -106,15 +113,16 @@ export function Projects({ projects }: { projects: Project[] }) {
   );
 }
 
-function Card({ project, index }: { project: Project; index: number }) {
+const Card = forwardRef<HTMLElement, { project: Project; index: number }>(function Card({ project, index }, ref) {
   return (
     <motion.article
+      ref={ref}
       layout
       initial={{ opacity: 0, y: 18, filter: "blur(6px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
       transition={{ duration: 0.55, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative flex min-h-[280px] flex-col gap-4 bg-bg p-9 transition-colors duration-300 hover:bg-surface"
+      className="group relative flex min-h-[300px] w-[86vw] max-w-[420px] shrink-0 snap-start scroll-ml-6 flex-col gap-4 overflow-hidden rounded-[26px] bg-surface p-6 transition-colors duration-300 sm:w-[56vw] sm:scroll-ml-8 md:w-[46vw] lg:min-h-[280px] lg:w-auto lg:max-w-none lg:shrink lg:snap-none lg:scroll-ml-0 lg:rounded-[28px] lg:p-9"
       onMouseMove={(e) => {
         const r = e.currentTarget.getBoundingClientRect();
         e.currentTarget.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
@@ -140,14 +148,14 @@ function Card({ project, index }: { project: Project; index: number }) {
         <span className="font-mono text-[11px] text-text/30">/ {String(index + 1).padStart(2, "0")}</span>
       </div>
 
-      <h3 className="relative text-[32px] font-light leading-[1.05] tracking-tight text-text-strong">
+      <h3 className="relative text-[28px] font-light leading-[1.08] tracking-normal text-text-strong sm:text-[30px] lg:text-[32px]">
         {project.title}
       </h3>
 
       <p className="relative flex-1 text-[14px] leading-[1.55] text-text/55">{project.summary}</p>
 
-      <div className="relative flex items-center justify-between border-t border-white/[0.08] pt-4 font-mono text-[10px] text-text/55">
-        <div className="flex gap-1.5">
+      <div className="relative flex items-start justify-between gap-4 border-t border-white/[0.08] pt-4 font-mono text-[10px] text-text/55">
+        <div className="flex min-w-0 flex-wrap gap-x-1.5 gap-y-1">
           {project.tags.slice(0, 3).map((t, i) => (
             <span key={t}>
               {t}
@@ -155,8 +163,8 @@ function Card({ project, index }: { project: Project; index: number }) {
             </span>
           ))}
         </div>
-        <span>{project.date}</span>
+        <span className="shrink-0">{project.date}</span>
       </div>
     </motion.article>
   );
-}
+});

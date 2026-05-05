@@ -41,7 +41,7 @@ export function Nav({ resumeHref }: { resumeHref: string }) {
   return (
     <>
       {/* Top bar */}
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-[60] flex items-center justify-between gap-4 px-7 py-4">
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-[60] flex items-center justify-between gap-3 px-4 py-4 sm:gap-4 sm:px-7">
         <Link
           href="#hero"
           className="glass pointer-events-auto inline-flex items-center gap-2.5 rounded-full px-3 py-2"
@@ -65,15 +65,17 @@ export function Nav({ resumeHref }: { resumeHref: string }) {
             href={resumeHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="glass inline-flex items-center gap-2 rounded-full px-4 py-[9px] text-[13px] font-medium text-text/92 transition hover:bg-white/[0.07]"
+            className="glass inline-flex min-h-10 items-center gap-2 rounded-full px-3 py-[9px] text-[13px] font-medium text-text/92 transition hover:bg-white/[0.07] sm:px-4"
           >
-            <Download className="h-3.5 w-3.5" /> Résumé · PDF
+            <Download className="h-3.5 w-3.5" />
+            <span>Résumé</span>
+            <span className="hidden min-[390px]:inline">· PDF</span>
           </a>
           <ThemeToggle />
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="glass grid h-9 w-9 place-items-center rounded-full md:hidden"
+            className="glass grid h-10 w-10 place-items-center rounded-full md:hidden"
             aria-label="Open navigation"
           >
             <Menu className="h-4 w-4" />

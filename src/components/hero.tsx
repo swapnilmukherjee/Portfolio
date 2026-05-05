@@ -1,7 +1,6 @@
 "use client";
 
 import { forwardRef, useEffect, useRef } from "react";
-import Image from "next/image";
 import { ArrowDown, Github, Linkedin, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -62,10 +61,10 @@ export function Hero({ profile }: { profile: Profile }) {
   }, []);
 
   return (
-    <section id="hero" className="relative z-[2] flex min-h-screen items-center pt-32 sm:pt-36 pb-20">
+    <section id="hero" className="relative z-[2] flex min-h-[100svh] items-center overflow-visible pb-20 pt-28 sm:pt-36 lg:min-h-[900px]">
       <div className="mx-auto w-full max-w-[1320px] px-6 sm:px-8">
         {/* Top meta row */}
-        <div className="mb-16 flex flex-wrap items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-text/55">
+        <div className="mb-12 flex flex-wrap items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-text/55 sm:mb-16">
           <span className="inline-flex items-center gap-2.5">
             <span
               className="relative inline-block h-[7px] w-[7px] rounded-full bg-emerald-400"
@@ -75,12 +74,16 @@ export function Hero({ profile }: { profile: Profile }) {
           </span>
         </div>
 
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.18fr)_minmax(320px,0.82fr)] lg:gap-16">
           {/* Headline + lead */}
-          <div>
-            <h1 ref={headlineRef} className="display-hero">
-              <span className="block">Identity,</span>
-              <span className="ir-text block">secured.</span>
+          <div className="min-w-0 overflow-visible">
+            <h1
+              ref={headlineRef}
+              className="display-hero max-w-[820px] overflow-visible"
+              aria-label="Identity, secured. For humans and AI agents."
+            >
+              <span className="hero-line">Identity,</span>
+              <span className="hero-line ir-text">secured.</span>
               <span className="small block">For humans &amp; AI agents.</span>
             </h1>
 
@@ -137,17 +140,17 @@ export function Hero({ profile }: { profile: Profile }) {
 
           {/* Portrait card */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 1, scale: 1 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:justify-self-end"
+            className="mx-auto w-[min(72vw,280px)] sm:w-full sm:max-w-[360px] md:max-w-[390px] lg:mx-0 lg:max-w-[420px] lg:justify-self-end"
           >
             <PortraitCard ref={portraitRef} name={profile.name} />
           </motion.div>
         </div>
 
         {/* Scroll cue */}
-        <div className="absolute inset-x-0 bottom-8 flex flex-col items-center gap-2 text-text/55">
+        <div className="absolute inset-x-0 bottom-8 hidden flex-col items-center gap-2 text-text/55 sm:flex">
           <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Scroll</span>
           <motion.span
             animate={{ y: [0, 6, 0] }}
@@ -166,7 +169,7 @@ const PortraitCard = forwardRef<HTMLDivElement, { name: string }>(function Portr
   return (
     <div
       ref={ref}
-      className="glass-strong relative aspect-[4/5] w-full max-w-[440px] overflow-hidden rounded-[28px] shadow-[inset_0_1px_0_rgb(255_255_255/0.18),0_40px_90px_-10px_rgb(0_0_0/0.6)]"
+      className="glass-strong relative aspect-[4/5] w-full overflow-hidden rounded-[28px] shadow-[inset_0_1px_0_rgb(255_255_255/0.18),0_40px_90px_-10px_rgb(0_0_0/0.6)]"
       style={{
         transform: "rotateX(var(--prx, 0deg)) rotateY(var(--pry, 0deg))",
         transition: "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
@@ -192,14 +195,15 @@ const PortraitCard = forwardRef<HTMLDivElement, { name: string }>(function Portr
         SM
       </div>
 
-      {/* Photo on top, falls back to placeholder via Next/Image error UI */}
-      <Image
+      {/* Photo on top, direct public asset path avoids optimizer and casing surprises. */}
+      <img
         src="/headshot.jpg"
         alt={name}
-        fill
-        sizes="(max-width: 1024px) 80vw, 440px"
-        priority
-        className="relative z-[1] object-cover"
+        width={1024}
+        height={1024}
+        loading="eager"
+        decoding="async"
+        className="absolute inset-0 z-[1] h-full w-full object-cover"
         style={{ filter: "saturate(1.05) contrast(1.02)" }}
       />
 

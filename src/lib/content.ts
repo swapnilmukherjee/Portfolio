@@ -1,23 +1,20 @@
 /**
  * Server-only content loader.
  *
- * Production: reads from Postgres (Vercel Postgres / Neon). Cached for the
- * duration of the request (React cache) and revalidated every 5 minutes
- * via Next.js fetch revalidation semantics, so a `vercel deploy` / sync
- * picks up changes within minutes without us having to bust caches.
+ * Production: reads from Postgres (Vercel Postgres / Neon). The homepage is
+ * dynamic so CMS saves show up on the next request instead of waiting for ISR.
  *
  * Local dev / fallback: reads the bundled JSON file. Means you don't need
  * Postgres running just to `npm run dev`.
  */
 import "server-only";
 
-import { cache } from "react";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 import type { Content } from "@/data/content-types";
 
-const REVALIDATE_SECONDS = 300;
+const REVALIDATE_SECONDS = 0;
 
 const POSTGRES_URL =
   process.env.POSTGRES_URL_NON_POOLING ||
@@ -72,16 +69,12 @@ async function fetchFromJson(): Promise<Content> {
   return JSON.parse(raw) as Content;
 }
 
-/**
- * `cache` dedupes calls within a single request. Outside that scope, Next's
- * incremental cache + revalidate handles freshness in production.
- */
-export const getContent = cache(async (): Promise<Content> => {
+export async function getContent(): Promise<Content> {
   // Prefer Postgres in production. Fall back to JSON if it isn't reachable
   // or hasn't been seeded yet, the prebuild sync covers seeding.
   const fromDb = await fetchFromPostgres();
   if (fromDb) return fromDb;
   return fetchFromJson();
-});
+}
 
 export const revalidate = REVALIDATE_SECONDS;
