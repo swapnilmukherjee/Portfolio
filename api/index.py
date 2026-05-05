@@ -29,6 +29,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import sys
 import time
 from pathlib import Path
 from typing import Any
@@ -37,6 +38,10 @@ import httpx
 from fastapi import FastAPI, Header, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr, Field
+
+ROOT = Path(__file__).resolve().parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from db import (
     DBNotConfigured,
@@ -53,7 +58,6 @@ from db import (
 # Configuration
 # ---------------------------------------------------------------------------
 
-ROOT = Path(__file__).resolve().parent
 CONTENT_PATH = ROOT / "content.json"
 
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
