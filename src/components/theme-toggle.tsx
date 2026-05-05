@@ -10,7 +10,7 @@ export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  const current = mounted ? (theme === "system" ? resolvedTheme : theme) : "dark";
+  const current = mounted ? (theme === "system" ? resolvedTheme : theme) : "light";
   const isDark = current === "dark";
 
   return (
@@ -18,7 +18,7 @@ export function ThemeToggle() {
       type="button"
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="glass relative grid h-9 w-9 place-items-center rounded-full transition hover:bg-white/[0.07]"
+      className="glass relative grid h-10 w-10 place-items-center rounded-full transition hover:bg-white/[0.07]"
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.span

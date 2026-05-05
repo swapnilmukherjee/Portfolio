@@ -73,10 +73,10 @@ export function Contact({ profile }: { profile: Profile }) {
             <motion.a
               {...reveal}
               href={`mailto:${profile.publicEmail}`}
-              className="glass mt-9 inline-flex items-center gap-3 rounded-2xl px-5 py-[18px] font-mono text-[13px] text-text/92 transition hover:bg-white/[0.07]"
+              className="glass mt-9 inline-flex max-w-full items-center gap-3 rounded-2xl px-4 py-[18px] font-mono text-[12px] text-text/92 transition hover:bg-white/[0.07] sm:px-5 sm:text-[13px]"
             >
               <Mail className="h-4 w-4" style={{ color: "rgb(var(--grad-2))" }} />
-              {profile.publicEmail}
+              <span className="min-w-0 break-all">{profile.publicEmail}</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </motion.a>
           </div>
@@ -85,7 +85,7 @@ export function Contact({ profile }: { profile: Profile }) {
             {...reveal}
             onSubmit={onSubmit}
             noValidate
-            className="glass-strong rounded-[28px] p-9"
+            className="glass-strong rounded-[28px] p-5 sm:p-9"
           >
             {/* Honeypot */}
             <input
@@ -141,14 +141,14 @@ export function Contact({ profile }: { profile: Profile }) {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -4 }}
-                    className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs ${
+                    className={`inline-flex max-w-full items-center gap-2 rounded-full border px-3 py-1.5 text-xs ${
                       status === "ok"
                         ? "border-emerald-400/40 bg-emerald-500/10 text-emerald-400"
                         : "border-red-400/40 bg-red-500/10 text-red-400"
                     }`}
                   >
                     {status === "ok" ? <CheckCircle2 className="h-3.5 w-3.5" /> : <AlertCircle className="h-3.5 w-3.5" />}
-                    {message}
+                    <span className="min-w-0">{message}</span>
                   </motion.div>
                 )}
               </AnimatePresence>
