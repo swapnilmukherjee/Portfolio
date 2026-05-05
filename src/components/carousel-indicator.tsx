@@ -60,9 +60,21 @@ export function useSnapCarousel(itemCount: number, resetKey: string) {
   }, [resetKey, updateIndex]);
 
   useEffect(() => {
+    const scroller = ref.current;
     updateIndex();
+    scroller?.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
-    return () => window.removeEventListener("resize", onScroll);
+    const observer = scroller ? new ResizeObserver(onScroll) : null;
+    if (scroller && observer) {
+      observer.observe(scroller);
+      Array.from(scroller.children).forEach((child) => observer.observe(child));
+    }
+
+    return () => {
+      scroller?.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      observer?.disconnect();
+    };
   }, [onScroll, updateIndex]);
 
   useEffect(() => {
@@ -94,15 +106,19 @@ export function CarouselIndicator({
   if (count <= 1) return null;
 
   return (
-    <div className="mt-1 flex flex-col items-center gap-2 lg:hidden" aria-label="Carousel position">
-      <div className="relative h-1.5 w-32 overflow-hidden rounded-full bg-text/10" aria-hidden="true">
-        <span
-          className="absolute inset-y-0 left-0 rounded-full bg-text/50 transition-transform duration-100 ease-out"
-          style={{
-            transform: `translateX(${progress * (count - 1) * 100}%)`,
-            width: `${100 / count}%`,
-          }}
-        />
+    <div className="mt-2 flex flex-col items-center gap-2 lg:hidden" aria-label="Carousel position" aria-live="polite">
+      <div className="flex items-center gap-3">
+        <span className="font-mono text-[10px] text-text/35">{String(activeIndex + 1).padStart(2, "0")}</span>
+        <div className="relative h-1.5 w-36 overflow-hidden rounded-full bg-text/10" aria-hidden="true">
+          <span
+            className="absolute inset-y-0 rounded-full bg-text/50 transition-[left] duration-100 ease-out"
+            style={{
+              left: `${progress * (100 - 100 / count)}%`,
+              width: `${100 / count}%`,
+            }}
+          />
+        </div>
+        <span className="font-mono text-[10px] text-text/25">{String(count).padStart(2, "0")}</span>
       </div>
       <div className="flex justify-center gap-1.5">
         {Array.from({ length: count }, (_, index) => (

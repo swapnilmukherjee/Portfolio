@@ -37,7 +37,7 @@ export function Hero({ profile }: { profile: Profile }) {
     };
   }, []);
 
-  // Portrait card 3D tilt on mouse
+  // Portrait tilt is intentionally subtle so the image feels part of the hero.
   useEffect(() => {
     const el = portraitRef.current;
     if (!el) return;
@@ -45,8 +45,8 @@ export function Hero({ profile }: { profile: Profile }) {
       const r = el.getBoundingClientRect();
       const px = (e.clientX - r.left) / r.width - 0.5;
       const py = (e.clientY - r.top) / r.height - 0.5;
-      el.style.setProperty("--prx", `${-py * 8}deg`);
-      el.style.setProperty("--pry", `${px * 10}deg`);
+      el.style.setProperty("--prx", `${-py * 3.5}deg`);
+      el.style.setProperty("--pry", `${px * 4.5}deg`);
     };
     const leave = () => {
       el.style.setProperty("--prx", "0deg");
@@ -138,14 +138,14 @@ export function Hero({ profile }: { profile: Profile }) {
             </motion.div>
           </div>
 
-          {/* Portrait card */}
+          {/* Integrated portrait */}
           <motion.div
             initial={{ opacity: 1, scale: 1 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto w-[min(62vw,220px)] sm:w-full sm:max-w-[300px] md:max-w-[330px] lg:mx-0 lg:max-w-[345px] lg:justify-self-end xl:max-w-[360px]"
+            className="relative mx-auto mt-2 w-full max-w-[250px] sm:max-w-[300px] md:max-w-[340px] lg:mt-0 lg:max-w-[500px] lg:justify-self-end xl:max-w-[540px]"
           >
-            <PortraitCard ref={portraitRef} name={profile.name} />
+            <PortraitScene ref={portraitRef} name={profile.name} />
           </motion.div>
         </div>
 
@@ -165,72 +165,84 @@ export function Hero({ profile }: { profile: Profile }) {
   );
 }
 
-const PortraitCard = forwardRef<HTMLDivElement, { name: string }>(function PortraitCard({ name }, ref) {
+const PortraitScene = forwardRef<HTMLDivElement, { name: string }>(function PortraitScene({ name }, ref) {
   return (
     <div
       ref={ref}
-      className="relative aspect-[4/5] w-full overflow-hidden rounded-[30px] bg-surface/75 backdrop-blur-xl"
+      className="relative aspect-square w-full lg:aspect-[5/4]"
       style={{
         transform: "rotateX(var(--prx, 0deg)) rotateY(var(--pry, 0deg))",
         transition: "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
         transformStyle: "preserve-3d",
       }}
     >
-      {/* Placeholder underneath */}
       <div
-        className="absolute inset-0 grid place-items-center text-[120px] font-light tracking-tighter text-text/30"
+        aria-hidden
+        className="absolute inset-[-14%] rounded-full blur-2xl"
         style={{
           background:
-            "radial-gradient(closest-side, rgb(var(--grad-1) / 0.25), transparent), linear-gradient(160deg, rgb(var(--surface-2)), rgb(var(--surface)))",
+            "radial-gradient(circle at 48% 36%, rgb(var(--grad-2) / 0.24), transparent 34%), radial-gradient(circle at 58% 64%, rgb(var(--grad-1) / 0.20), transparent 42%), radial-gradient(circle at 28% 70%, rgb(var(--grad-3) / 0.15), transparent 38%)",
+        }}
+      />
+
+      <div
+        className="absolute inset-0 overflow-hidden rounded-full lg:inset-x-[-4%] lg:inset-y-[-2%] lg:rounded-[44%]"
+        style={{
+          WebkitMaskImage:
+            "radial-gradient(ellipse at 50% 42%, black 0%, black 43%, rgba(0,0,0,0.78) 58%, transparent 79%)",
+          maskImage:
+            "radial-gradient(ellipse at 50% 42%, black 0%, black 43%, rgba(0,0,0,0.78) 58%, transparent 79%)",
         }}
       >
-        SM
-      </div>
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(145deg, rgb(var(--surface) / 0.85), rgb(var(--surface-2) / 0.40)), radial-gradient(circle at 52% 34%, rgb(var(--grad-2) / 0.22), transparent 38%)",
+          }}
+        />
 
-      {/* Photo on top, direct public asset path avoids optimizer and casing surprises. */}
-      <img
-        src="/headshot.jpg"
-        alt={name}
-        width={1024}
-        height={1024}
-        loading="eager"
-        decoding="async"
-        className="absolute inset-0 z-[1] h-full w-full object-cover opacity-[0.92]"
-        style={{
-          filter: "grayscale(0.12) saturate(0.72) contrast(0.94) brightness(1.01)",
-          objectPosition: "50% 42%",
-        }}
-      />
+        <img
+          src="/headshot.jpg"
+          alt={name}
+          width={1024}
+          height={1024}
+          loading="eager"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover opacity-[0.84]"
+          style={{
+            filter: "grayscale(0.22) saturate(0.64) contrast(0.92) brightness(1.04)",
+            objectPosition: "50% 36%",
+          }}
+        />
+
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, rgb(var(--bg) / 0.36), transparent 26%, transparent 64%, rgb(var(--bg) / 0.42)), linear-gradient(180deg, transparent 44%, rgb(var(--bg) / 0.38) 100%)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-80"
+          style={{
+            background:
+              "radial-gradient(circle at 62% 26%, rgb(var(--grad-2) / 0.16), transparent 34%), radial-gradient(circle at 34% 72%, rgb(var(--grad-1) / 0.18), transparent 42%)",
+          }}
+        />
+      </div>
 
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 z-[2]"
+        className="absolute bottom-[8%] left-1/2 h-[1px] w-[78%] -translate-x-1/2"
         style={{
           background:
-            "radial-gradient(circle at 50% 18%, transparent 0%, transparent 40%, rgb(var(--bg) / 0.22) 82%), linear-gradient(135deg, rgb(var(--grad-1) / 0.24), transparent 46%, rgb(var(--grad-2) / 0.18))",
+            "linear-gradient(90deg, transparent, rgb(var(--grad-1) / 0.38), rgb(var(--grad-2) / 0.38), transparent)",
         }}
       />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-[3]"
-        style={{
-          background: "linear-gradient(180deg, rgb(var(--surface) / 0.10), transparent 38%, rgb(var(--surface) / 0.30))",
-        }}
-      />
-
-      {/* Bottom HUD */}
-      <div className="absolute inset-x-4 bottom-4 z-[4] flex items-center justify-between rounded-2xl bg-surface/70 px-[18px] py-[14px] backdrop-blur-xl">
-        <div>
-          <div
-            className="font-mono text-[10px] uppercase tracking-[0.22em]"
-            style={{ color: "rgb(var(--grad-2))" }}
-          >
-            Now
-          </div>
-          <div className="mt-1 text-sm font-semibold text-text-strong">Technical Consultant</div>
-          <div className="mt-0.5 text-xs text-text/60">Okta · Auth0</div>
-        </div>
-      </div>
     </div>
   );
 });
