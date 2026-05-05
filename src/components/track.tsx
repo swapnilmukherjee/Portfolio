@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 /**
  * Fires a single /api/track ping per session (uses sessionStorage as a guard).
- * Failures are silent — analytics shouldn't be load-bearing.
+ * Failures are silent, analytics shouldn't be load-bearing.
  */
 export function Track({ page = "home" }: { page?: string }) {
   useEffect(() => {

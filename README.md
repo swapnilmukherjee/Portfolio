@@ -2,31 +2,44 @@
 
 Personal portfolio for **Swapnil Mukherjee**, Technical Consultant at Okta.
 
-- **Frontend:** Next.js 14 (App Router) + TypeScript + Tailwind CSS + Framer Motion
+- **Frontend:** Next.js 14 (App Router) + TypeScript + Tailwind + Framer Motion
 - **Backend:** FastAPI (Python) on Vercel Serverless Functions
-- **Hosting:** Vercel (Hobby tier is more than enough)
+- **Database:** Vercel Postgres / Neon — **source of truth for content**
 - **Email:** Resend (free tier)
-- **Analytics:** Vercel Analytics (free) + a lightweight `/api/track` counter
+- **Analytics:** Vercel Analytics + Postgres-backed counters
+- **Hosting:** Vercel (Hobby tier covers everything)
 
 ```
 .
-├── api/                          FastAPI backend — runs as Vercel Python function
-│   ├── content.json              Mirror of web content for /api/* endpoints
-│   ├── index.py                  FastAPI app — /api/health, /api/contact, /api/track, ...
+├── api/                              FastAPI backend (Vercel Python function)
+│   ├── content.json                  Mirror of content.json — only used as a seed
+│   ├── db.py                         Postgres helpers (psycopg)
+│   ├── index.py                      FastAPI app
 │   └── requirements.txt
 ├── public/
-│   └── Swapnil_Mukherjee_Resume.pdf
+│   ├── Swapnil_Mukherjee_Resume.pdf
+│   └── headshot.jpg                  Drop your portrait here
+├── scripts/
+│   └── sync-content.mjs              Build-time hook: syncs content.json → Postgres
 ├── src/
-│   ├── app/                      Next.js App Router (layout, page, sitemap, robots)
-│   ├── components/               Hero, About, Experience, Projects, Skills, Contact, ...
-│   ├── data/content.json         Single source of truth for portfolio content
-│   └── lib/                      Utilities (cn, icons)
+│   ├── app/                          Next.js App Router (layout, page, sitemap, robots)
+│   ├── components/
+│   │   ├── spatial-stage.tsx         CSS-3D scene (lock cube + IAM satellites)
+│   │   ├── nav.tsx                   Top bar + side rail
+│   │   ├── hero.tsx                  Variable-weight headline + portrait card
+│   │   ├── about.tsx                 3-pillar grid + manifesto
+│   │   ├── experience.tsx            Sticky-num + cascading bullets per role
+│   │   ├── projects.tsx              Filterable grid w/ cursor spotlight
+│   │   ├── skills.tsx                Toolkit grid by category
+│   │   ├── education.tsx             Education + In-progress / Earned certs
+│   │   ├── contact.tsx               Form posting to /api/contact
+│   │   └── footer.tsx
+│   ├── data/content.json             Source content (committed in repo, synced to DB on build)
+│   ├── data/content-types.ts         TypeScript schema
+│   └── lib/content.ts                Server-only Postgres-first content loader
 ├── .env.example
-├── .eslintrc.json
-├── .gitignore
 ├── next.config.mjs
 ├── package.json
-├── postcss.config.mjs
 ├── tailwind.config.ts
 ├── tsconfig.json
 ├── vercel.json
@@ -35,120 +48,154 @@ Personal portfolio for **Swapnil Mukherjee**, Technical Consultant at Okta.
 
 ---
 
-## 1 — Push to GitHub
+## Architecture in one paragraph
 
-From the project root:
+`src/data/content.json` is the canonical source. On every Vercel build, the
+**`prebuild` hook** (`scripts/sync-content.mjs`) writes that JSON into a
+single-row Postgres table (`portfolio_content` keyed on `'main'`). At
+runtime, **the home page is a React Server Component** that calls
+`getContent()` (in `src/lib/content.ts`) which reads the row directly from
+Postgres. The result is cached at the React/request level and revalidated
+every 5 minutes by Next.js. Postgres is the source of truth at runtime;
+JSON is only the build-time seed and the local-dev fallback. So the workflow
+is still "edit JSON → commit → push", but production reads from the DB.
+
+---
+
+## 1 — Push to GitHub
 
 ```bash
 git init
 git add .
-git commit -m "Initial commit: Next.js + FastAPI portfolio"
+git commit -m "Initial commit: v4 spatial portfolio (Postgres-backed)"
 git branch -M main
-git remote add origin https://github.com/swapnilmukherjee/Portfolio.git   # or a fresh repo
-git push -u origin main --force                                           # --force because the existing repo will be replaced
+git remote add origin https://github.com/swapnilmukherjee/Portfolio.git
+git push -u origin main --force
 ```
 
-If you want to keep the old portfolio's git history, create a new repo (e.g. `Portfolio-v2`) instead and push there.
+---
+
+## 2 — Get a Resend API key
+
+1. Sign up at https://resend.com (free tier: 3,000 emails/month).
+2. **API Keys** → **Create API Key** → copy `re_...`.
+3. Default `from` is Resend's sandbox `onboarding@resend.dev` — works without verifying a domain.
 
 ---
 
-## 2 — Get a Resend API key (for the contact form)
+## 3 — Deploy on Vercel + connect Postgres
 
-1. Sign up at https://resend.com (free tier: 3,000 emails/month, 100/day).
-2. **API Keys** → **Create API Key** → copy the value (starts with `re_`).
-3. By default the app sends from Resend's sandbox address `onboarding@resend.dev`, which goes straight to your verified inbox — fine for personal use. To send from your own domain, verify it under **Domains** in Resend, then update `CONTACT_FROM_EMAIL` (see below).
+1. Go to https://vercel.com/new → Import the repo. Leave the build settings on auto-detect.
+2. Project → **Storage → Create Database → Postgres**. Pick the same project. Vercel auto-injects:
+   - `POSTGRES_URL` (pooled)
+   - `POSTGRES_URL_NON_POOLING` (direct, used for writes during build)
+   - …and a couple of extras you can ignore.
+3. Add the Resend env vars under **Settings → Environment Variables**:
 
----
+   | Name                  | Value                                     |
+   | --------------------- | ----------------------------------------- |
+   | `RESEND_API_KEY`      | `re_...`                                  |
+   | `CONTACT_TO_EMAIL`    | `swapnilmukherjee.jobs@gmail.com`         |
+   | `CONTACT_FROM_EMAIL`  | `Portfolio <onboarding@resend.dev>`       |
+   | `ADMIN_SYNC_TOKEN`    | `openssl rand -hex 32` (optional)         |
 
-## 3 — Deploy on Vercel
+4. **Redeploy.** The first build's `prebuild` step seeds the `portfolio_content` table. Subsequent deploys overwrite it with whatever's in `content.json`.
+5. Project → **Analytics → Enable Web Analytics** (free).
 
-1. Go to https://vercel.com/new and import the GitHub repo.
-2. Vercel will auto-detect **Next.js** at the repo root. Leave all the build settings on their defaults — `vercel.json` handles the Python function configuration.
-3. Add the following **Environment Variables** (Project → Settings → Environment Variables):
+> **Local dev without Postgres:** without `POSTGRES_URL`, `getContent()` falls back to reading `src/data/content.json` from disk. So `npm run dev` just works.
 
-   | Name                  | Value                                          |
-   | --------------------- | ---------------------------------------------- |
-   | `RESEND_API_KEY`      | `re_...` (from step 2)                         |
-   | `CONTACT_TO_EMAIL`    | `swapnilmukherjee.jobs@gmail.com`              |
-   | `CONTACT_FROM_EMAIL`  | `Portfolio <onboarding@resend.dev>`            |
-
-4. Click **Deploy**. First build takes ~1–2 minutes.
-5. Once it's live, in Project → **Analytics**, click **Enable Web Analytics** (free).
-
-That's it — your portfolio is live at `https://<project-name>.vercel.app`.
-
-### Custom domain (optional)
-Project → **Settings** → **Domains** → add yours. Vercel will give you the DNS records to add at your registrar.
+### Custom domain
+Project → Settings → Domains → add yours.
 
 ---
 
 ## 4 — Local development
 
-You'll want **Node 18+** and **Python 3.11+**.
+```bash
+npm install
+npm run dev          # http://localhost:3000  (uses JSON when POSTGRES_URL not set)
+```
 
-The simplest local workflow is `vercel dev`, which runs Next.js and the Python API together at `http://localhost:3000`:
+To run the FastAPI side locally:
+
+```bash
+cd api
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python index.py      # http://localhost:8000  → docs at /api/docs
+```
+
+If you want to test the production-shaped flow end-to-end (Next.js + Python + DB), use `vercel dev`:
 
 ```bash
 npm install -g vercel
-npm install
-vercel dev                # http://localhost:3000  (Next.js + /api/* both work)
+vercel dev
 ```
-
-If you'd rather run them separately:
-
-```bash
-# Frontend
-npm install
-npm run dev               # http://localhost:3000
-
-# Backend (second terminal)
-cd api
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python index.py           # http://localhost:8000  → docs at /api/docs
-```
-
-For the contact form to actually send email locally, copy `.env.example` to `.env.local`. Without `RESEND_API_KEY`, the API logs the message to stdout and returns success — fine for testing the UI flow.
 
 ---
 
-## 5 — Updating content
+## 5 — Updating content (the day-to-day workflow)
 
-All copy lives in **two synchronized files**:
-
-- `src/data/content.json`  — used by the frontend
-- `api/content.json`        — used by the backend's `/api/content` endpoint
-
-After editing `src/data/content.json`:
+All copy lives in **`src/data/content.json`**. Edit it, then:
 
 ```bash
-cp src/data/content.json api/content.json
-git add . && git commit -m "Update content" && git push
+cp src/data/content.json api/content.json   # keep the FastAPI side in sync
+git add . && git commit -m "Update content"
+git push
 ```
 
-Vercel auto-deploys on push.
+Vercel auto-deploys. The `prebuild` script re-syncs `portfolio_content` in Postgres. Within ~5 minutes (or immediately on hard reload after the deploy completes), the live site reflects the change.
+
+### Adding / flipping certifications
+
+In `src/data/content.json`, find the `certifications` array. Each item:
+
+```json
+{ "name": "Auth0 Certified Developer", "issuer": "Okta · Auth0", "status": "in-progress", "expected": "May 2026" }
+```
+
+When you pass the exam, swap two fields:
+
+```json
+{ "name": "Auth0 Certified Developer", "issuer": "Okta · Auth0", "status": "earned" }
+```
+
+Same for CISSP. Commit, push — the cert moves from the dashed "In Progress" rail into the "Earned" grid automatically. No code changes needed.
+
+### Updating your role
+
+In the `experience` array, edit the `okta` entry's `role`, `period`, `summary`, `highlights`, and `tags`. Push.
 
 ---
 
 ## 6 — API endpoints
 
-| Method | Path              | Description                                              |
-| ------ | ----------------- | -------------------------------------------------------- |
-| GET    | `/api/health`     | Liveness probe                                           |
-| GET    | `/api/content`    | Full portfolio content                                   |
-| GET    | `/api/profile`    | Profile only                                             |
-| GET    | `/api/experience` | Experience list                                          |
-| GET    | `/api/projects`   | Projects (optional `?category=Cybersecurity`)            |
-| POST   | `/api/contact`    | Send a message (name, email, subject?, message)          |
-| GET    | `/api/track`      | Increment a page-view counter (`?page=home`)             |
-| GET    | `/api/stats`      | Read aggregate counters                                  |
-| GET    | `/api/docs`       | Auto-generated OpenAPI docs (FastAPI)                    |
+| Method | Path                  | Description                                            |
+| ------ | --------------------- | ------------------------------------------------------ |
+| GET    | `/api/health`         | Liveness + DB status                                   |
+| GET    | `/api/content`        | Full portfolio content (Postgres-first, 503 if down)   |
+| GET    | `/api/profile`        | Profile only                                           |
+| GET    | `/api/experience`     | Experience list                                        |
+| GET    | `/api/projects`       | Projects (`?category=Cybersecurity` filter)            |
+| POST   | `/api/contact`        | Send a message via Resend                              |
+| GET    | `/api/track`          | Increment a page-view counter (`?page=home`)           |
+| POST   | `/api/track-project`  | Increment a project click (`{"id": "..."}`)            |
+| GET    | `/api/stats`          | Aggregate analytics (views + project clicks)           |
+| POST   | `/api/admin/sync`     | Manually re-sync `content.json` → Postgres (token-gated) |
+| GET    | `/api/docs`           | Auto-generated OpenAPI docs                            |
 
-The resume PDF is served as a static asset at `/Swapnil_Mukherjee_Resume.pdf`.
+---
+
+## Design notes (v4)
+
+- Pure black background, iridescent **violet → rose → cyan** as the only accent. No warm tones, no glass tint.
+- A CSS-3D **glass padlock cube** is pinned to the viewport. Three IAM satellites — **key**, **shield**, **fingerprint** — orbit at independent radii and tilts. Section-driven camera presets (translate / rotate / blur / scale / opacity) reposition the cube as you scroll.
+- Display headline is **variable-weight Inter**: ultra-thin (200) at the top of the page, animates to bold (700) as you scroll the first viewport. Same trick Apple uses on Vision Pro / iPhone Pro reveals.
+- Glass primitives (`glass`, `glass-strong`) used on nav pills, theme toggle, certs, marquees.
+- Dark + light themes share the gradient. Light mode: off-white `#f5f5f7` à la Apple.
 
 ---
 
 ## License
+
 Personal portfolio. Code is fine for inspiration — copy whatever's useful.
-Vercel staging deployment trigger.

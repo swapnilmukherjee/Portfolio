@@ -1,50 +1,57 @@
 "use client";
 
-import { Reveal } from "./reveal";
-import { SpotlightCard } from "./spotlight-card";
-import { getIcon } from "@/lib/icons";
-import contentJson from "@/data/content.json";
+import { motion } from "framer-motion";
+import type { SkillGroup } from "@/data/content-types";
 
-export function Skills() {
-  const { skills } = contentJson;
+const reveal = {
+  initial: { opacity: 0, y: 28, filter: "blur(8px)" },
+  whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+  viewport: { once: true, margin: "-80px" },
+  transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
+};
 
+export function Skills({ skills }: { skills: SkillGroup[] }) {
   return (
-    <section id="skills" className="relative scroll-mt-24 py-24 sm:py-32">
-      <div className="mx-auto max-w-6xl px-6">
-        <Reveal>
-          <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">04 — Toolkit</p>
-          <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight text-text sm:text-5xl">
-            What I reach <span className="text-gradient">for</span>.
-          </h2>
-        </Reveal>
+    <section id="skills" className="relative z-[2] py-32 sm:py-44">
+      <div className="mx-auto max-w-[1320px] px-6 sm:px-8">
+        <motion.div {...reveal} className="mb-6">
+          <span className="eyebrow">04 / Toolkit</span>
+        </motion.div>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {skills.map((group, idx) => {
-            const Icon = getIcon(group.icon);
-            return (
-              <Reveal key={group.category} delay={idx * 0.05}>
-                <SpotlightCard className="flex h-full flex-col p-7">
-                  <div className="mb-5 flex items-center gap-3">
-                    <div className="grid h-9 w-9 place-items-center rounded-lg border border-accent/30 bg-accent/10 text-accent">
-                      <Icon className="h-4 w-4" />
-                    </div>
-                    <h3 className="text-sm font-semibold tracking-tight text-text">{group.category}</h3>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {group.items.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-md border border-border/50 bg-bg/40 px-2 py-1 text-[11px] font-medium text-text/85 transition hover:border-accent/40 hover:bg-accent/10 hover:text-text"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                </SpotlightCard>
-              </Reveal>
-            );
-          })}
+        <div className="mb-16 grid items-end gap-12 lg:grid-cols-[1fr_0.55fr] lg:gap-14">
+          <motion.h2 {...reveal} className="display-section">
+            What I <b className="ir-text">reach for.</b>
+          </motion.h2>
+          <motion.p {...reveal} className="max-w-[360px] text-base leading-[1.65] text-text/55">
+            The protocols, platforms, and tools I use day-to-day.
+          </motion.p>
         </div>
+
+        <motion.div
+          {...reveal}
+          className="grid overflow-hidden rounded-[28px] border border-white/[0.08] gap-px bg-white/[0.08] sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {skills.map((g) => (
+            <div key={g.category} className="bg-bg p-8">
+              <div
+                className="font-mono text-[10px] uppercase tracking-[0.22em]"
+                style={{ color: "rgb(var(--grad-2))" }}
+              >
+                {g.category}
+              </div>
+              <div className="mt-5 flex flex-wrap gap-1.5">
+                {g.items.map((item) => (
+                  <span
+                    key={item}
+                    className="glass rounded-md px-3 py-1.5 text-[12px] text-text/92"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
