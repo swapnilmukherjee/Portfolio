@@ -102,8 +102,8 @@ export function Hero({ profile }: { profile: Profile }) {
               transition={{ duration: 0.8, delay: 0.55 }}
               className="mt-9 flex flex-wrap items-center gap-3"
             >
-              <a href="#projects" className="btn-primary">
-                Explore work →
+              <a href="#experience" className="btn-primary">
+                See experience →
               </a>
               <a href="#contact" className="btn-secondary">
                 Start a conversation
