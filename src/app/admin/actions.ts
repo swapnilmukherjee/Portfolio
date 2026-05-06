@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import {
   clearAdminSession,
   isAdminAuthenticated,
+  publishDraft,
   saveEditableContent,
   setAdminSession,
   verifyAdminToken,
@@ -27,9 +28,7 @@ export async function logoutAction() {
 }
 
 export async function saveContentAction(formData: FormData) {
-  if (!isAdminAuthenticated()) {
-    redirect("/admin?error=session");
-  }
+  if (!isAdminAuthenticated()) redirect("/admin?error=session");
 
   const raw = String(formData.get("content") || "");
   let saveTarget = "content";
@@ -45,4 +44,36 @@ export async function saveContentAction(formData: FormData) {
   revalidatePath("/");
   revalidatePath("/admin");
   redirect(`/admin?saved=${saveTarget}`);
+}
+
+export async function saveDraftAction(formData: FormData) {
+  if (!isAdminAuthenticated()) redirect("/admin?error=session");
+
+  const raw = String(formData.get("content") || "");
+
+  try {
+    const parsed = JSON.parse(raw);
+    await saveEditableContent(parsed, true);
+  } catch (error) {
+    console.error("[admin] Draft save failed:", error);
+    redirect("/admin?error=save");
+  }
+
+  revalidatePath("/admin");
+  redirect("/admin?saved=draft");
+}
+
+export async function publishDraftAction() {
+  if (!isAdminAuthenticated()) redirect("/admin?error=session");
+
+  try {
+    await publishDraft();
+  } catch (error) {
+    console.error("[admin] Publish draft failed:", error);
+    redirect("/admin?error=save");
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin");
+  redirect("/admin?saved=published");
 }

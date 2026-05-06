@@ -12,6 +12,7 @@ import "server-only";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { unstable_noStore as noStore } from "next/cache";
+import { draftMode } from "next/headers";
 
 import type { Content } from "@/data/content-types";
 
@@ -28,7 +29,7 @@ const POSTGRES_URL =
  * client bundle clean and avoids importing the driver during dev when JSON
  * is enough.
  */
-async function fetchFromPostgres(): Promise<Content | null> {
+async function fetchFromPostgres(key = "main"): Promise<Content | null> {
   if (!POSTGRES_URL) return null;
 
   const { Client } = await import("pg");
@@ -39,8 +40,6 @@ async function fetchFromPostgres(): Promise<Content | null> {
   await client.connect();
 
   try {
-    // Ensure schema exists. The build-time seed normally creates this, but
-    // if the table got dropped we self-heal here rather than 500ing.
     await client.query(`
       CREATE TABLE IF NOT EXISTS portfolio_content (
         key         TEXT PRIMARY KEY,
@@ -51,7 +50,7 @@ async function fetchFromPostgres(): Promise<Content | null> {
 
     const { rows } = await client.query<{ data: Content }>(
       "SELECT data FROM portfolio_content WHERE key = $1 LIMIT 1",
-      ["main"],
+      [key],
     );
     return rows[0]?.data ?? null;
   } finally {
@@ -68,14 +67,23 @@ async function fetchFromJson(): Promise<Content> {
 export async function getContent(): Promise<Content> {
   noStore();
 
-  // Prefer Postgres in staging/production. If a DB is configured but cannot be
-  // read, do not silently render bundled JSON, that makes CMS saves look stale.
+  const { isEnabled: isDraft } = draftMode();
+
+  // In draft mode, try the "draft" row first, then fall back to "main"
   if (POSTGRES_URL) {
-    const fromDb = await fetchFromPostgres();
+    if (isDraft) {
+      const draft = await fetchFromPostgres("draft");
+      if (draft) return draft;
+    }
+    const fromDb = await fetchFromPostgres("main");
     if (fromDb) return fromDb;
   }
 
   return fetchFromJson();
+}
+
+export async function isDraftModeEnabled(): Promise<boolean> {
+  return draftMode().isEnabled;
 }
 
 export const revalidate = REVALIDATE_SECONDS;

@@ -3,7 +3,7 @@
 import { forwardRef, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import type { Project } from "@/data/content-types";
+import type { Project, SiteCopy } from "@/data/content-types";
 import { CarouselIndicator, useSnapCarousel } from "@/components/carousel-indicator";
 import { cn } from "@/lib/cn";
 
@@ -17,7 +17,7 @@ const reveal = {
   transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
 };
 
-export function Projects({ projects }: { projects: Project[] }) {
+export function Projects({ projects, siteCopy }: { projects: Project[]; siteCopy: SiteCopy }) {
   const [active, setActive] = useState<Category>("All");
 
   const filtered = useMemo(
@@ -27,6 +27,7 @@ export function Projects({ projects }: { projects: Project[] }) {
 
   const carouselKey = `${active}-${filtered.length}`;
   const carousel = useSnapCarousel(filtered.length, carouselKey);
+  const headingLines = siteCopy.projectsHeading.split("\n");
 
   return (
     <section id="projects" className="relative z-[2] py-32 sm:py-44">
@@ -37,10 +38,16 @@ export function Projects({ projects }: { projects: Project[] }) {
 
         <div className="mb-12 grid items-end gap-12 lg:grid-cols-[1fr_0.55fr] lg:gap-14">
           <motion.h2 {...reveal} className="display-section">
-            Selected <b className="ir-text">work.</b>
+            {headingLines.map((line, i) => (
+              <span key={i}>
+                {line}
+                {i < headingLines.length - 1 && <br />}
+              </span>
+            ))}
+            {siteCopy.projectsHeadingBold && <> <b className="ir-text">{siteCopy.projectsHeadingBold}</b></>}
           </motion.h2>
           <motion.p {...reveal} className="max-w-[360px] text-base leading-[1.65] text-text/55">
-            A mix of identity, security research, and full-stack engineering, built across grad school and personal time.
+            {siteCopy.projectsSubheading}
           </motion.p>
         </div>
 

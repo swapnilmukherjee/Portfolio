@@ -4,9 +4,9 @@ import { forwardRef, useEffect, useRef } from "react";
 import { ArrowDown, Github, Linkedin, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 
-import type { Profile } from "@/data/content-types";
+import type { Profile, SiteCopy } from "@/data/content-types";
 
-export function Hero({ profile }: { profile: Profile }) {
+export function Hero({ profile, siteCopy }: { profile: Profile; siteCopy: SiteCopy }) {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const portraitRef = useRef<HTMLDivElement>(null);
 
@@ -70,7 +70,7 @@ export function Hero({ profile }: { profile: Profile }) {
               className="relative inline-block h-[7px] w-[7px] rounded-full bg-emerald-400"
               style={{ boxShadow: "0 0 0 4px rgb(108 255 174 / 0.18)" }}
             />
-            Okta · Identity & CIAM
+            {siteCopy.heroStatus}
           </span>
         </div>
 
@@ -145,7 +145,7 @@ export function Hero({ profile }: { profile: Profile }) {
             transition={{ duration: 1.1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="relative mx-auto mt-2 w-full max-w-[230px] sm:max-w-[280px] md:max-w-[320px] lg:mt-0 lg:max-w-[360px] lg:justify-self-end xl:max-w-[390px]"
           >
-            <PortraitCard ref={portraitRef} name={profile.name} title={profile.title} />
+            <PortraitCard ref={portraitRef} name={profile.name} title={profile.title} headshotUrl={profile.headshotUrl} />
           </motion.div>
         </div>
 
@@ -165,7 +165,7 @@ export function Hero({ profile }: { profile: Profile }) {
   );
 }
 
-const PortraitCard = forwardRef<HTMLDivElement, { name: string; title: string }>(function PortraitCard({ name, title }, ref) {
+const PortraitCard = forwardRef<HTMLDivElement, { name: string; title: string; headshotUrl?: string }>(function PortraitCard({ name, title, headshotUrl }, ref) {
   return (
     <div className="relative aspect-[4/5] w-full">
       {/* Ambient glow — static, no animation to avoid repaints */}
@@ -202,7 +202,7 @@ const PortraitCard = forwardRef<HTMLDivElement, { name: string; title: string }>
         >
           <div className="relative h-full overflow-hidden rounded-[24px] bg-surface-2 sm:rounded-[28px]">
             <img
-              src="/headshot.jpg"
+              src={headshotUrl || "/headshot.jpg"}
               alt={name}
               width={1024}
               height={1024}

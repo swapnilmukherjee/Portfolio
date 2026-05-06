@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { SkillGroup } from "@/data/content-types";
+import type { SkillGroup, SiteCopy } from "@/data/content-types";
 import { CarouselIndicator, useSnapCarousel } from "@/components/carousel-indicator";
 
 const reveal = {
@@ -11,8 +11,9 @@ const reveal = {
   transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
 };
 
-export function Skills({ skills }: { skills: SkillGroup[] }) {
+export function Skills({ skills, siteCopy }: { skills: SkillGroup[]; siteCopy: SiteCopy }) {
   const carousel = useSnapCarousel(skills.length, String(skills.length));
+  const headingLines = siteCopy.skillsHeading.split("\n");
 
   return (
     <section id="skills" className="relative z-[2] py-32 sm:py-44">
@@ -23,10 +24,16 @@ export function Skills({ skills }: { skills: SkillGroup[] }) {
 
         <div className="mb-16 grid items-end gap-12 lg:grid-cols-[1fr_0.55fr] lg:gap-14">
           <motion.h2 {...reveal} className="display-section">
-            What I <b className="ir-text">reach for.</b>
+            {headingLines.map((line, i) => (
+              <span key={i}>
+                {line}
+                {i < headingLines.length - 1 && <br />}
+              </span>
+            ))}
+            {siteCopy.skillsHeadingBold && <> <b className="ir-text">{siteCopy.skillsHeadingBold}</b></>}
           </motion.h2>
           <motion.p {...reveal} className="max-w-[360px] text-base leading-[1.65] text-text/55">
-            The protocols, platforms, and tools I use day-to-day.
+            {siteCopy.skillsSubheading}
           </motion.p>
         </div>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { Experience as ExpType } from "@/data/content-types";
+import type { Experience as ExpType, SiteCopy } from "@/data/content-types";
 
 const reveal = {
   initial: { opacity: 0, y: 28, filter: "blur(8px)" },
@@ -10,7 +10,9 @@ const reveal = {
   transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
 };
 
-export function Experience({ experience }: { experience: ExpType[] }) {
+export function Experience({ experience, siteCopy }: { experience: ExpType[]; siteCopy: SiteCopy }) {
+  const headingLines = siteCopy.experienceHeading.split("\n");
+
   return (
     <section id="experience" className="relative z-[2] py-32 sm:py-44">
       <div className="mx-auto max-w-[1320px] px-6 sm:px-8">
@@ -20,12 +22,18 @@ export function Experience({ experience }: { experience: ExpType[] }) {
 
         <div className="mb-16 grid items-end gap-12 lg:grid-cols-[1fr_0.55fr] lg:gap-14">
           <motion.h2 {...reveal} className="display-section">
-            Five years,
-            <br />
-            <b className="ir-text">three chapters.</b>
+            {headingLines.map((line, i) => (
+              <span key={i}>
+                {line}
+                {i < headingLines.length - 1 && <br />}
+              </span>
+            ))}
+            {siteCopy.experienceHeadingBold && (
+              <><br /><b className="ir-text">{siteCopy.experienceHeadingBold}</b></>
+            )}
           </motion.h2>
           <motion.p {...reveal} className="max-w-[360px] text-base leading-[1.65] text-text/55">
-            Healthcare IAM, CIAM in financial services, and now Auth0 platform consulting at Okta.
+            {siteCopy.experienceSubheading}
           </motion.p>
         </div>
 
