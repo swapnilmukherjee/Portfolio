@@ -207,4 +207,4 @@ want to overwrite Postgres from the bundled JSON seed.
 
 ## License
 
-Personal portfolio. Code is fine for inspiration — copy whatever's useful. 
+Personal portfolio. Code is fine for inspiration — copy whatever's useful.
