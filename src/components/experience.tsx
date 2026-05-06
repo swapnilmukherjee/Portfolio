@@ -22,10 +22,10 @@ export function Experience({ experience }: { experience: ExpType[] }) {
           <motion.h2 {...reveal} className="display-section">
             Five years,
             <br />
-            <b className="ir-text">four chapters.</b>
+            <b className="ir-text">three chapters.</b>
           </motion.h2>
           <motion.p {...reveal} className="max-w-[360px] text-base leading-[1.65] text-text/55">
-            Customer and workforce identity at scale, financial services, healthcare, and now Auth0 platform consulting.
+            Healthcare IAM, CIAM in financial services, and now Auth0 platform consulting at Okta.
           </motion.p>
         </div>
 

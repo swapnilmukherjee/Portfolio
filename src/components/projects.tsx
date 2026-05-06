@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { forwardRef, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import type { Project } from "@/data/content-types";
+import { CarouselIndicator, useSnapCarousel } from "@/components/carousel-indicator";
 import { cn } from "@/lib/cn";
 
 const CATEGORIES = ["All", "Cybersecurity", "Web Engineering", "Automation & IoT", "AI & Data"] as const;
@@ -18,14 +19,14 @@ const reveal = {
 
 export function Projects({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState<Category>("All");
-  const [showAll, setShowAll] = useState(false);
 
   const filtered = useMemo(
     () => (active === "All" ? projects : projects.filter((p) => p.category === active)),
     [active, projects]
   );
 
-  const visible = showAll ? filtered : filtered.slice(0, 6);
+  const carouselKey = `${active}-${filtered.length}`;
+  const carousel = useSnapCarousel(filtered.length, carouselKey);
 
   return (
     <section id="projects" className="relative z-[2] py-32 sm:py-44">
@@ -54,7 +55,6 @@ export function Projects({ projects }: { projects: Project[] }) {
                 type="button"
                 onClick={() => {
                   setActive(cat);
-                  setShowAll(false);
                 }}
                 className={cn(
                   "glass rounded-full px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.18em] transition",
@@ -78,43 +78,46 @@ export function Projects({ projects }: { projects: Project[] }) {
           })}
         </motion.div>
 
-        {/* Grid */}
-        <motion.div
-          {...reveal}
-          className="grid overflow-hidden rounded-[28px] border border-white/[0.08] gap-px bg-white/[0.08] sm:grid-cols-2 lg:grid-cols-3"
-        >
-          <AnimatePresence mode="popLayout">
-            {visible.map((p, i) => (
-              <Card key={p.id} project={p} index={i} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
-
-        {filtered.length > 6 && (
-          <div className="mt-10 flex justify-center">
-            <button
-              type="button"
-              onClick={() => setShowAll((v) => !v)}
-              className="glass rounded-full px-6 py-2.5 font-mono text-[11px] uppercase tracking-[0.18em] text-text/92 transition hover:bg-white/[0.07]"
+        <div className="relative">
+          <motion.div {...reveal}>
+            <div
+              data-carousel-scroller="true"
+              ref={carousel.ref}
+              onScroll={carousel.onScroll}
+              className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-6 no-scrollbar touch-pan-x sm:-mx-8 sm:px-8 md:gap-5 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible lg:p-0 lg:pb-0 lg:touch-auto"
             >
-              {showAll ? "Show less" : `View all ${filtered.length} projects`}
-            </button>
-          </div>
-        )}
+              <AnimatePresence mode="popLayout">
+                {filtered.map((p, i) => (
+                  <Card key={p.id} project={p} index={i} />
+                ))}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+
+          <CarouselIndicator
+            count={filtered.length}
+            activeIndex={carousel.activeIndex}
+            progress={carousel.progress}
+            onSelect={carousel.scrollToIndex}
+          />
+        </div>
+
       </div>
     </section>
   );
 }
 
-function Card({ project, index }: { project: Project; index: number }) {
+const Card = forwardRef<HTMLElement, { project: Project; index: number }>(function Card({ project, index }, ref) {
   return (
     <motion.article
+      ref={ref}
+      data-carousel-item="true"
       layout
       initial={{ opacity: 0, y: 18, filter: "blur(6px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
       transition={{ duration: 0.55, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative flex min-h-[280px] flex-col gap-4 bg-bg p-9 transition-colors duration-300 hover:bg-surface"
+      className="group relative flex w-[82vw] max-w-[380px] shrink-0 snap-start scroll-ml-6 flex-col gap-3 overflow-hidden rounded-[22px] bg-surface p-5 transition-colors duration-300 sm:w-[52vw] sm:scroll-ml-8 md:w-[44vw] lg:min-h-[280px] lg:w-auto lg:max-w-none lg:shrink lg:snap-none lg:scroll-ml-0 lg:rounded-[28px] lg:gap-4 lg:p-9"
       onMouseMove={(e) => {
         const r = e.currentTarget.getBoundingClientRect();
         e.currentTarget.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
@@ -140,14 +143,14 @@ function Card({ project, index }: { project: Project; index: number }) {
         <span className="font-mono text-[11px] text-text/30">/ {String(index + 1).padStart(2, "0")}</span>
       </div>
 
-      <h3 className="relative text-[32px] font-light leading-[1.05] tracking-tight text-text-strong">
+      <h3 className="relative text-[22px] font-light leading-[1.08] tracking-normal text-text-strong sm:text-[26px] lg:text-[32px]">
         {project.title}
       </h3>
 
-      <p className="relative flex-1 text-[14px] leading-[1.55] text-text/55">{project.summary}</p>
+      <p className="relative flex-1 text-[13px] leading-[1.5] text-text/55 lg:text-[14px] lg:leading-[1.55]">{project.summary}</p>
 
-      <div className="relative flex items-center justify-between border-t border-white/[0.08] pt-4 font-mono text-[10px] text-text/55">
-        <div className="flex gap-1.5">
+      <div className="relative flex items-start justify-between gap-4 border-t border-white/[0.08] pt-3 font-mono text-[10px] text-text/55 lg:pt-4">
+        <div className="flex min-w-0 flex-wrap gap-x-1.5 gap-y-1">
           {project.tags.slice(0, 3).map((t, i) => (
             <span key={t}>
               {t}
@@ -155,8 +158,8 @@ function Card({ project, index }: { project: Project; index: number }) {
             </span>
           ))}
         </div>
-        <span>{project.date}</span>
+        <span className="shrink-0">{project.date}</span>
       </div>
     </motion.article>
   );
-}
+});

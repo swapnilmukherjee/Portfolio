@@ -1,7 +1,6 @@
 "use client";
 
 import { forwardRef, useEffect, useRef } from "react";
-import Image from "next/image";
 import { ArrowDown, Github, Linkedin, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -38,7 +37,7 @@ export function Hero({ profile }: { profile: Profile }) {
     };
   }, []);
 
-  // Portrait card 3D tilt on mouse
+  // Portrait tilt is intentionally subtle so the image feels part of the hero.
   useEffect(() => {
     const el = portraitRef.current;
     if (!el) return;
@@ -46,8 +45,8 @@ export function Hero({ profile }: { profile: Profile }) {
       const r = el.getBoundingClientRect();
       const px = (e.clientX - r.left) / r.width - 0.5;
       const py = (e.clientY - r.top) / r.height - 0.5;
-      el.style.setProperty("--prx", `${-py * 8}deg`);
-      el.style.setProperty("--pry", `${px * 10}deg`);
+      el.style.setProperty("--prx", `${-py * 3.5}deg`);
+      el.style.setProperty("--pry", `${px * 4.5}deg`);
     };
     const leave = () => {
       el.style.setProperty("--prx", "0deg");
@@ -62,25 +61,29 @@ export function Hero({ profile }: { profile: Profile }) {
   }, []);
 
   return (
-    <section id="hero" className="relative z-[2] flex min-h-screen items-center pt-32 sm:pt-36 pb-20">
+    <section id="hero" className="relative z-[2] flex min-h-[100svh] items-center overflow-visible pb-20 pt-28 sm:pt-36 lg:min-h-[900px]">
       <div className="mx-auto w-full max-w-[1320px] px-6 sm:px-8">
         {/* Top meta row */}
-        <div className="mb-16 flex flex-wrap items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-text/55">
+        <div className="mb-12 flex flex-wrap items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-text/55 sm:mb-16">
           <span className="inline-flex items-center gap-2.5">
             <span
               className="relative inline-block h-[7px] w-[7px] rounded-full bg-emerald-400"
               style={{ boxShadow: "0 0 0 4px rgb(108 255 174 / 0.18)" }}
             />
-            Available · Identity consulting
+            Okta · Identity & CIAM
           </span>
         </div>
 
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.18fr)_minmax(320px,0.82fr)] lg:gap-16">
           {/* Headline + lead */}
-          <div>
-            <h1 ref={headlineRef} className="display-hero">
-              <span className="block">Identity,</span>
-              <span className="ir-text block">secured.</span>
+          <div className="min-w-0 overflow-visible">
+            <h1
+              ref={headlineRef}
+              className="display-hero max-w-[820px] overflow-visible"
+              aria-label="Identity, secured. For humans and AI agents."
+            >
+              <span className="hero-line">Identity,</span>
+              <span className="hero-line ir-text">secured.</span>
               <span className="small block">For humans &amp; AI agents.</span>
             </h1>
 
@@ -99,8 +102,8 @@ export function Hero({ profile }: { profile: Profile }) {
               transition={{ duration: 0.8, delay: 0.55 }}
               className="mt-9 flex flex-wrap items-center gap-3"
             >
-              <a href="#projects" className="btn-primary">
-                Explore work →
+              <a href="#experience" className="btn-primary">
+                See experience →
               </a>
               <a href="#contact" className="btn-secondary">
                 Start a conversation
@@ -135,19 +138,19 @@ export function Hero({ profile }: { profile: Profile }) {
             </motion.div>
           </div>
 
-          {/* Portrait card */}
+          {/* Headshot */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 1, scale: 1 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:justify-self-end"
+            className="relative mx-auto mt-2 w-full max-w-[230px] sm:max-w-[280px] md:max-w-[320px] lg:mt-0 lg:max-w-[360px] lg:justify-self-end xl:max-w-[390px]"
           >
-            <PortraitCard ref={portraitRef} name={profile.name} />
+            <PortraitCard ref={portraitRef} name={profile.name} title={profile.title} />
           </motion.div>
         </div>
 
         {/* Scroll cue */}
-        <div className="absolute inset-x-0 bottom-8 flex flex-col items-center gap-2 text-text/55">
+        <div className="absolute inset-x-0 bottom-8 hidden flex-col items-center gap-2 text-text/55 sm:flex">
           <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Scroll</span>
           <motion.span
             animate={{ y: [0, 6, 0] }}
@@ -162,58 +165,94 @@ export function Hero({ profile }: { profile: Profile }) {
   );
 }
 
-const PortraitCard = forwardRef<HTMLDivElement, { name: string }>(function PortraitCard({ name }, ref) {
+const PortraitCard = forwardRef<HTMLDivElement, { name: string; title: string }>(function PortraitCard({ name, title }, ref) {
   return (
-    <div
-      ref={ref}
-      className="glass-strong relative aspect-[4/5] w-full max-w-[440px] overflow-hidden rounded-[28px] shadow-[inset_0_1px_0_rgb(255_255_255/0.18),0_40px_90px_-10px_rgb(0_0_0/0.6)]"
-      style={{
-        transform: "rotateX(var(--prx, 0deg)) rotateY(var(--pry, 0deg))",
-        transition: "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
-        transformStyle: "preserve-3d",
-      }}
-    >
-      {/* Side label */}
-      <span
-        className="absolute -left-7 top-[30%] font-mono text-[10px] uppercase tracking-[0.22em] text-text/30"
-        style={{ transform: "rotate(-90deg)", transformOrigin: "left top" }}
-      >
-        Charlotte · NC
-      </span>
-
-      {/* Placeholder underneath */}
+    <div className="relative aspect-[4/5] w-full">
+      {/* Ambient glow — static, no animation to avoid repaints */}
       <div
-        className="absolute inset-0 grid place-items-center text-[120px] font-light tracking-tighter text-text/30"
+        aria-hidden
+        className="absolute inset-[-14%] rounded-[50px]"
         style={{
           background:
-            "radial-gradient(closest-side, rgb(var(--grad-1) / 0.25), transparent), linear-gradient(160deg, rgb(var(--surface-2)), rgb(var(--surface)))",
+            "radial-gradient(circle at 52% 16%, rgb(var(--grad-2) / 0.22), transparent 36%), radial-gradient(circle at 22% 82%, rgb(var(--grad-1) / 0.18), transparent 40%), radial-gradient(circle at 80% 60%, rgb(var(--grad-3) / 0.10), transparent 32%)",
+          filter: "blur(28px)",
         }}
-      >
-        SM
-      </div>
-
-      {/* Photo on top, falls back to placeholder via Next/Image error UI */}
-      <Image
-        src="/headshot.jpg"
-        alt={name}
-        fill
-        sizes="(max-width: 1024px) 80vw, 440px"
-        priority
-        className="relative z-[1] object-cover"
-        style={{ filter: "saturate(1.05) contrast(1.02)" }}
       />
 
-      {/* Bottom HUD */}
-      <div className="absolute inset-x-4 bottom-4 z-[2] flex items-center justify-between rounded-2xl border border-white/10 bg-black/55 px-[18px] py-[14px] backdrop-blur-xl">
-        <div>
-          <div
-            className="font-mono text-[10px] uppercase tracking-[0.22em]"
-            style={{ color: "rgb(var(--grad-2))" }}
-          >
-            Now
+      {/* Tilt container — ref lives here for the mousemove effect */}
+      <div
+        ref={ref}
+        className="absolute inset-0"
+        style={{
+          transform: "rotateX(var(--prx, 0deg)) rotateY(var(--pry, 0deg))",
+          transition: "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
+          transformStyle: "preserve-3d",
+        }}
+      >
+        {/* Photo frame */}
+        <div
+          className="absolute inset-0 overflow-hidden rounded-[30px] p-2 backdrop-blur-xl sm:rounded-[34px] sm:p-2.5"
+          style={{
+            border: "1px solid transparent",
+            background:
+              "linear-gradient(rgb(var(--surface) / 0.8), rgb(var(--surface) / 0.8)) padding-box, " +
+              "linear-gradient(135deg, rgb(var(--grad-1) / 0.55), rgb(var(--grad-3) / 0.35) 50%, rgb(var(--grad-2) / 0.50)) border-box",
+            boxShadow: "0 28px 90px -50px rgb(var(--text) / 0.34)",
+          }}
+        >
+          <div className="relative h-full overflow-hidden rounded-[24px] bg-surface-2 sm:rounded-[28px]">
+            <img
+              src="/headshot.jpg"
+              alt={name}
+              width={1024}
+              height={1024}
+              loading="eager"
+              decoding="async"
+              className="h-full w-full object-cover"
+              style={{
+                filter: "saturate(1.06) contrast(1.02) brightness(1.0)",
+                objectPosition: "50% 36%",
+              }}
+            />
+
+            {/* Iridescent colour wash — very subtle screen blend */}
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(150deg, rgb(var(--grad-1) / 0.12) 0%, transparent 45%, rgb(var(--grad-2) / 0.09) 100%)",
+                mixBlendMode: "screen",
+              }}
+            />
+
+            {/* Bottom dissolve — photo fades into the card surface */}
+            <div
+              aria-hidden
+              className="absolute inset-x-0 bottom-0"
+              style={{
+                height: "42%",
+                background:
+                  "linear-gradient(to bottom, transparent 0%, rgb(var(--surface) / 0.55) 65%, rgb(var(--surface) / 0.92) 100%)",
+              }}
+            />
           </div>
-          <div className="mt-1 text-sm font-semibold text-white">Technical Consultant</div>
-          <div className="mt-0.5 text-xs text-white/70">Okta · Auth0</div>
+        </div>
+
+        {/* Name badge — gradient border matches the card */}
+        <div
+          className="absolute -bottom-5 left-1/2 w-[86%] -translate-x-1/2 rounded-2xl px-4 py-3 text-center backdrop-blur-xl"
+          style={{
+            border: "1px solid transparent",
+            background:
+              "linear-gradient(rgb(var(--surface) / 0.92), rgb(var(--surface) / 0.92)) padding-box, " +
+              "linear-gradient(135deg, rgb(var(--grad-1) / 0.45), rgb(var(--grad-3) / 0.28) 50%, rgb(var(--grad-2) / 0.40)) border-box",
+            boxShadow: "0 18px 70px -44px rgb(var(--text) / 0.45)",
+          }}
+        >
+          <p className="text-sm font-semibold text-text-strong">{name}</p>
+          <p className="text-[11px] leading-snug text-text/55">{title.split("@")[0].trim()}</p>
+          <p className="text-[11px] leading-snug text-text/40">{title.split("@")[1]?.trim()}</p>
         </div>
       </div>
     </div>

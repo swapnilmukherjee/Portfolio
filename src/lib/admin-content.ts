@@ -4,6 +4,7 @@ import { timingSafeEqual, createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
+import { unstable_noStore as noStore } from "next/cache";
 import { cookies } from "next/headers";
 
 import fallbackJson from "@/data/content.json";
@@ -48,12 +49,14 @@ function safeEquals(a: string, b: string) {
 }
 
 export function getAdminStatus() {
+  noStore();
   const hasConfiguredToken = Boolean(process.env.ADMIN_SYNC_TOKEN);
   return {
     enabled: Boolean(configuredAdminToken()),
     usesDevToken: !hasConfiguredToken && process.env.NODE_ENV !== "production",
     devToken: !hasConfiguredToken && process.env.NODE_ENV !== "production" ? "dev-admin" : "",
     storage: POSTGRES_URL ? "Postgres" : "local JSON",
+    missingDatabase: !POSTGRES_URL && process.env.NODE_ENV === "production",
   };
 }
 
@@ -165,11 +168,13 @@ async function writeJsonContent(content: Content) {
 }
 
 export async function getEditableContent() {
-  const fromDb = await readPostgresContent().catch((error) => {
-    console.warn("[admin] Postgres read failed, using JSON fallback:", (error as Error).message);
-    return null;
-  });
-  return fromDb ?? (await readJsonContent().catch(() => FALLBACK_CONTENT));
+  noStore();
+  if (POSTGRES_URL) {
+    const fromDb = await readPostgresContent();
+    if (fromDb) return fromDb;
+  }
+
+  return readJsonContent().catch(() => FALLBACK_CONTENT);
 }
 
 export async function saveEditableContent(raw: unknown): Promise<SaveTarget> {
