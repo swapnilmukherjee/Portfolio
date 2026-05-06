@@ -32,29 +32,34 @@ const POSTGRES_URL =
 async function fetchFromPostgres(key = "main"): Promise<Content | null> {
   if (!POSTGRES_URL) return null;
 
-  const { Client } = await import("pg");
-  const client = new Client({
-    connectionString: POSTGRES_URL,
-    ssl: { rejectUnauthorized: false },
-  });
-  await client.connect();
-
   try {
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS portfolio_content (
-        key         TEXT PRIMARY KEY,
-        data        JSONB NOT NULL,
-        updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
-      );
-    `);
+    const { Client } = await import("pg");
+    const client = new Client({
+      connectionString: POSTGRES_URL,
+      ssl: { rejectUnauthorized: false },
+    });
+    await client.connect();
 
-    const { rows } = await client.query<{ data: Content }>(
-      "SELECT data FROM portfolio_content WHERE key = $1 LIMIT 1",
-      [key],
-    );
-    return rows[0]?.data ?? null;
-  } finally {
-    await client.end().catch(() => {});
+    try {
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS portfolio_content (
+          key         TEXT PRIMARY KEY,
+          data        JSONB NOT NULL,
+          updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        );
+      `);
+
+      const { rows } = await client.query<{ data: Content }>(
+        "SELECT data FROM portfolio_content WHERE key = $1 LIMIT 1",
+        [key],
+      );
+      return rows[0]?.data ?? null;
+    } finally {
+      await client.end().catch(() => {});
+    }
+  } catch (err) {
+    console.error("[content] Postgres fetch failed, falling back to JSON:", err);
+    return null;
   }
 }
 
