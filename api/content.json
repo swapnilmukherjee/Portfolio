@@ -6,7 +6,7 @@
     "tagline": "Identity, secured.",
     "headline": "I build the identity layer behind modern apps, from CIAM at scale to IAM for AI agents.",
     "shortBio": "Technical Consultant at Okta helping enterprises design and deploy secure CIAM and IAM architectures, including identity patterns for AI agents, OAuth/OIDC, MFA, and Zero Trust access.",
-    "about": "I am a Technical Consultant at Okta focused on CIAM, Auth0, and IAM architecture for AI agents. I help enterprise customers design secure authentication, authorization, MFA, federation, and extensibility patterns across web, mobile, SPA, and API workloads. Previously, I owned production Auth0 operations for Fifth Third Bank's Newline platform and planned the target-state migration architecture to Ping Identity with zero unplanned downtime. Earlier at Cardinal Health, I supported 22,000+ workforce identities, federated 100+ applications, and worked across Okta, SailPoint, CyberArk, Active Directory, OAuth 2.0, OpenID Connect, SAML, SCIM, Terraform, CI/CD, and Zero Trust controls.",
+    "about": "Technical Consultant at Okta focused on Auth0, CIAM, and IAM for AI agents. I design secure authentication, authorization, MFA, federation, and extensibility patterns across modern app and API workloads. Previously owned production Auth0 operations for Fifth Third Bank’s Newline platform and supported enterprise IAM at Cardinal Health across 22,000+ identities and 100+ federated applications.",
     "location": "Charlotte, North Carolina",
     "email": "swapnilmukherjee.jobs@gmail.com",
     "publicEmail": "swapnilmukherjee.jobs@gmail.com",
@@ -145,7 +145,7 @@
       "accent": "rgba(59, 130, 246, 0.25)",
       "summary": "Technical Consultant supporting enterprise Auth0 and CIAM implementations, with a focus on secure authentication, authorization, extensibility, and IAM patterns for AI agents.",
       "highlights": [
-        "Lead customer architecture sessions for Auth0 CIAM across web, mobile, SPA, API, B2B, and B2C workloads, translating business requirements into secure implementation plans.",
+        "Lead customer consultation and integrations sessions for Auth0 CIAM across web, mobile, SPA, API, B2B, and B2C workloads, translating business requirements into secure implementation plans.",
         "Advise on IAM for AI agents, including agent authorization, delegated access, token exchange patterns, consent, scoped API access, and secure user-to-agent interactions.",
         "Implement and optimize Universal Login, Organizations, Actions, MFA, Attack Protection, RBAC, custom domains, and enterprise/social identity provider integrations.",
         "Troubleshoot OAuth 2.0, OpenID Connect, SAML, token claims, sessions, redirects, extensibility code, and federation issues across production Auth0 tenants.",

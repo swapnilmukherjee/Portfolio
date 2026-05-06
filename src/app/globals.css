@@ -3,31 +3,9 @@
 @tailwind utilities;
 
 /* ===========================================================
-   v4, Apple liquid-glass · Pure black · Iridescent gradient
+   v4, Apple liquid-glass · Light default · Iridescent gradient
    =========================================================== */
 :root,
-.dark {
-  --bg: 0 0 0;
-  --bg-2: 6 6 8;
-  --surface: 14 14 18;
-  --surface-2: 22 22 28;
-  --line: 255 255 255;            /* used with /0.08 etc. */
-  --line-strong: 255 255 255;     /* used with /0.16 */
-  --text: 255 255 255;
-  --text-strong: 255 255 255;
-  --muted: 255 255 255;           /* used with /0.55 */
-  --muted-soft: 255 255 255;      /* used with /0.30 */
-
-  --grad-1: 183 148 255;          /* iridescent violet */
-  --grad-2: 108 227 255;          /* electric cyan */
-  --grad-3: 255 143 177;          /* iridescent rose */
-
-  --glass-bg: 255 255 255;        /* used with /0.04 */
-  --glass-bg-strong: 255 255 255; /* /0.07 */
-
-  color-scheme: dark;
-}
-
 .light {
   --bg: 245 245 247;
   --bg-2: 236 236 239;
@@ -50,6 +28,28 @@
   color-scheme: light;
 }
 
+.dark {
+  --bg: 0 0 0;
+  --bg-2: 6 6 8;
+  --surface: 14 14 18;
+  --surface-2: 22 22 28;
+  --line: 255 255 255;            /* used with /0.08 etc. */
+  --line-strong: 255 255 255;     /* used with /0.16 */
+  --text: 255 255 255;
+  --text-strong: 255 255 255;
+  --muted: 255 255 255;           /* used with /0.55 */
+  --muted-soft: 255 255 255;      /* used with /0.30 */
+
+  --grad-1: 183 148 255;          /* iridescent violet */
+  --grad-2: 108 227 255;          /* electric cyan */
+  --grad-3: 255 143 177;          /* iridescent rose */
+
+  --glass-bg: 255 255 255;        /* used with /0.04 */
+  --glass-bg-strong: 255 255 255; /* /0.07 */
+
+  color-scheme: dark;
+}
+
 * { border-color: rgb(var(--line) / 0.08); }
 
 html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; }
@@ -59,12 +59,19 @@ body {
   color: rgb(var(--text) / 0.92);
   font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
   font-feature-settings: "ss01", "cv11";
-  letter-spacing: -0.014em;
+  letter-spacing: 0;
   transition: background 0.6s ease, color 0.6s ease;
 }
 
 ::selection { background: rgb(var(--grad-1)); color: rgb(var(--bg)); }
 ::-webkit-scrollbar { width: 0; height: 0; }
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
 /* ===========================
    Iridescent gradient utility
@@ -119,31 +126,63 @@ body {
 .display-hero {
   font-family: var(--font-sans), -apple-system, sans-serif;
   font-weight: var(--hw, 200);
-  font-size: clamp(56px, 11vw, 196px);
-  line-height: 0.92;
-  letter-spacing: -0.05em;
-  padding-bottom: 0.14em;
+  font-size: 50px;
+  line-height: 1.02;
+  letter-spacing: 0;
+  padding-bottom: 0.18em;
   transition: font-weight 0.1s linear;
+}
+.display-hero .hero-line {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow: visible;
+  padding-right: 0.12em;
+  padding-bottom: 0.04em;
 }
 .display-hero .small {
   display: block;
-  font-size: clamp(28px, 4.4vw, 64px);
+  max-width: 100%;
+  font-size: 24px;
   font-weight: 420;
-  line-height: 1.12;
-  letter-spacing: -0.012em;
-  margin-top: 18px;
+  line-height: 1.18;
+  letter-spacing: 0;
+  margin-top: 14px;
   color: rgb(var(--text) / 0.55);
-  padding-bottom: 0.18em;
+  padding-right: 0.08em;
+  padding-bottom: 0.2em;
 }
 .display-section {
   font-family: var(--font-sans), -apple-system, sans-serif;
   font-weight: 200;
-  font-size: clamp(40px, 6vw, 88px);
+  font-size: 40px;
   line-height: 1.0;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
   padding-bottom: 0.12em;
 }
 .display-section b { font-weight: 600; }
+
+@media (min-width: 640px) {
+  .display-hero { font-size: 78px; }
+  .display-hero .small { font-size: 34px; margin-top: 16px; }
+  .display-section { font-size: 56px; }
+}
+
+@media (min-width: 1024px) {
+  .display-hero { font-size: 118px; line-height: 0.98; }
+  .display-hero .small { font-size: 44px; }
+  .display-section { font-size: 76px; }
+}
+
+@media (min-width: 1280px) {
+  .display-hero { font-size: 142px; }
+  .display-hero .small { font-size: 52px; }
+  .display-section { font-size: 88px; }
+}
+
+@media (min-width: 1536px) {
+  .display-hero { font-size: 150px; }
+}
 
 /* ===========================
    Eyebrow, section label
