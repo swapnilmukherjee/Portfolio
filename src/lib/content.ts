@@ -15,6 +15,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import { draftMode } from "next/headers";
 
 import type { Content } from "@/data/content-types";
+import { normalizeContent } from "@/lib/admin-content";
 
 const REVALIDATE_SECONDS = 0;
 
@@ -49,11 +50,11 @@ async function fetchFromPostgres(key = "main"): Promise<Content | null> {
         );
       `);
 
-      const { rows } = await client.query<{ data: Content }>(
+      const { rows } = await client.query<{ data: unknown }>(
         "SELECT data FROM portfolio_content WHERE key = $1 LIMIT 1",
         [key],
       );
-      return rows[0]?.data ?? null;
+      return rows[0]?.data ? normalizeContent(rows[0].data) : null;
     } finally {
       await client.end().catch(() => {});
     }
@@ -66,7 +67,7 @@ async function fetchFromPostgres(key = "main"): Promise<Content | null> {
 async function fetchFromJson(): Promise<Content> {
   const file = join(process.cwd(), "src", "data", "content.json");
   const raw = await readFile(file, "utf-8");
-  return JSON.parse(raw) as Content;
+  return normalizeContent(JSON.parse(raw));
 }
 
 export async function getContent(): Promise<Content> {
