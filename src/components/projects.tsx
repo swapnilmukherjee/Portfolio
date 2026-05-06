@@ -19,16 +19,14 @@ const reveal = {
 
 export function Projects({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState<Category>("All");
-  const [showAll, setShowAll] = useState(false);
 
   const filtered = useMemo(
     () => (active === "All" ? projects : projects.filter((p) => p.category === active)),
     [active, projects]
   );
 
-  const visible = showAll ? filtered : filtered.slice(0, 6);
-  const carouselKey = `${active}-${showAll}-${visible.length}`;
-  const carousel = useSnapCarousel(visible.length, carouselKey);
+  const carouselKey = `${active}-${filtered.length}`;
+  const carousel = useSnapCarousel(filtered.length, carouselKey);
 
   return (
     <section id="projects" className="relative z-[2] py-32 sm:py-44">
@@ -57,7 +55,6 @@ export function Projects({ projects }: { projects: Project[] }) {
                 type="button"
                 onClick={() => {
                   setActive(cat);
-                  setShowAll(false);
                 }}
                 className={cn(
                   "glass rounded-full px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.18em] transition",
@@ -90,7 +87,7 @@ export function Projects({ projects }: { projects: Project[] }) {
               className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-6 no-scrollbar touch-pan-x sm:-mx-8 sm:px-8 md:gap-5 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible lg:p-0 lg:pb-0 lg:touch-auto"
             >
               <AnimatePresence mode="popLayout">
-                {visible.map((p, i) => (
+                {filtered.map((p, i) => (
                   <Card key={p.id} project={p} index={i} />
                 ))}
               </AnimatePresence>
@@ -98,24 +95,13 @@ export function Projects({ projects }: { projects: Project[] }) {
           </motion.div>
 
           <CarouselIndicator
-            count={visible.length}
+            count={filtered.length}
             activeIndex={carousel.activeIndex}
             progress={carousel.progress}
             onSelect={carousel.scrollToIndex}
           />
         </div>
 
-        {filtered.length > 6 && (
-          <div className="mt-10 flex justify-center">
-            <button
-              type="button"
-              onClick={() => setShowAll((v) => !v)}
-              className="glass rounded-full px-6 py-2.5 font-mono text-[11px] uppercase tracking-[0.18em] text-text/92 transition hover:bg-white/[0.07]"
-            >
-              {showAll ? "Show less" : `View all ${filtered.length} projects`}
-            </button>
-          </div>
-        )}
       </div>
     </section>
   );

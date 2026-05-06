@@ -239,23 +239,20 @@ const PortraitCard = forwardRef<HTMLDivElement, { name: string; title: string }>
           </div>
         </div>
 
-        {/* Name badge */}
+        {/* Name badge — gradient border matches the card */}
         <div
-          className="absolute -bottom-5 left-1/2 flex w-[86%] -translate-x-1/2 items-center gap-3 rounded-2xl bg-surface/90 px-4 py-3 backdrop-blur-xl"
+          className="absolute -bottom-5 left-1/2 w-[86%] -translate-x-1/2 rounded-2xl px-4 py-3 text-center backdrop-blur-xl"
           style={{
-            boxShadow:
-              "0 18px 70px -44px rgb(var(--text) / 0.45), 0 0 0 1px rgb(var(--line) / 0.07)",
+            border: "1px solid transparent",
+            background:
+              "linear-gradient(rgb(var(--surface) / 0.92), rgb(var(--surface) / 0.92)) padding-box, " +
+              "linear-gradient(135deg, rgb(var(--grad-1) / 0.45), rgb(var(--grad-3) / 0.28) 50%, rgb(var(--grad-2) / 0.40)) border-box",
+            boxShadow: "0 18px 70px -44px rgb(var(--text) / 0.45)",
           }}
         >
-          <span
-            aria-hidden
-            className="h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-400"
-            style={{ boxShadow: "0 0 0 4px rgb(52 211 153 / 0.16)" }}
-          />
-          <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-text-strong">{name}</p>
-            <p className="truncate text-xs text-text/55">{title}</p>
-          </div>
+          <p className="text-sm font-semibold text-text-strong">{name}</p>
+          <p className="text-[11px] leading-snug text-text/55">{title.split("@")[0].trim()}</p>
+          <p className="text-[11px] leading-snug text-text/40">{title.split("@")[1]?.trim()}</p>
         </div>
       </div>
     </div>
