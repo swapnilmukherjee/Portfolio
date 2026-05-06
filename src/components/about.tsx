@@ -39,7 +39,7 @@ export function About({ profile }: { profile: Profile }) {
         <motion.div {...reveal} className="glass mt-12 grid grid-cols-1 overflow-hidden rounded-[28px] sm:grid-cols-3">
           {[
             { k: "Now", v: "Technical Consultant", s: "Okta · Auth0" },
-            { k: "Specialty", v: "CIAM at scale", s: "OAuth · OIDC · SAML" },
+            { k: "Specialty", v: "Auth0 & CIAM", s: "OAuth · OIDC · SAML" },
             { k: "Frontier", v: "Auth0 for AI Agents", s: "Identity for agentic workflows" },
           ].map((row, i, arr) => (
             <div

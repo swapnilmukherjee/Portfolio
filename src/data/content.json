@@ -6,12 +6,12 @@
     "tagline": "Identity, secured.",
     "headline": "I build the identity layer behind modern apps, from CIAM at scale to IAM for AI agents.",
     "shortBio": "Technical Consultant at Okta helping enterprises design and deploy secure CIAM and IAM architectures, including identity patterns for AI agents, OAuth/OIDC, MFA, and Zero Trust access.",
-    "about": "Technical Consultant at Okta focused on Auth0, CIAM, and IAM for AI agents. I design secure authentication, authorization, MFA, federation, and extensibility patterns across modern app and API workloads. Previously owned production Auth0 operations for Fifth Third Bank’s Newline platform and supported enterprise IAM at Cardinal Health across 22,000+ identities and 100+ federated applications.",
+    "about": "Five years across enterprise identity — from federating 100+ applications onto Okta at a healthcare company with 22,000 workforce identities, to owning production Auth0 ops for Fifth Third Bank’s Newline platform and designing its migration to Ping Identity. Now on the platform side at Okta, I help enterprises design and deploy secure CIAM from the ground up: authentication flows, authorization models, MFA, extensibility, and the emerging identity patterns that AI agents require.",
     "location": "Charlotte, North Carolina",
     "email": "swapnilmukherjee.jobs@gmail.com",
     "publicEmail": "swapnilmukherjee.jobs@gmail.com",
     "phone": "+1 (864) 765-4851",
-    "availability": "Open to consulting conversations and CIAM architecture reviews.",
+    "availability": "Always up for a conversation about identity architecture, CIAM challenges, or AI agent security.",
     "socials": {
       "github": "https://github.com/swapnilmukherjee",
       "linkedin": "https://www.linkedin.com/in/swapnilmukherjee24/",
@@ -37,7 +37,7 @@
     },
     {
       "label": "Platforms",
-      "value": "Okta · Auth0 · IAM",
+      "value": "Okta · Auth0",
       "detail": "CIAM, workforce IAM, and AI identity"
     }
   ],
