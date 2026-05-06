@@ -9,6 +9,7 @@ import { cookies } from "next/headers";
 
 import fallbackJson from "@/data/content.json";
 import type {
+  AboutStat,
   Certification,
   Content,
   Education,
@@ -16,6 +17,7 @@ import type {
   Highlight,
   Profile,
   Project,
+  SiteCopy,
   SkillGroup,
 } from "@/data/content-types";
 
@@ -30,7 +32,7 @@ const POSTGRES_URL =
   process.env.DATABASE_URL ||
   "";
 
-type SaveTarget = "postgres" | "local-json";
+type SaveTarget = "postgres" | "local-json" | "draft";
 
 function configuredAdminToken() {
   if (process.env.ADMIN_SYNC_TOKEN) return process.env.ADMIN_SYNC_TOKEN;
@@ -98,7 +100,57 @@ async function ensureContentTable(client: import("pg").Client) {
       data        JSONB NOT NULL,
       updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
+    CREATE TABLE IF NOT EXISTS portfolio_changelog (
+      id            SERIAL PRIMARY KEY,
+      saved_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      save_type     TEXT NOT NULL DEFAULT 'live',
+      sections      TEXT[] NOT NULL DEFAULT '{}',
+      note          TEXT
+    );
   `);
+}
+
+export type ChangelogEntry = {
+  id: number;
+  saved_at: string;
+  save_type: string;
+  sections: string[];
+  note: string | null;
+};
+
+async function recordChangelog(
+  client: import("pg").Client,
+  sections: string[],
+  saveType: string,
+) {
+  await client.query(
+    "INSERT INTO portfolio_changelog (saved_at, save_type, sections) VALUES (NOW(), $1, $2)",
+    [saveType, sections],
+  );
+}
+
+function diffSections(prev: Content | null, next: Content): string[] {
+  if (!prev) return Object.keys(next);
+  return Object.keys(next).filter((k) => {
+    return JSON.stringify((prev as Record<string, unknown>)[k]) !==
+      JSON.stringify((next as Record<string, unknown>)[k]);
+  });
+}
+
+export async function getChangelog(): Promise<ChangelogEntry[]> {
+  if (!POSTGRES_URL) return [];
+  const { Client } = await import("pg");
+  const client = new Client({ connectionString: POSTGRES_URL, ssl: { rejectUnauthorized: false } });
+  try {
+    await client.connect();
+    await ensureContentTable(client);
+    const { rows } = await client.query<ChangelogEntry>(
+      "SELECT id, saved_at, save_type, sections, note FROM portfolio_changelog ORDER BY saved_at DESC LIMIT 30"
+    );
+    return rows;
+  } finally {
+    await client.end().catch(() => {});
+  }
 }
 
 async function readPostgresContent() {
@@ -122,7 +174,7 @@ async function readPostgresContent() {
   }
 }
 
-async function writePostgresContent(content: Content) {
+async function writePostgresContent(content: Content, key = "main") {
   if (!POSTGRES_URL) return false;
   const { Client } = await import("pg");
   const client = new Client({
@@ -133,6 +185,14 @@ async function writePostgresContent(content: Content) {
   try {
     await client.connect();
     await ensureContentTable(client);
+
+    // Read current for diff
+    const { rows: existing } = await client.query<{ data: Content }>(
+      "SELECT data FROM portfolio_content WHERE key = $1 LIMIT 1",
+      [key],
+    );
+    const prev = existing[0]?.data ?? null;
+
     await client.query(
       `
       INSERT INTO portfolio_content (key, data, updated_at)
@@ -141,8 +201,12 @@ async function writePostgresContent(content: Content) {
         SET data = EXCLUDED.data,
             updated_at = NOW();
       `,
-      ["main", JSON.stringify(content)],
+      [key, JSON.stringify(content)],
     );
+
+    const changed = diffSections(prev, content);
+    await recordChangelog(client, changed, key === "draft" ? "draft" : "live");
+
     return true;
   } finally {
     await client.end().catch(() => {});
@@ -177,13 +241,51 @@ export async function getEditableContent() {
   return readJsonContent().catch(() => FALLBACK_CONTENT);
 }
 
-export async function saveEditableContent(raw: unknown): Promise<SaveTarget> {
-  const content = normalizeContent(raw);
-  const wrotePostgres = await writePostgresContent(content);
-  if (wrotePostgres) return "postgres";
+export async function getDraftContent(): Promise<Content | null> {
+  noStore();
+  if (!POSTGRES_URL) return null;
+  const { Client } = await import("pg");
+  const client = new Client({ connectionString: POSTGRES_URL, ssl: { rejectUnauthorized: false } });
+  try {
+    await client.connect();
+    await ensureContentTable(client);
+    const { rows } = await client.query<{ data: Content }>(
+      "SELECT data FROM portfolio_content WHERE key = 'draft' LIMIT 1"
+    );
+    return rows[0]?.data ?? null;
+  } finally {
+    await client.end().catch(() => {});
+  }
+}
 
+export async function saveEditableContent(raw: unknown, asDraft = false): Promise<SaveTarget> {
+  const content = normalizeContent(raw);
+  const key = asDraft ? "draft" : "main";
+  const wrotePostgres = await writePostgresContent(content, key);
+  if (wrotePostgres) return asDraft ? "draft" : "postgres";
+
+  if (asDraft) throw new Error("Draft mode requires Postgres.");
   await writeJsonContent(content);
   return "local-json";
+}
+
+export async function publishDraft(): Promise<boolean> {
+  if (!POSTGRES_URL) return false;
+  const { Client } = await import("pg");
+  const client = new Client({ connectionString: POSTGRES_URL, ssl: { rejectUnauthorized: false } });
+  try {
+    await client.connect();
+    await ensureContentTable(client);
+    // Copy draft → main
+    await client.query(`
+      INSERT INTO portfolio_content (key, data, updated_at)
+      SELECT 'main', data, NOW() FROM portfolio_content WHERE key = 'draft'
+      ON CONFLICT (key) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW();
+    `);
+    return true;
+  } finally {
+    await client.end().catch(() => {});
+  }
 }
 
 function asRecord(value: unknown): Record<string, unknown> {
@@ -237,6 +339,7 @@ function normalizeProfile(value: unknown): Profile {
       email: stringValue(socials.email, fallback.socials.email),
     },
     resume: stringValue(input.resume, fallback.resume),
+    ...(input.headshotUrl ? { headshotUrl: stringValue(input.headshotUrl, "") } : {}),
   };
 }
 
@@ -306,7 +409,7 @@ function normalizeCertification(value: unknown, fallback?: Certification): Certi
 
 function normalizeProject(value: unknown, fallback?: Project): Project {
   const input = asRecord(value);
-  return {
+  const project: Project = {
     id: stringValue(input.id, fallback?.id),
     title: stringValue(input.title, fallback?.title),
     date: stringValue(input.date, fallback?.date),
@@ -316,6 +419,59 @@ function normalizeProject(value: unknown, fallback?: Project): Project {
     summary: stringValue(input.summary, fallback?.summary),
     description: stringValue(input.description, fallback?.description),
     tags: stringArray(input.tags),
+  };
+  if (input.imageUrl) project.imageUrl = stringValue(input.imageUrl, "");
+  return project;
+}
+
+function normalizeAboutStat(value: unknown, fallback?: AboutStat): AboutStat {
+  const input = asRecord(value);
+  return {
+    key: stringValue(input.key, fallback?.key),
+    value: stringValue(input.value, fallback?.value),
+    sub: stringValue(input.sub, fallback?.sub),
+  };
+}
+
+const FALLBACK_SITE_COPY: SiteCopy = (FALLBACK_CONTENT as unknown as { siteCopy?: SiteCopy }).siteCopy ?? {
+  heroStatus: "Okta · Identity & CIAM",
+  aboutHeading: "The identity layer\nbehind",
+  aboutHeadingBold: "modern apps.",
+  aboutSubheading: "Five years operating customer and workforce identity at scale. Now on the platform side at Okta, including the new patterns AI agents demand.",
+  aboutStats: [
+    { key: "Now", value: "Technical Consultant", sub: "Okta · Auth0" },
+    { key: "Specialty", value: "Auth0 & CIAM", sub: "OAuth · OIDC · SAML" },
+    { key: "Frontier", value: "Auth0 for AI Agents", sub: "Identity for agentic workflows" },
+  ],
+  experienceHeading: "Five years,",
+  experienceHeadingBold: "three chapters.",
+  experienceSubheading: "Healthcare IAM, CIAM in financial services, and now Auth0 platform consulting at Okta.",
+  projectsHeading: "Selected",
+  projectsHeadingBold: "work.",
+  projectsSubheading: "A mix of identity, security research, and full-stack engineering, built across grad school and personal time.",
+  skillsHeading: "What I",
+  skillsHeadingBold: "reach for.",
+  skillsSubheading: "The protocols, platforms, and tools I use day-to-day.",
+};
+
+function normalizeSiteCopy(value: unknown): SiteCopy {
+  const input = asRecord(value);
+  const fb = FALLBACK_SITE_COPY;
+  return {
+    heroStatus: stringValue(input.heroStatus, fb.heroStatus),
+    aboutHeading: stringValue(input.aboutHeading, fb.aboutHeading),
+    aboutHeadingBold: stringValue(input.aboutHeadingBold, fb.aboutHeadingBold),
+    aboutSubheading: stringValue(input.aboutSubheading, fb.aboutSubheading),
+    aboutStats: arrayValue(input.aboutStats, fb.aboutStats, normalizeAboutStat),
+    experienceHeading: stringValue(input.experienceHeading, fb.experienceHeading),
+    experienceHeadingBold: stringValue(input.experienceHeadingBold, fb.experienceHeadingBold),
+    experienceSubheading: stringValue(input.experienceSubheading, fb.experienceSubheading),
+    projectsHeading: stringValue(input.projectsHeading, fb.projectsHeading),
+    projectsHeadingBold: stringValue(input.projectsHeadingBold, fb.projectsHeadingBold),
+    projectsSubheading: stringValue(input.projectsSubheading, fb.projectsSubheading),
+    skillsHeading: stringValue(input.skillsHeading, fb.skillsHeading),
+    skillsHeadingBold: stringValue(input.skillsHeadingBold, fb.skillsHeadingBold),
+    skillsSubheading: stringValue(input.skillsSubheading, fb.skillsSubheading),
   };
 }
 
@@ -329,5 +485,6 @@ export function normalizeContent(value: unknown): Content {
     education: arrayValue(input.education, FALLBACK_CONTENT.education, normalizeEducation),
     certifications: arrayValue(input.certifications, FALLBACK_CONTENT.certifications, normalizeCertification),
     projects: arrayValue(input.projects, FALLBACK_CONTENT.projects, normalizeProject),
+    siteCopy: normalizeSiteCopy(input.siteCopy),
   };
 }

@@ -10,29 +10,37 @@ import { Skills } from "@/components/skills";
 import { SpatialStage } from "@/components/spatial-stage";
 import { Track } from "@/components/track";
 
-import { getContent } from "@/lib/content";
+import { getContent, isDraftModeEnabled } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export const fetchCache = "force-no-store";
 
 export default async function HomePage() {
-  const content = await getContent();
-  const { profile, experience, projects, skills, education, certifications } = content;
+  const [content, isDraft] = await Promise.all([getContent(), isDraftModeEnabled()]);
+  const { profile, experience, projects, skills, education, certifications, siteCopy } = content;
 
   return (
     <>
+      {/* Draft mode banner */}
+      {isDraft && (
+        <div className="fixed inset-x-0 top-0 z-[100] flex items-center justify-between gap-3 bg-amber-400 px-4 py-2 text-sm font-medium text-black">
+          <span>⚠️ You are previewing a draft — this is not the live site.</span>
+          <a href="/api/draft?action=disable" className="underline hover:no-underline">Exit preview</a>
+        </div>
+      )}
+
       {/* Ambient identity graph behind every section */}
       <SpatialStage />
 
       <Nav resumeHref={profile.resume} />
 
       <main className="relative">
-        <Hero profile={profile} />
-        <About profile={profile} />
-        <Experience experience={experience} />
-        <Projects projects={projects} />
-        <Skills skills={skills} />
+        <Hero profile={profile} siteCopy={siteCopy} />
+        <About profile={profile} siteCopy={siteCopy} />
+        <Experience experience={experience} siteCopy={siteCopy} />
+        <Projects projects={projects} siteCopy={siteCopy} />
+        <Skills skills={skills} siteCopy={siteCopy} />
         <Education education={education} certifications={certifications} />
         <Contact profile={profile} />
       </main>

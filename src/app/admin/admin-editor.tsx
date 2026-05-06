@@ -7,46 +7,60 @@ import {
   ArrowUp,
   Award,
   BriefcaseBusiness,
+  ChevronDown,
+  Clock,
   Copy,
   FileJson,
   GraduationCap,
   IdCard,
+  ImagePlus,
   ListChecks,
+  Loader2,
   Plus,
   RotateCcw,
   Save,
   Sparkles,
   Trash2,
+  Type,
   Wrench,
 } from "lucide-react";
 
 import type {
+  AboutStat,
   Certification,
   Content,
   Education,
   Experience,
   Highlight,
   Project,
+  SiteCopy,
   SkillGroup,
 } from "@/data/content-types";
+import type { ChangelogEntry } from "@/lib/admin-content";
 
 type AdminEditorProps = {
   initialContent: Content;
   saveAction: (formData: FormData) => void | Promise<void>;
+  saveDraftAction: (formData: FormData) => void | Promise<void>;
   storageLabel: string;
+  hasDraft: boolean;
+  changelog: ChangelogEntry[];
 };
 
-type TabId = "profile" | "highlights" | "experience" | "skills" | "education" | "projects" | "json";
+type TabId = "profile" | "sitecopy" | "highlights" | "experience" | "skills" | "education" | "certifications" | "projects" | "json" | "changelog";
 type ListKey = "highlights" | "experience" | "skills" | "education" | "certifications" | "projects";
 
 const tabs: Array<{ id: TabId; label: string; icon: typeof IdCard }> = [
   { id: "profile", label: "Profile", icon: IdCard },
+  { id: "sitecopy", label: "Site copy", icon: Type },
   { id: "highlights", label: "Highlights", icon: Sparkles },
   { id: "experience", label: "Experience", icon: BriefcaseBusiness },
   { id: "skills", label: "Skills", icon: Wrench },
   { id: "education", label: "Education", icon: GraduationCap },
+  { id: "certifications", label: "Certifications", icon: Award },
   { id: "projects", label: "Projects", icon: ListChecks },
   { id: "json", label: "JSON", icon: FileJson },
+  { id: "changelog", label: "Changelog", icon: Clock },
 ];
 
 function newId(prefix: string) {
@@ -60,7 +74,7 @@ function splitLines(value: string) {
     .filter(Boolean);
 }
 
-export function AdminEditor({ initialContent, saveAction, storageLabel }: AdminEditorProps) {
+export function AdminEditor({ initialContent, saveAction, saveDraftAction, storageLabel, hasDraft, changelog }: AdminEditorProps) {
   const [content, setContent] = useState<Content>(initialContent);
   const [activeTab, setActiveTab] = useState<TabId>("profile");
   const [copied, setCopied] = useState(false);
@@ -101,6 +115,33 @@ export function AdminEditor({ initialContent, saveAction, storageLabel }: AdminE
       list.splice(index, 1);
       return { ...current, [key]: list } as Content;
     });
+  }
+
+  function duplicateListItem(key: ListKey, index: number) {
+    setContent((current) => {
+      const list = [...(current[key] as unknown[])];
+      const item = list[index];
+      const duped =
+        typeof item === "object" && item !== null
+          ? { ...(item as Record<string, unknown>), id: newId("copy") }
+          : item;
+      list.splice(index + 1, 0, duped);
+      return { ...current, [key]: list } as Content;
+    });
+  }
+
+  function updateSiteCopy(patch: Partial<SiteCopy>) {
+    setContent((current) => ({ ...current, siteCopy: { ...current.siteCopy, ...patch } }));
+  }
+
+  function updateAboutStat(index: number, patch: Partial<AboutStat>) {
+    setContent((current) => ({
+      ...current,
+      siteCopy: {
+        ...current.siteCopy,
+        aboutStats: current.siteCopy.aboutStats.map((s, i) => (i === index ? { ...s, ...patch } : s)),
+      },
+    }));
   }
 
   function updateHighlight(index: number, patch: Partial<Highlight>) {
@@ -146,6 +187,7 @@ export function AdminEditor({ initialContent, saveAction, storageLabel }: AdminE
   }
 
   return (
+    <div>
     <form action={saveAction} className="pb-28">
       <input type="hidden" name="content" value={serialized} readOnly />
 
@@ -179,63 +221,117 @@ export function AdminEditor({ initialContent, saveAction, storageLabel }: AdminE
         </aside>
 
         <div className="min-w-0">
+          {/* ── Profile ── */}
           {activeTab === "profile" && (
             <div className="space-y-5">
               <SectionHeading title="Profile" detail="Hero copy, contact details, social links, and resume path." />
+              <Group title="Headshot">
+                <ImageUpload
+                  label="Profile photo (replaces headshot.jpg)"
+                  currentUrl={content.profile.headshotUrl ?? ""}
+                  onUpload={(url) => setContent((c) => ({ ...c, profile: { ...c.profile, headshotUrl: url } }))}
+                />
+                <p className="text-xs text-white/35">Upload a new headshot. The URL is saved to Postgres — no git push needed. Leave blank to use the bundled headshot.jpg.</p>
+              </Group>
               <div className="grid gap-5 xl:grid-cols-2">
                 <Group title="Identity">
-                  <Field label="Name" value={content.profile.name} onChange={(name) => setContent((current) => ({ ...current, profile: { ...current.profile, name } }))} />
-                  <Field label="First name" value={content.profile.firstName} onChange={(firstName) => setContent((current) => ({ ...current, profile: { ...current.profile, firstName } }))} />
-                  <Field label="Title" value={content.profile.title} onChange={(title) => setContent((current) => ({ ...current, profile: { ...current.profile, title } }))} />
-                  <Field label="Tagline" value={content.profile.tagline} onChange={(tagline) => setContent((current) => ({ ...current, profile: { ...current.profile, tagline } }))} />
-                  <Field label="Location" value={content.profile.location} onChange={(location) => setContent((current) => ({ ...current, profile: { ...current.profile, location } }))} />
+                  <Field label="Full name" value={content.profile.name} onChange={(name) => setContent((c) => ({ ...c, profile: { ...c.profile, name } }))} />
+                  <Field label="First name" value={content.profile.firstName} onChange={(firstName) => setContent((c) => ({ ...c, profile: { ...c.profile, firstName } }))} />
+                  <Field label="Title (use @ to split lines in photo badge)" value={content.profile.title} onChange={(title) => setContent((c) => ({ ...c, profile: { ...c.profile, title } }))} placeholder="Technical Consultant @ Okta" />
+                  <Field label="Tagline" value={content.profile.tagline} onChange={(tagline) => setContent((c) => ({ ...c, profile: { ...c.profile, tagline } }))} />
+                  <Field label="Location" value={content.profile.location} onChange={(location) => setContent((c) => ({ ...c, profile: { ...c.profile, location } }))} />
                 </Group>
 
                 <Group title="Contact">
-                  <Field label="Private email" value={content.profile.email} onChange={(email) => setContent((current) => ({ ...current, profile: { ...current.profile, email } }))} />
-                  <Field label="Public email" value={content.profile.publicEmail} onChange={(publicEmail) => setContent((current) => ({ ...current, profile: { ...current.profile, publicEmail } }))} />
-                  <Field label="Phone" value={content.profile.phone} onChange={(phone) => setContent((current) => ({ ...current, profile: { ...current.profile, phone } }))} />
-                  <Field label="Resume path" value={content.profile.resume} onChange={(resume) => setContent((current) => ({ ...current, profile: { ...current.profile, resume } }))} />
-                  <Field label="Availability" value={content.profile.availability} onChange={(availability) => setContent((current) => ({ ...current, profile: { ...current.profile, availability } }))} />
+                  <Field label="Private email" value={content.profile.email} onChange={(email) => setContent((c) => ({ ...c, profile: { ...c.profile, email } }))} />
+                  <Field label="Public email" value={content.profile.publicEmail} onChange={(publicEmail) => setContent((c) => ({ ...c, profile: { ...c.profile, publicEmail } }))} />
+                  <Field label="Phone" value={content.profile.phone} onChange={(phone) => setContent((c) => ({ ...c, profile: { ...c.profile, phone } }))} />
+                  <Field label="Availability" value={content.profile.availability} onChange={(availability) => setContent((c) => ({ ...c, profile: { ...c.profile, availability } }))} />
+                </Group>
+
+                <Group title="Resume">
+                  <ImageUpload
+                    label="Upload resume PDF (replaces current resume)"
+                    currentUrl={content.profile.resume}
+                    onUpload={(url) => setContent((c) => ({ ...c, profile: { ...c.profile, resume: url } }))}
+                    accept="application/pdf"
+                  />
+                  <p className="text-xs text-white/35">Upload a PDF and the URL is saved to Postgres automatically — no git push needed. Or type a path manually below (e.g. /resume.pdf for a file in /public).</p>
+                  <Field label="Resume path (manual override)" value={content.profile.resume} onChange={(resume) => setContent((c) => ({ ...c, profile: { ...c.profile, resume } }))} placeholder="/resume.pdf" />
                 </Group>
               </div>
 
               <Group title="Main copy">
-                <Textarea label="Headline" rows={3} value={content.profile.headline} onChange={(headline) => setContent((current) => ({ ...current, profile: { ...current.profile, headline } }))} />
-                <Textarea label="Short bio" rows={4} value={content.profile.shortBio} onChange={(shortBio) => setContent((current) => ({ ...current, profile: { ...current.profile, shortBio } }))} />
-                <Textarea label="About" rows={8} value={content.profile.about} onChange={(about) => setContent((current) => ({ ...current, profile: { ...current.profile, about } }))} />
+                <Textarea label="Headline (shown in hero below your name)" rows={3} value={content.profile.headline} onChange={(headline) => setContent((c) => ({ ...c, profile: { ...c.profile, headline } }))} />
+                <Textarea label="Short bio" rows={4} value={content.profile.shortBio} onChange={(shortBio) => setContent((c) => ({ ...c, profile: { ...c.profile, shortBio } }))} />
+                <Textarea label="About (long-form paragraph in the About section)" rows={8} value={content.profile.about} onChange={(about) => setContent((c) => ({ ...c, profile: { ...c.profile, about } }))} />
               </Group>
 
               <Group title="Social links">
-                <Field
-                  label="GitHub"
-                  value={content.profile.socials.github}
-                  onChange={(github) => setContent((current) => ({ ...current, profile: { ...current.profile, socials: { ...current.profile.socials, github } } }))}
-                />
-                <Field
-                  label="LinkedIn"
-                  value={content.profile.socials.linkedin}
-                  onChange={(linkedin) => setContent((current) => ({ ...current, profile: { ...current.profile, socials: { ...current.profile.socials, linkedin } } }))}
-                />
-                <Field
-                  label="Email link"
-                  value={content.profile.socials.email}
-                  onChange={(email) => setContent((current) => ({ ...current, profile: { ...current.profile, socials: { ...current.profile.socials, email } } }))}
-                />
+                <Field label="GitHub URL" value={content.profile.socials.github} onChange={(github) => setContent((c) => ({ ...c, profile: { ...c.profile, socials: { ...c.profile.socials, github } } }))} placeholder="https://github.com/username" />
+                <Field label="LinkedIn URL" value={content.profile.socials.linkedin} onChange={(linkedin) => setContent((c) => ({ ...c, profile: { ...c.profile, socials: { ...c.profile.socials, linkedin } } }))} placeholder="https://linkedin.com/in/username" />
+                <Field label="Email link (mailto:)" value={content.profile.socials.email} onChange={(email) => setContent((c) => ({ ...c, profile: { ...c.profile, socials: { ...c.profile.socials, email } } }))} placeholder="mailto:you@example.com" />
               </Group>
             </div>
           )}
 
+          {/* ── Site copy ── */}
+          {activeTab === "sitecopy" && (
+            <div className="space-y-5">
+              <SectionHeading title="Site copy" detail="Section headings, subheadings, and the About stat cards. These are the words baked into the layout that aren't stored as profile or experience data." />
+
+              <Group title="Hero status badge">
+                <Field label="Status text (top-left of hero, next to green dot)" value={content.siteCopy.heroStatus} onChange={(heroStatus) => updateSiteCopy({ heroStatus })} placeholder="Okta · Identity & CIAM" />
+              </Group>
+
+              <Group title="About section">
+                <Field label="Heading (use \\n for a line break)" value={content.siteCopy.aboutHeading} onChange={(aboutHeading) => updateSiteCopy({ aboutHeading })} placeholder="The identity layer\nbehind" />
+                <Field label="Heading bold suffix (rendered in colour)" value={content.siteCopy.aboutHeadingBold} onChange={(aboutHeadingBold) => updateSiteCopy({ aboutHeadingBold })} placeholder="modern apps." />
+                <Textarea label="Subheading (right column, smaller text)" rows={3} value={content.siteCopy.aboutSubheading} onChange={(aboutSubheading) => updateSiteCopy({ aboutSubheading })} />
+              </Group>
+
+              <Group title="About stat cards">
+                <p className="text-xs text-white/40">Three cards below the About paragraph — e.g. Now / Specialty / Frontier.</p>
+                {content.siteCopy.aboutStats.map((stat, i) => (
+                  <div key={i} className="grid gap-3 rounded-2xl border border-white/10 bg-black/30 p-4 md:grid-cols-3">
+                    <Field label={`Card ${i + 1} — label`} value={stat.key} onChange={(key) => updateAboutStat(i, { key })} placeholder="Now" />
+                    <Field label="Main value" value={stat.value} onChange={(value) => updateAboutStat(i, { value })} placeholder="Technical Consultant" />
+                    <Field label="Sub-text" value={stat.sub} onChange={(sub) => updateAboutStat(i, { sub })} placeholder="Okta · Auth0" />
+                  </div>
+                ))}
+              </Group>
+
+              <Group title="Experience section">
+                <Field label="Heading (use \\n for line break)" value={content.siteCopy.experienceHeading} onChange={(experienceHeading) => updateSiteCopy({ experienceHeading })} placeholder="Five years," />
+                <Field label="Heading bold suffix" value={content.siteCopy.experienceHeadingBold} onChange={(experienceHeadingBold) => updateSiteCopy({ experienceHeadingBold })} placeholder="three chapters." />
+                <Textarea label="Subheading" rows={2} value={content.siteCopy.experienceSubheading} onChange={(experienceSubheading) => updateSiteCopy({ experienceSubheading })} />
+              </Group>
+
+              <Group title="Projects section">
+                <Field label="Heading (use \\n for line break)" value={content.siteCopy.projectsHeading} onChange={(projectsHeading) => updateSiteCopy({ projectsHeading })} placeholder="Selected" />
+                <Field label="Heading bold suffix" value={content.siteCopy.projectsHeadingBold} onChange={(projectsHeadingBold) => updateSiteCopy({ projectsHeadingBold })} placeholder="work." />
+                <Textarea label="Subheading" rows={2} value={content.siteCopy.projectsSubheading} onChange={(projectsSubheading) => updateSiteCopy({ projectsSubheading })} />
+              </Group>
+
+              <Group title="Skills / Toolkit section">
+                <Field label="Heading (use \\n for line break)" value={content.siteCopy.skillsHeading} onChange={(skillsHeading) => updateSiteCopy({ skillsHeading })} placeholder="What I" />
+                <Field label="Heading bold suffix" value={content.siteCopy.skillsHeadingBold} onChange={(skillsHeadingBold) => updateSiteCopy({ skillsHeadingBold })} placeholder="reach for." />
+                <Textarea label="Subheading" rows={2} value={content.siteCopy.skillsSubheading} onChange={(skillsSubheading) => updateSiteCopy({ skillsSubheading })} />
+              </Group>
+            </div>
+          )}
+
+          {/* ── Highlights ── */}
           {activeTab === "highlights" && (
             <div className="space-y-5">
               <SectionHeading
                 title="Highlights"
-                detail="Small proof points that appear near the top of the site."
+                detail="Small proof-point metrics that appear near the top of the site."
                 actionLabel="Add highlight"
                 onAction={() =>
-                  setContent((current) => ({
-                    ...current,
-                    highlights: [...current.highlights, { label: "New metric", value: "0", detail: "Short detail" }],
+                  setContent((c) => ({
+                    ...c,
+                    highlights: [...c.highlights, { label: "New metric", value: "0", detail: "Short detail" }],
                   }))
                 }
               />
@@ -258,6 +354,7 @@ export function AdminEditor({ initialContent, saveAction, storageLabel }: AdminE
             </div>
           )}
 
+          {/* ── Experience ── */}
           {activeTab === "experience" && (
             <div className="space-y-5">
               <SectionHeading
@@ -265,10 +362,10 @@ export function AdminEditor({ initialContent, saveAction, storageLabel }: AdminE
                 detail="Role cards, summaries, bullet points, tags, dates, and locations."
                 actionLabel="Add role"
                 onAction={() =>
-                  setContent((current) => ({
-                    ...current,
+                  setContent((c) => ({
+                    ...c,
                     experience: [
-                      ...current.experience,
+                      ...c.experience,
                       {
                         id: newId("role"),
                         role: "New role",
@@ -296,27 +393,33 @@ export function AdminEditor({ initialContent, saveAction, storageLabel }: AdminE
                   total={content.experience.length}
                   onMove={(direction) => moveListItem("experience", index, direction)}
                   onRemove={() => removeListItem("experience", index)}
+                  onDuplicate={() => duplicateListItem("experience", index)}
                 >
                   <div className="grid gap-4 lg:grid-cols-2">
-                    <Field label="ID" value={item.id} onChange={(id) => updateExperience(index, { id })} />
-                    <Field label="Role" value={item.role} onChange={(role) => updateExperience(index, { role })} />
+                    <Field label="Role title" value={item.role} onChange={(role) => updateExperience(index, { role })} />
                     <Field label="Company" value={item.company} onChange={(company) => updateExperience(index, { company })} />
-                    <Field label="Contract info" value={item.contractInfo ?? ""} onChange={(contractInfo) => updateExperience(index, { contractInfo: contractInfo || null })} />
-                    <Field label="Logo key" value={item.logo} onChange={(logo) => updateExperience(index, { logo })} />
-                    <Field label="Period" value={item.period} onChange={(period) => updateExperience(index, { period })} />
+                    <Field label="Period (e.g. Jan 2023 – Present)" value={item.period} onChange={(period) => updateExperience(index, { period })} />
                     <Field label="Location" value={item.location} onChange={(location) => updateExperience(index, { location })} />
-                    <Field label="Type" value={item.type} onChange={(type) => updateExperience(index, { type })} />
-                    <Field label="Gradient class" value={item.color} onChange={(color) => updateExperience(index, { color })} />
-                    <Field label="Accent color" value={item.accent} onChange={(accent) => updateExperience(index, { accent })} />
+                    <Field label="Employment type" value={item.type} onChange={(type) => updateExperience(index, { type })} placeholder="Full-time" />
+                    <Field label="Contract info (optional, replaces type)" value={item.contractInfo ?? ""} onChange={(contractInfo) => updateExperience(index, { contractInfo: contractInfo || null })} placeholder="Leave blank unless contract/freelance" />
                   </div>
-                  <Textarea label="Summary" rows={4} value={item.summary} onChange={(summary) => updateExperience(index, { summary })} />
-                  <LinesField label="Highlights, one per line" value={item.highlights} onChange={(highlights) => updateExperience(index, { highlights })} rows={7} />
-                  <LinesField label="Tags, one per line" value={item.tags} onChange={(tags) => updateExperience(index, { tags })} rows={4} />
+                  <Textarea label="Summary (1–2 sentences about this role)" rows={3} value={item.summary} onChange={(summary) => updateExperience(index, { summary })} />
+                  <LinesField label="Highlights — one bullet per line" value={item.highlights} onChange={(highlights) => updateExperience(index, { highlights })} rows={7} />
+                  <LinesField label="Tags — one skill per line" value={item.tags} onChange={(tags) => updateExperience(index, { tags })} rows={4} />
+                  <Advanced>
+                    <div className="grid gap-4 lg:grid-cols-2">
+                      <Field label="ID (slug, auto-generated)" value={item.id} onChange={(id) => updateExperience(index, { id })} />
+                      <Field label="Logo key" value={item.logo} onChange={(logo) => updateExperience(index, { logo })} />
+                      <Field label="Gradient class" value={item.color} onChange={(color) => updateExperience(index, { color })} placeholder="from-cyan-500 to-blue-600" />
+                      <Field label="Accent color (rgba)" value={item.accent} onChange={(accent) => updateExperience(index, { accent })} placeholder="rgba(108, 227, 255, 0.25)" />
+                    </div>
+                  </Advanced>
                 </ItemFrame>
               ))}
             </div>
           )}
 
+          {/* ── Skills ── */}
           {activeTab === "skills" && (
             <div className="space-y-5">
               <SectionHeading
@@ -324,9 +427,9 @@ export function AdminEditor({ initialContent, saveAction, storageLabel }: AdminE
                 detail="Skill groups and the chips listed under each group."
                 actionLabel="Add skill group"
                 onAction={() =>
-                  setContent((current) => ({
-                    ...current,
-                    skills: [...current.skills, { category: "New skill group", icon: "shield", items: ["Skill"] }],
+                  setContent((c) => ({
+                    ...c,
+                    skills: [...c.skills, { category: "New skill group", icon: "shield", items: ["Skill"] }],
                   }))
                 }
               />
@@ -339,130 +442,129 @@ export function AdminEditor({ initialContent, saveAction, storageLabel }: AdminE
                   onMove={(direction) => moveListItem("skills", index, direction)}
                   onRemove={() => removeListItem("skills", index)}
                 >
-                  <div className="grid gap-4 lg:grid-cols-2">
-                    <Field label="Category" value={skill.category} onChange={(category) => updateSkill(index, { category })} />
+                  <Field label="Category name" value={skill.category} onChange={(category) => updateSkill(index, { category })} />
+                  <LinesField label="Skills — one per line" value={skill.items} onChange={(items) => updateSkill(index, { items })} rows={8} />
+                  <Advanced>
                     <Field label="Icon key" value={skill.icon} onChange={(icon) => updateSkill(index, { icon })} />
-                  </div>
-                  <LinesField label="Skills, one per line" value={skill.items} onChange={(items) => updateSkill(index, { items })} rows={8} />
+                  </Advanced>
                 </ItemFrame>
               ))}
             </div>
           )}
 
+          {/* ── Education ── */}
           {activeTab === "education" && (
             <div className="space-y-5">
               <SectionHeading
-                title="Education and certifications"
-                detail="Degrees and certification cards. Use expected for in-progress certifications."
+                title="Education"
+                detail="Degrees and academic credentials."
+                actionLabel="Add education"
+                onAction={() =>
+                  setContent((c) => ({
+                    ...c,
+                    education: [
+                      ...c.education,
+                      {
+                        id: newId("education"),
+                        school: "School",
+                        degree: "Degree",
+                        period: "Year to Year",
+                        location: "City, State",
+                        accent: "rgba(108, 227, 255, 0.25)",
+                      },
+                    ],
+                  }))
+                }
               />
-
-              <div className="flex justify-end gap-2">
-                <AddButton
-                  label="Add education"
-                  onClick={() =>
-                    setContent((current) => ({
-                      ...current,
-                      education: [
-                        ...current.education,
-                        {
-                          id: newId("education"),
-                          school: "School",
-                          degree: "Degree",
-                          period: "Year to Year",
-                          location: "City, State",
-                          accent: "rgba(108, 227, 255, 0.25)",
-                        },
-                      ],
-                    }))
-                  }
-                />
-                <AddButton
-                  label="Add certification"
-                  onClick={() =>
-                    setContent((current) => ({
-                      ...current,
-                      certifications: [
-                        ...current.certifications,
-                        {
-                          name: "Certification",
-                          issuer: "Issuer",
-                          status: "earned",
-                        },
-                      ],
-                    }))
-                  }
-                />
-              </div>
-
-              <div className="space-y-5">
-                {content.education.map((school, index) => (
-                  <ItemFrame
-                    key={school.id || index}
-                    title={school.school || `Education ${index + 1}`}
-                    index={index}
-                    total={content.education.length}
-                    onMove={(direction) => moveListItem("education", index, direction)}
-                    onRemove={() => removeListItem("education", index)}
-                  >
+              {content.education.map((school, index) => (
+                <ItemFrame
+                  key={school.id || index}
+                  title={school.school || `Education ${index + 1}`}
+                  index={index}
+                  total={content.education.length}
+                  onMove={(direction) => moveListItem("education", index, direction)}
+                  onRemove={() => removeListItem("education", index)}
+                >
+                  <div className="grid gap-4 lg:grid-cols-2">
+                    <Field label="School" value={school.school} onChange={(schoolName) => updateEducation(index, { school: schoolName })} />
+                    <Field label="Degree" value={school.degree} onChange={(degree) => updateEducation(index, { degree })} />
+                    <Field label="Period (e.g. 2020 – 2022)" value={school.period} onChange={(period) => updateEducation(index, { period })} />
+                    <Field label="Location" value={school.location} onChange={(location) => updateEducation(index, { location })} />
+                  </div>
+                  <Advanced>
                     <div className="grid gap-4 lg:grid-cols-2">
-                      <Field label="ID" value={school.id} onChange={(id) => updateEducation(index, { id })} />
-                      <Field label="School" value={school.school} onChange={(schoolName) => updateEducation(index, { school: schoolName })} />
-                      <Field label="Degree" value={school.degree} onChange={(degree) => updateEducation(index, { degree })} />
-                      <Field label="Period" value={school.period} onChange={(period) => updateEducation(index, { period })} />
-                      <Field label="Location" value={school.location} onChange={(location) => updateEducation(index, { location })} />
-                      <Field label="Accent color" value={school.accent} onChange={(accent) => updateEducation(index, { accent })} />
+                      <Field label="ID (slug)" value={school.id} onChange={(id) => updateEducation(index, { id })} />
+                      <Field label="Accent color (rgba)" value={school.accent} onChange={(accent) => updateEducation(index, { accent })} />
                     </div>
-                  </ItemFrame>
-                ))}
-              </div>
-
-              <div className="space-y-5">
-                {content.certifications.map((cert, index) => (
-                  <ItemFrame
-                    key={`${cert.name}-${index}`}
-                    title={cert.name || `Certification ${index + 1}`}
-                    index={index}
-                    total={content.certifications.length}
-                    onMove={(direction) => moveListItem("certifications", index, direction)}
-                    onRemove={() => removeListItem("certifications", index)}
-                  >
-                    <div className="grid gap-4 lg:grid-cols-2">
-                      <Field label="Name" value={cert.name} onChange={(name) => updateCertification(index, { name })} />
-                      <Field label="Issuer" value={cert.issuer} onChange={(issuer) => updateCertification(index, { issuer })} />
-                      <Select
-                        label="Status"
-                        value={cert.status ?? "earned"}
-                        options={[
-                          { label: "Earned", value: "earned" },
-                          { label: "In progress", value: "in-progress" },
-                        ]}
-                        onChange={(status) => updateCertification(index, { status: status as Certification["status"] })}
-                      />
-                      <Field label="Issued" value={cert.issued ?? ""} onChange={(issued) => updateCertification(index, { issued })} />
-                      <Field label="Expected" value={cert.expected ?? ""} onChange={(expected) => updateCertification(index, { expected })} />
-                    </div>
-                  </ItemFrame>
-                ))}
-              </div>
+                  </Advanced>
+                </ItemFrame>
+              ))}
             </div>
           )}
 
+          {/* ── Certifications ── */}
+          {activeTab === "certifications" && (
+            <div className="space-y-5">
+              <SectionHeading
+                title="Certifications"
+                detail="Earned and in-progress certifications. Use 'expected' for ones you're working toward."
+                actionLabel="Add certification"
+                onAction={() =>
+                  setContent((c) => ({
+                    ...c,
+                    certifications: [
+                      ...c.certifications,
+                      { name: "Certification name", issuer: "Issuer", status: "earned" },
+                    ],
+                  }))
+                }
+              />
+              {content.certifications.map((cert, index) => (
+                <ItemFrame
+                  key={`${cert.name}-${index}`}
+                  title={cert.name || `Certification ${index + 1}`}
+                  index={index}
+                  total={content.certifications.length}
+                  onMove={(direction) => moveListItem("certifications", index, direction)}
+                  onRemove={() => removeListItem("certifications", index)}
+                >
+                  <div className="grid gap-4 lg:grid-cols-2">
+                    <Field label="Certification name" value={cert.name} onChange={(name) => updateCertification(index, { name })} />
+                    <Field label="Issuer (e.g. Okta, AWS, Google)" value={cert.issuer} onChange={(issuer) => updateCertification(index, { issuer })} />
+                    <Select
+                      label="Status"
+                      value={cert.status ?? "earned"}
+                      options={[
+                        { label: "✅ Earned", value: "earned" },
+                        { label: "⏳ In progress", value: "in-progress" },
+                      ]}
+                      onChange={(status) => updateCertification(index, { status: status as Certification["status"] })}
+                    />
+                    <Field label="Date issued (e.g. Jun 2024)" value={cert.issued ?? ""} onChange={(issued) => updateCertification(index, { issued })} placeholder="Leave blank if in progress" />
+                    <Field label="Expected date (in-progress only)" value={cert.expected ?? ""} onChange={(expected) => updateCertification(index, { expected })} placeholder="e.g. Q3 2025" />
+                  </div>
+                </ItemFrame>
+              ))}
+            </div>
+          )}
+
+          {/* ── Projects ── */}
           {activeTab === "projects" && (
             <div className="space-y-5">
               <SectionHeading
                 title="Projects"
-                detail="Project cards, categories, descriptions, icons, and tags."
+                detail="Project cards shown in the Projects section. Category must match one of the filter chips."
                 actionLabel="Add project"
                 onAction={() =>
-                  setContent((current) => ({
-                    ...current,
+                  setContent((c) => ({
+                    ...c,
                     projects: [
-                      ...current.projects,
+                      ...c.projects,
                       {
                         id: newId("project"),
                         title: "New project",
                         date: "Month YYYY",
-                        category: "Category",
+                        category: "Cybersecurity",
                         icon: "sparkles",
                         color: "from-cyan-500 to-blue-600",
                         summary: "Short project summary.",
@@ -481,23 +583,105 @@ export function AdminEditor({ initialContent, saveAction, storageLabel }: AdminE
                   total={content.projects.length}
                   onMove={(direction) => moveListItem("projects", index, direction)}
                   onRemove={() => removeListItem("projects", index)}
+                  onDuplicate={() => duplicateListItem("projects", index)}
                 >
                   <div className="grid gap-4 lg:grid-cols-2">
-                    <Field label="ID" value={project.id} onChange={(id) => updateProject(index, { id })} />
                     <Field label="Title" value={project.title} onChange={(title) => updateProject(index, { title })} />
-                    <Field label="Date" value={project.date} onChange={(date) => updateProject(index, { date })} />
-                    <Field label="Category" value={project.category} onChange={(category) => updateProject(index, { category })} />
-                    <Field label="Icon key" value={project.icon} onChange={(icon) => updateProject(index, { icon })} />
-                    <Field label="Gradient class" value={project.color} onChange={(color) => updateProject(index, { color })} />
+                    <Field label="Date (e.g. Jan 2024)" value={project.date} onChange={(date) => updateProject(index, { date })} />
+                    <Select
+                      label="Category (must match a filter chip)"
+                      value={project.category}
+                      options={[
+                        { label: "Cybersecurity", value: "Cybersecurity" },
+                        { label: "Web Engineering", value: "Web Engineering" },
+                        { label: "Automation & IoT", value: "Automation & IoT" },
+                        { label: "AI & Data", value: "AI & Data" },
+                      ]}
+                      onChange={(category) => updateProject(index, { category })}
+                    />
                   </div>
-                  <Textarea label="Summary" rows={3} value={project.summary} onChange={(summary) => updateProject(index, { summary })} />
-                  <Textarea label="Description" rows={5} value={project.description} onChange={(description) => updateProject(index, { description })} />
-                  <LinesField label="Tags, one per line" value={project.tags} onChange={(tags) => updateProject(index, { tags })} rows={4} />
+                  <Textarea label="Summary (shown on card)" rows={3} value={project.summary} onChange={(summary) => updateProject(index, { summary })} />
+                  <Textarea label="Description (detail view)" rows={5} value={project.description} onChange={(description) => updateProject(index, { description })} />
+                  <LinesField label="Tags — one per line" value={project.tags} onChange={(tags) => updateProject(index, { tags })} rows={4} />
+                  <ImageUpload
+                    label="Project screenshot (optional)"
+                    currentUrl={project.imageUrl ?? ""}
+                    onUpload={(url) => updateProject(index, { imageUrl: url })}
+                  />
+                  <Advanced>
+                    <div className="grid gap-4 lg:grid-cols-2">
+                      <Field label="ID (slug)" value={project.id} onChange={(id) => updateProject(index, { id })} />
+                      <Field label="Icon key" value={project.icon} onChange={(icon) => updateProject(index, { icon })} />
+                      <Field label="Gradient class" value={project.color} onChange={(color) => updateProject(index, { color })} placeholder="from-cyan-500 to-blue-600" />
+                    </div>
+                  </Advanced>
                 </ItemFrame>
               ))}
             </div>
           )}
 
+          {/* ── Changelog ── */}
+          {activeTab === "changelog" && (
+            <div className="space-y-5">
+              <SectionHeading title="Changelog" detail="A log of every save — what sections changed and when. Recorded automatically whenever you save live or as a draft." />
+              {changelog.length === 0 ? (
+                <div className="rounded-[24px] border border-white/10 bg-white/[0.055] p-8 text-center backdrop-blur-xl">
+                  <Clock className="mx-auto mb-3 h-8 w-8 text-white/20" />
+                  <p className="text-sm text-white/45">No saves recorded yet. Changes are logged here after your first save.</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {changelog.map((entry) => {
+                    const date = new Date(entry.saved_at);
+                    const isLive = entry.save_type === "live";
+                    return (
+                      <div key={entry.id} className="rounded-[20px] border border-white/10 bg-white/[0.055] p-4 backdrop-blur-xl">
+                        <div className="flex flex-wrap items-start justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`inline-flex items-center rounded-lg px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest ${
+                                isLive
+                                  ? "bg-emerald-500/15 text-emerald-300"
+                                  : "bg-amber-500/15 text-amber-300"
+                              }`}
+                            >
+                              {isLive ? "Live" : "Draft"}
+                            </span>
+                            {entry.note && (
+                              <span className="text-xs text-white/45">{entry.note}</span>
+                            )}
+                          </div>
+                          <time dateTime={date.toISOString()} className="flex items-center gap-1.5 text-xs text-white/35" title={date.toLocaleString()}>
+                            <Clock className="h-3 w-3" />
+                            {date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}
+                            {" · "}
+                            {date.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
+                          </time>
+                        </div>
+                        {entry.sections.length > 0 && (
+                          <div className="mt-3 flex flex-wrap gap-1.5">
+                            {entry.sections.map((section) => (
+                              <span
+                                key={section}
+                                className="rounded-lg border border-white/10 bg-white/[0.06] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-white/55"
+                              >
+                                {section}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        {entry.sections.length === 0 && (
+                          <p className="mt-2 text-xs text-white/30">No section changes detected</p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ── JSON ── */}
           {activeTab === "json" && (
             <div className="space-y-5">
               <SectionHeading title="JSON export" detail="Use this for backups or larger edits outside the form." />
@@ -528,9 +712,9 @@ export function AdminEditor({ initialContent, saveAction, storageLabel }: AdminE
         <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-sm font-medium text-white">{isDirty ? "Unsaved changes" : "No unsaved changes"}</p>
-            <p className="text-xs text-white/45">The form keeps the site layout intact. Save writes the same schema the homepage reads.</p>
+            <p className="text-xs text-white/45">Save publishes live. Save as draft lets you preview first.</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={resetContent}
@@ -545,6 +729,35 @@ export function AdminEditor({ initialContent, saveAction, storageLabel }: AdminE
         </div>
       </div>
     </form>
+
+    {/* Draft form — separate form so it can share the same serialized content */}
+    <form action={saveDraftAction} className="hidden" id="draft-form">
+      <input type="hidden" name="content" value={serialized} readOnly />
+    </form>
+
+    <div className="fixed inset-x-0 bottom-[72px] z-30 flex justify-center px-5 sm:px-8">
+      <div className="flex items-center gap-2">
+        <button
+          type="submit"
+          form="draft-form"
+          disabled={!isDirty}
+          className="inline-flex h-9 items-center gap-1.5 rounded-2xl border border-white/10 bg-black/60 px-3.5 text-xs text-white/60 backdrop-blur transition hover:border-white/25 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Save as draft
+        </button>
+        {hasDraft && (
+          <a
+            href="/api/draft?action=enable&redirect=/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-9 items-center gap-1.5 rounded-2xl border border-cyan-300/25 bg-cyan-500/10 px-3.5 text-xs text-cyan-300 backdrop-blur transition hover:border-cyan-300/50 hover:text-cyan-100"
+          >
+            Preview draft ↗
+          </a>
+        )}
+      </div>
+    </div>
+    </div>
   );
 }
 
@@ -557,7 +770,7 @@ function SubmitButton() {
       className="inline-flex h-11 items-center gap-2 rounded-2xl bg-white px-5 text-sm font-semibold text-black transition hover:bg-cyan-100 disabled:cursor-wait disabled:opacity-60"
     >
       <Save className="h-4 w-4" />
-      {pending ? "Saving" : "Save content"}
+      {pending ? "Saving…" : "Save content"}
     </button>
   );
 }
@@ -607,6 +820,23 @@ function Group({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
+function Advanced({ children }: { children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03]">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center gap-2 px-4 py-3 text-left text-xs text-white/40 transition hover:text-white/65"
+      >
+        <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
+        Advanced fields
+      </button>
+      {open && <div className="space-y-4 border-t border-white/[0.07] p-4">{children}</div>}
+    </div>
+  );
+}
+
 function ItemFrame({
   title,
   children,
@@ -614,6 +844,7 @@ function ItemFrame({
   total,
   onMove,
   onRemove,
+  onDuplicate,
 }: {
   title: string;
   children: ReactNode;
@@ -621,6 +852,7 @@ function ItemFrame({
   total: number;
   onMove: (direction: -1 | 1) => void;
   onRemove: () => void;
+  onDuplicate?: () => void;
 }) {
   return (
     <section className="rounded-[24px] border border-white/10 bg-white/[0.055] p-5 backdrop-blur-xl">
@@ -636,6 +868,11 @@ function ItemFrame({
           <IconButton label="Move down" disabled={index === total - 1} onClick={() => onMove(1)}>
             <ArrowDown className="h-4 w-4" />
           </IconButton>
+          {onDuplicate && (
+            <IconButton label="Duplicate" onClick={onDuplicate}>
+              <Copy className="h-4 w-4" />
+            </IconButton>
+          )}
           <IconButton label="Remove" danger onClick={onRemove}>
             <Trash2 className="h-4 w-4" />
           </IconButton>
@@ -746,6 +983,74 @@ function LinesField({
         className="w-full resize-y rounded-2xl border border-white/10 bg-black/50 px-3.5 py-3 text-sm leading-6 text-white outline-none transition placeholder:text-white/25 focus:border-cyan-300/60"
       />
     </label>
+  );
+}
+
+function ImageUpload({
+  label,
+  currentUrl,
+  onUpload,
+  accept = "image/*,application/pdf",
+}: {
+  label: string;
+  currentUrl: string;
+  onUpload: (url: string) => void;
+  accept?: string;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError("");
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? "Upload failed");
+      onUpload(json.url);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  return (
+    <div className="space-y-2">
+      <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-white/42">{label}</span>
+      {currentUrl && (
+        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40">
+          {currentUrl.match(/\.(jpg|jpeg|png|webp|gif)$/i) ? (
+            <img src={currentUrl} alt="Uploaded" className="max-h-48 w-full object-contain" />
+          ) : currentUrl.match(/\.pdf$/i) || accept === "application/pdf" ? (
+            <div className="flex items-center gap-2 px-3 py-2.5">
+              <span className="rounded-lg bg-red-500/20 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-red-300">PDF</span>
+              <a href={currentUrl} target="_blank" rel="noopener noreferrer" className="truncate text-xs text-cyan-300/80 underline hover:text-cyan-200">{currentUrl}</a>
+            </div>
+          ) : (
+            <p className="truncate px-3 py-2 text-xs text-cyan-300/80">{currentUrl}</p>
+          )}
+          <button
+            type="button"
+            onClick={() => onUpload("")}
+            className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-xl border border-red-300/20 bg-black/60 text-red-300 backdrop-blur transition hover:bg-red-500/20"
+            title="Remove"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
+      <label className={`flex cursor-pointer items-center gap-2 rounded-2xl border border-white/10 bg-black/50 px-4 py-3 text-sm text-white/65 transition hover:border-cyan-300/40 hover:text-white ${uploading ? "pointer-events-none opacity-60" : ""}`}>
+        {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ImagePlus className="h-4 w-4" />}
+        {uploading ? "Uploading…" : accept === "application/pdf" ? "Upload PDF" : "Upload image"}
+        <input type="file" accept={accept} className="hidden" onChange={handleFile} disabled={uploading} />
+      </label>
+      {error && <p className="text-xs text-red-300">{error}</p>}
+    </div>
   );
 }
 

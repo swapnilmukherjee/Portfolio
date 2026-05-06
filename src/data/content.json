@@ -6,7 +6,7 @@
     "tagline": "Identity, secured.",
     "headline": "I build the identity layer behind modern apps, from CIAM at scale to IAM for AI agents.",
     "shortBio": "Technical Consultant at Okta helping enterprises design and deploy secure CIAM and IAM architectures, including identity patterns for AI agents, OAuth/OIDC, MFA, and Zero Trust access.",
-    "about": "Five years across enterprise identity — from federating 100+ applications onto Okta at a healthcare company with 22,000 workforce identities, to owning production Auth0 ops for Fifth Third Bank’s Newline platform and designing its migration to Ping Identity. Now on the platform side at Okta, I help enterprises design and deploy secure CIAM from the ground up: authentication flows, authorization models, MFA, extensibility, and the emerging identity patterns that AI agents require.",
+    "about": "Five years across enterprise identity \u2014 from federating 100+ applications onto Okta at a healthcare company with 22,000 workforce identities, to owning production Auth0 ops for Fifth Third Bank\u2019s Newline platform and designing its migration to Ping Identity. Now on the platform side at Okta, I help enterprises design and deploy secure CIAM from the ground up: authentication flows, authorization models, MFA, extensibility, and the emerging identity patterns that AI agents require.",
     "location": "Charlotte, North Carolina",
     "email": "swapnilmukherjee.jobs@gmail.com",
     "publicEmail": "swapnilmukherjee.jobs@gmail.com",
@@ -37,7 +37,7 @@
     },
     {
       "label": "Platforms",
-      "value": "Okta · Auth0",
+      "value": "Okta \u00b7 Auth0",
       "detail": "CIAM, workforce IAM, and AI identity"
     }
   ],
@@ -138,8 +138,8 @@
       "company": "Okta",
       "contractInfo": null,
       "logo": "okta",
-      "period": "Feb 2026 – Present",
-      "location": "Charlotte, NC · Remote",
+      "period": "Feb 2026 \u2013 Present",
+      "location": "Charlotte, NC \u00b7 Remote",
       "type": "Full-time",
       "color": "from-blue-500 to-indigo-600",
       "accent": "rgba(59, 130, 246, 0.25)",
@@ -167,8 +167,8 @@
       "company": "Fifth Third Bank",
       "contractInfo": "Contractor via CBTS",
       "logo": "fifth-third",
-      "period": "Jun 2024 – Dec 2025",
-      "location": "Charlotte, NC · Remote",
+      "period": "Jun 2024 \u2013 Dec 2025",
+      "location": "Charlotte, NC \u00b7 Remote",
       "type": "Contract",
       "color": "from-emerald-500 to-teal-600",
       "accent": "rgba(16, 185, 129, 0.25)",
@@ -196,8 +196,8 @@
       "company": "Cardinal Health",
       "contractInfo": "Consultant via TCS",
       "logo": "cardinal",
-      "period": "Jul 2020 – Aug 2022",
-      "location": "Kolkata, India · Remote",
+      "period": "Jul 2020 \u2013 Aug 2022",
+      "location": "Kolkata, India \u00b7 Remote",
       "type": "Consultant",
       "color": "from-rose-500 to-red-600",
       "accent": "rgba(244, 63, 94, 0.25)",
@@ -225,7 +225,7 @@
       "company": "Nokia Networks",
       "contractInfo": null,
       "logo": "nokia",
-      "period": "Jan 2019 – Feb 2019",
+      "period": "Jan 2019 \u2013 Feb 2019",
       "location": "New Delhi, India",
       "type": "Internship",
       "color": "from-sky-500 to-blue-600",
@@ -248,7 +248,7 @@
       "id": "clemson",
       "school": "Clemson University",
       "degree": "M.S. Computer Science",
-      "period": "Aug 2022 – May 2024",
+      "period": "Aug 2022 \u2013 May 2024",
       "location": "Clemson, SC",
       "accent": "rgba(245, 102, 0, 0.25)"
     },
@@ -256,7 +256,7 @@
       "id": "iem",
       "school": "Institute of Engineering and Management",
       "degree": "B.Tech. Computer Science and Engineering",
-      "period": "Apr 2016 – Jul 2020",
+      "period": "Apr 2016 \u2013 Jul 2020",
       "location": "Kolkata, India",
       "accent": "rgba(0, 86, 179, 0.25)"
     }
@@ -270,7 +270,7 @@
     },
     {
       "name": "CISSP, Certified Information Systems Security Professional",
-      "issuer": "(ISC)²",
+      "issuer": "(ISC)\u00b2",
       "status": "in-progress",
       "expected": "Q3 2026"
     },
@@ -500,5 +500,37 @@
         "ML"
       ]
     }
-  ]
+  ],
+  "siteCopy": {
+    "heroStatus": "Okta \u00b7 Identity & CIAM",
+    "aboutHeading": "The identity layer\nbehind",
+    "aboutHeadingBold": "modern apps.",
+    "aboutSubheading": "Five years operating customer and workforce identity at scale. Now on the platform side at Okta, including the new patterns AI agents demand.",
+    "aboutStats": [
+      {
+        "key": "Now",
+        "value": "Technical Consultant",
+        "sub": "Okta \u00b7 Auth0"
+      },
+      {
+        "key": "Specialty",
+        "value": "Auth0 & CIAM",
+        "sub": "OAuth \u00b7 OIDC \u00b7 SAML"
+      },
+      {
+        "key": "Frontier",
+        "value": "Auth0 for AI Agents",
+        "sub": "Identity for agentic workflows"
+      }
+    ],
+    "experienceHeading": "Five years,",
+    "experienceHeadingBold": "three chapters.",
+    "experienceSubheading": "Healthcare IAM, CIAM in financial services, and now Auth0 platform consulting at Okta.",
+    "projectsHeading": "Selected",
+    "projectsHeadingBold": "work.",
+    "projectsSubheading": "A mix of identity, security research, and full-stack engineering, built across grad school and personal time.",
+    "skillsHeading": "What I",
+    "skillsHeadingBold": "reach for.",
+    "skillsSubheading": "The protocols, platforms, and tools I use day-to-day."
+  }
 }

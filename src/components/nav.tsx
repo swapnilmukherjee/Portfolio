@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Download, Menu, X } from "lucide-react";
+import { Download, FileText, Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { ThemeToggle } from "./theme-toggle";
@@ -61,16 +61,13 @@ export function Nav({ resumeHref }: { resumeHref: string }) {
         </Link>
 
         <div className="pointer-events-auto flex items-center gap-2">
-          <a
-            href={resumeHref}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/resume"
             className="glass inline-flex min-h-10 items-center gap-2 rounded-full px-3 py-[9px] text-[13px] font-medium text-text/92 transition hover:bg-white/[0.07] sm:px-4"
           >
-            <Download className="h-3.5 w-3.5" />
+            <FileText className="h-3.5 w-3.5" />
             <span>Résumé</span>
-            <span className="hidden min-[390px]:inline">· PDF</span>
-          </a>
+          </Link>
           <ThemeToggle />
           <button
             type="button"
@@ -176,15 +173,13 @@ export function Nav({ resumeHref }: { resumeHref: string }) {
                   </li>
                 ))}
               </ul>
-              <a
-                href={resumeHref}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/resume"
                 className="btn-primary mt-4 w-full justify-center"
                 onClick={() => setOpen(false)}
               >
-                <Download className="h-4 w-4" /> Résumé · PDF
-              </a>
+                <FileText className="h-4 w-4" /> View Résumé
+              </Link>
             </motion.div>
           </motion.div>
         )}
