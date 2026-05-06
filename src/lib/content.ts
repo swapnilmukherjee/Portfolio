@@ -15,7 +15,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import { draftMode } from "next/headers";
 
 import type { Content } from "@/data/content-types";
-import { normalizeContent } from "@/lib/admin-content";
+import { normalizeContent } from "@/lib/normalize-content";
 
 const REVALIDATE_SECONDS = 0;
 
