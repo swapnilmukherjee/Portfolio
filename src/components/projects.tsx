@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef, useMemo, useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Github, ExternalLink, ArrowUpRight } from "lucide-react";
 
@@ -131,12 +132,16 @@ export function Projects({ projects, siteCopy }: { projects: Project[]; siteCopy
         </div>
       </div>
 
-      {/* Project Detail Modal */}
-      <AnimatePresence>
-        {modalProject && (
-          <ProjectModal project={modalProject} onClose={() => setModalProject(null)} />
+      {/* Project Detail Modal — rendered via portal to escape filter/transform stacking contexts */}
+      {typeof window !== "undefined" &&
+        createPortal(
+          <AnimatePresence>
+            {modalProject && (
+              <ProjectModal project={modalProject} onClose={() => setModalProject(null)} />
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </section>
   );
 }
@@ -222,88 +227,82 @@ const Card = forwardRef<HTMLElement, { project: Project; index: number; onMore: 
 
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
   return (
-    <>
-      {/* Backdrop */}
-      <motion.div
-        key="modal-backdrop"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.25 }}
-        className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm"
-        onClick={onClose}
-      />
-
+    /* Backdrop — theme-aware overlay */
+    <motion.div
+      key="modal-backdrop"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+      className="fixed inset-0 z-[200] flex items-end justify-center sm:items-center sm:p-6 md:p-10"
+      style={{ background: "rgb(var(--bg) / 0.75)", backdropFilter: "blur(6px)" }}
+      onClick={onClose}
+    >
       {/* Panel */}
       <motion.div
         key="modal-panel"
-        initial={{ opacity: 0, y: 40, scale: 0.97 }}
+        initial={{ opacity: 0, y: 32, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 24, scale: 0.97 }}
+        exit={{ opacity: 0, y: 20, scale: 0.97 }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed inset-x-4 bottom-0 top-[5vh] z-[101] mx-auto flex max-w-[680px] flex-col overflow-hidden rounded-t-[28px] sm:inset-x-6 sm:top-[8vh] sm:rounded-[28px] md:inset-x-auto md:left-1/2 md:right-auto md:w-full md:-translate-x-1/2"
+        onClick={(e) => e.stopPropagation()}
+        className="relative flex w-full max-w-[680px] max-h-[92dvh] flex-col overflow-hidden rounded-t-[28px] sm:rounded-[28px] bg-surface"
         style={{
-          background:
-            "linear-gradient(160deg, rgba(18,18,22,0.98) 0%, rgba(12,12,16,0.99) 100%)",
-          border: "1px solid rgba(255,255,255,0.09)",
-          boxShadow: "0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset",
+          border: "1px solid rgb(var(--line) / 0.12)",
+          boxShadow: "0 24px 64px rgb(var(--bg) / 0.5), 0 0 0 1px rgb(var(--line) / 0.06) inset",
         }}
       >
-        {/* Gradient accent top strip */}
+        {/* Gradient accent strip */}
         <div
           className="absolute inset-x-0 top-0 h-[2px] rounded-t-[28px]"
-          style={{
-            background:
-              "linear-gradient(90deg, rgb(var(--grad-1) / 0.7), rgb(var(--grad-2) / 0.7), rgb(var(--grad-3, var(--grad-1)) / 0.7))",
-          }}
+          style={{ background: "linear-gradient(90deg, rgb(var(--grad-1) / 0.8), rgb(var(--grad-2) / 0.8))" }}
         />
 
-        {/* Ambient glow */}
+        {/* Ambient glow — subtle in both themes */}
         <div
-          className="pointer-events-none absolute -top-24 left-1/2 h-48 w-64 -translate-x-1/2 rounded-full opacity-20 blur-3xl"
-          style={{
-            background: "linear-gradient(135deg, rgb(var(--grad-1)), rgb(var(--grad-2)))",
-          }}
+          className="pointer-events-none absolute -top-20 left-1/2 h-40 w-56 -translate-x-1/2 rounded-full blur-3xl"
+          style={{ background: "linear-gradient(135deg, rgb(var(--grad-1) / 0.12), rgb(var(--grad-2) / 0.12))" }}
         />
 
-        {/* Scrollable content */}
-        <div className="relative flex flex-1 flex-col overflow-y-auto px-7 pb-10 pt-8 sm:px-10 sm:pb-12 sm:pt-10">
-          {/* Header row */}
-          <div className="mb-8 flex items-start justify-between gap-4">
-            <div className="flex-1">
+        {/* Drag handle (mobile hint) */}
+        <div className="mx-auto mt-3 h-1 w-10 rounded-full bg-text/10 sm:hidden" />
+
+        {/* Scrollable body */}
+        <div className="relative flex flex-1 flex-col overflow-y-auto px-6 pb-8 pt-6 sm:px-10 sm:pb-12 sm:pt-10">
+          {/* Header */}
+          <div className="mb-6 flex items-start justify-between gap-4 sm:mb-8">
+            <div className="flex-1 min-w-0">
               <span
-                className="mb-3 block font-mono text-[10px] uppercase tracking-[0.22em]"
+                className="mb-2 block font-mono text-[10px] uppercase tracking-[0.22em] sm:mb-3"
                 style={{ color: "rgb(var(--grad-2))" }}
               >
                 {project.category} · {project.date}
               </span>
-              <h2 className="text-[28px] font-light leading-[1.07] tracking-tight text-text-strong sm:text-[36px]">
+              <h2 className="text-[24px] font-light leading-[1.08] tracking-tight text-text-strong sm:text-[32px] md:text-[36px]">
                 {project.title}
               </h2>
             </div>
-
             <button
               type="button"
               onClick={onClose}
-              className="group flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.05] text-text/50 transition hover:border-white/20 hover:bg-white/[0.09] hover:text-text"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-text/40 transition hover:bg-text/[0.07] hover:text-text"
+              style={{ border: "1px solid rgb(var(--line) / 0.12)" }}
               aria-label="Close"
             >
-              <X className="h-4 w-4" />
+              <X className="h-[15px] w-[15px]" />
             </button>
           </div>
 
           {/* Description */}
           {project.description && (
-            <div className="mb-8">
-              <p className="text-[15px] leading-[1.7] text-text/70 sm:text-[16px]">
-                {project.description}
-              </p>
-            </div>
+            <p className="mb-7 text-[14px] leading-[1.75] text-text/65 sm:mb-8 sm:text-[15px] md:text-[16px]">
+              {project.description}
+            </p>
           )}
 
           {/* Tags */}
           {project.tags.length > 0 && (
-            <div className="mb-8">
+            <div className="mb-7 sm:mb-8">
               <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.18em] text-text/35">
                 Tech Stack
               </p>
@@ -311,7 +310,11 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-white/[0.1] bg-white/[0.05] px-3 py-1.5 font-mono text-[11px] text-text/65"
+                    className="rounded-full px-3 py-1.5 font-mono text-[11px] text-text/60"
+                    style={{
+                      background: "rgb(var(--text) / 0.05)",
+                      border: "1px solid rgb(var(--line) / 0.1)",
+                    }}
                   >
                     {tag}
                   </span>
@@ -322,42 +325,45 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
 
           {/* Links */}
           {(project.github || project.website) && (
-            <div className="mt-auto pt-2">
-              <div className="flex flex-wrap gap-3">
-                {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group/link inline-flex items-center gap-2 rounded-2xl border border-white/[0.12] bg-white/[0.06] px-5 py-3 text-[13px] font-medium text-text/70 transition hover:border-white/22 hover:bg-white/[0.1] hover:text-text"
-                  >
-                    <Github className="h-4 w-4" />
-                    View on GitHub
-                    <ArrowUpRight className="h-3.5 w-3.5 opacity-40 transition-all group-hover/link:opacity-100 group-hover/link:translate-x-px group-hover/link:-translate-y-px" />
-                  </a>
-                )}
-                {project.website && (
-                  <a
-                    href={project.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group/link inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-[13px] font-medium text-text-strong transition"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, rgb(var(--grad-1) / 0.22), rgb(var(--grad-2) / 0.22))",
-                      border: "1px solid rgb(var(--grad-1) / 0.3)",
-                    }}
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                    Live Site
-                    <ArrowUpRight className="h-3.5 w-3.5 opacity-50 transition-all group-hover/link:opacity-100 group-hover/link:translate-x-px group-hover/link:-translate-y-px" />
-                  </a>
-                )}
-              </div>
+            <div className="mt-auto flex flex-wrap gap-3 border-t pt-6 sm:pt-7"
+              style={{ borderColor: "rgb(var(--line) / 0.08)" }}
+            >
+              {project.github && (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/link inline-flex flex-1 items-center justify-center gap-2 rounded-2xl px-5 py-3 text-[13px] font-medium text-text/70 transition hover:text-text sm:flex-none"
+                  style={{
+                    background: "rgb(var(--text) / 0.05)",
+                    border: "1px solid rgb(var(--line) / 0.1)",
+                  }}
+                >
+                  <Github className="h-4 w-4 shrink-0" />
+                  View on GitHub
+                  <ArrowUpRight className="h-3.5 w-3.5 shrink-0 opacity-40 transition-all group-hover/link:opacity-100 group-hover/link:translate-x-px group-hover/link:-translate-y-px" />
+                </a>
+              )}
+              {project.website && (
+                <a
+                  href={project.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/link inline-flex flex-1 items-center justify-center gap-2 rounded-2xl px-5 py-3 text-[13px] font-medium text-text-strong transition sm:flex-none"
+                  style={{
+                    background: "linear-gradient(135deg, rgb(var(--grad-1) / 0.18), rgb(var(--grad-2) / 0.18))",
+                    border: "1px solid rgb(var(--grad-1) / 0.28)",
+                  }}
+                >
+                  <ExternalLink className="h-4 w-4 shrink-0" />
+                  Live Site
+                  <ArrowUpRight className="h-3.5 w-3.5 shrink-0 opacity-50 transition-all group-hover/link:opacity-100 group-hover/link:translate-x-px group-hover/link:-translate-y-px" />
+                </a>
+              )}
             </div>
           )}
         </div>
       </motion.div>
-    </>
+    </motion.div>
   );
 }
