@@ -158,6 +158,8 @@ function normalizeProject(value: unknown, fallback?: Project): Project {
     tags: stringArray(input.tags),
   };
   if (input.imageUrl) project.imageUrl = stringValue(input.imageUrl, "");
+  if (input.github) project.github = stringValue(input.github, "");
+  if (input.website) project.website = stringValue(input.website, "");
   return project;
 }
 
