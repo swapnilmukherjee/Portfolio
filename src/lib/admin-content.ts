@@ -85,21 +85,26 @@ export function isAdminAuthenticated() {
 }
 
 async function ensureContentTable(client: import("pg").Client) {
+  // Run each DDL statement separately — pg does not reliably handle multi-statement queries.
   await client.query(`
     CREATE TABLE IF NOT EXISTS portfolio_content (
       key         TEXT PRIMARY KEY,
       data        JSONB NOT NULL,
       updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    );
+    )
+  `);
+  await client.query(`
     CREATE TABLE IF NOT EXISTS portfolio_changelog (
       id            SERIAL PRIMARY KEY,
       saved_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       save_type     TEXT NOT NULL DEFAULT 'live',
       sections      TEXT[] NOT NULL DEFAULT '{}',
       note          TEXT
-    );
-    ALTER TABLE portfolio_changelog ADD COLUMN IF NOT EXISTS diff JSONB;
+    )
   `);
+  await client.query(
+    `ALTER TABLE portfolio_changelog ADD COLUMN IF NOT EXISTS diff JSONB`
+  );
 }
 
 // ── Field-level diff engine ────────────────────────────────────────────────
