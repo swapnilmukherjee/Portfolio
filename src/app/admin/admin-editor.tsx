@@ -623,56 +623,46 @@ export function AdminEditor({ initialContent, saveAction, saveDraftAction, stora
           {/* ── Changelog ── */}
           {activeTab === "changelog" && (
             <div className="space-y-5">
-              <SectionHeading title="Changelog" detail="A log of every save — what sections changed and when. Recorded automatically whenever you save live or as a draft." />
+              <SectionHeading title="Changelog" detail="Every time you hit Save or Save as draft, an entry is recorded here." />
               {changelog.length === 0 ? (
                 <div className="rounded-[24px] border border-white/10 bg-white/[0.055] p-8 text-center backdrop-blur-xl">
                   <Clock className="mx-auto mb-3 h-8 w-8 text-white/20" />
-                  <p className="text-sm text-white/45">No saves recorded yet. Changes are logged here after your first save.</p>
+                  <p className="text-sm text-white/45">No saves yet. Your first save will appear here.</p>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="rounded-[24px] border border-white/10 bg-white/[0.055] backdrop-blur-xl divide-y divide-white/[0.06]">
                   {changelog.map((entry) => {
                     const date = new Date(entry.saved_at);
                     const isLive = entry.save_type === "live";
+                    const now = Date.now();
+                    const diff = now - date.getTime();
+                    const relTime = diff < 60_000
+                      ? "just now"
+                      : diff < 3_600_000
+                      ? `${Math.floor(diff / 60_000)}m ago`
+                      : diff < 86_400_000
+                      ? `${Math.floor(diff / 3_600_000)}h ago`
+                      : diff < 604_800_000
+                      ? `${Math.floor(diff / 86_400_000)}d ago`
+                      : date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
                     return (
-                      <div key={entry.id} className="rounded-[20px] border border-white/10 bg-white/[0.055] p-4 backdrop-blur-xl">
-                        <div className="flex flex-wrap items-start justify-between gap-2">
-                          <div className="flex items-center gap-2">
-                            <span
-                              className={`inline-flex items-center rounded-lg px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest ${
-                                isLive
-                                  ? "bg-emerald-500/15 text-emerald-300"
-                                  : "bg-amber-500/15 text-amber-300"
-                              }`}
-                            >
-                              {isLive ? "Live" : "Draft"}
-                            </span>
-                            {entry.note && (
-                              <span className="text-xs text-white/45">{entry.note}</span>
-                            )}
-                          </div>
-                          <time dateTime={date.toISOString()} className="flex items-center gap-1.5 text-xs text-white/35" title={date.toLocaleString()}>
-                            <Clock className="h-3 w-3" />
-                            {date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}
-                            {" · "}
-                            {date.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
-                          </time>
+                      <div key={entry.id} className="flex items-center justify-between gap-4 px-5 py-3.5">
+                        <div className="flex items-center gap-3">
+                          <span className={`inline-flex h-2 w-2 rounded-full ${isLive ? "bg-emerald-400" : "bg-amber-400"}`} />
+                          <span className="text-sm text-white/80">
+                            {isLive ? "Published live" : "Saved as draft"}
+                          </span>
+                          {entry.note && (
+                            <span className="text-xs text-white/35">— {entry.note}</span>
+                          )}
                         </div>
-                        {entry.sections.length > 0 && (
-                          <div className="mt-3 flex flex-wrap gap-1.5">
-                            {entry.sections.map((section) => (
-                              <span
-                                key={section}
-                                className="rounded-lg border border-white/10 bg-white/[0.06] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-white/55"
-                              >
-                                {section}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                        {entry.sections.length === 0 && (
-                          <p className="mt-2 text-xs text-white/30">No section changes detected</p>
-                        )}
+                        <time
+                          dateTime={date.toISOString()}
+                          title={date.toLocaleString()}
+                          className="shrink-0 text-xs text-white/35"
+                        >
+                          {relTime}
+                        </time>
                       </div>
                     );
                   })}
@@ -724,6 +714,32 @@ export function AdminEditor({ initialContent, saveAction, saveDraftAction, stora
               <RotateCcw className="h-4 w-4" />
               Reset
             </button>
+
+            {/* Divider */}
+            <div className="h-6 w-px bg-white/10" />
+
+            {/* Save as draft */}
+            <button
+              type="submit"
+              form="draft-form"
+              disabled={!isDirty}
+              className="inline-flex h-11 items-center gap-2 rounded-2xl border border-amber-300/30 bg-amber-500/10 px-4 text-sm text-amber-300 transition hover:border-amber-300/55 hover:bg-amber-500/20 hover:text-amber-100 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Save as draft
+            </button>
+
+            {/* Preview draft — only visible when a draft exists */}
+            {hasDraft && (
+              <a
+                href="/api/draft?action=enable&redirect=/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-11 items-center gap-2 rounded-2xl border border-cyan-300/30 bg-cyan-500/10 px-4 text-sm text-cyan-300 transition hover:border-cyan-300/55 hover:bg-cyan-500/20 hover:text-cyan-100"
+              >
+                Preview draft ↗
+              </a>
+            )}
+
             <SubmitButton />
           </div>
         </div>
@@ -734,29 +750,6 @@ export function AdminEditor({ initialContent, saveAction, saveDraftAction, stora
     <form action={saveDraftAction} className="hidden" id="draft-form">
       <input type="hidden" name="content" value={serialized} readOnly />
     </form>
-
-    <div className="fixed inset-x-0 bottom-[72px] z-30 flex justify-center px-5 sm:px-8">
-      <div className="flex items-center gap-2">
-        <button
-          type="submit"
-          form="draft-form"
-          disabled={!isDirty}
-          className="inline-flex h-9 items-center gap-1.5 rounded-2xl border border-white/10 bg-black/60 px-3.5 text-xs text-white/60 backdrop-blur transition hover:border-white/25 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          Save as draft
-        </button>
-        {hasDraft && (
-          <a
-            href="/api/draft?action=enable&redirect=/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex h-9 items-center gap-1.5 rounded-2xl border border-cyan-300/25 bg-cyan-500/10 px-3.5 text-xs text-cyan-300 backdrop-blur transition hover:border-cyan-300/50 hover:text-cyan-100"
-          >
-            Preview draft ↗
-          </a>
-        )}
-      </div>
-    </div>
     </div>
   );
 }
