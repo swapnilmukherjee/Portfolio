@@ -171,7 +171,7 @@ export function normalizeAboutStat(value: unknown, fallback?: AboutStat): AboutS
 }
 
 export const FALLBACK_SITE_COPY: SiteCopy =
-  (FALLBACK_CONTENT as unknown as { siteCopy?: SiteCopy }).siteCopy ?? {
+  FALLBACK_CONTENT.siteCopy ?? {
     heroStatus: "Okta · Identity & CIAM",
     aboutHeading: "The identity layer\nbehind",
     aboutHeadingBold: "modern apps.",
