@@ -23,7 +23,7 @@ const jetbrains = JetBrains_Mono({
 export async function generateMetadata(): Promise<Metadata> {
   const { profile } = await getContent();
   return {
-    metadataBase: new URL("https://swapnilmukherjee.dev"),
+    metadataBase: new URL("https://swapnilmukherjee.vercel.app"),
     title: {
       default: `${profile.name}, ${profile.title}`,
       template: `%s · ${profile.name}`,

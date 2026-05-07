@@ -22,6 +22,7 @@ export type Profile = {
     email: string;
   };
   resume: string;
+  headshotUrl?: string;
 };
 
 export type Highlight = {
@@ -79,6 +80,32 @@ export type Project = {
   summary: string;
   description: string;
   tags: string[];
+  imageUrl?: string;
+  github?: string;
+  website?: string;
+};
+
+export type AboutStat = {
+  key: string;
+  value: string;
+  sub: string;
+};
+
+export type SiteCopy = {
+  heroStatus: string;
+  aboutHeading: string;
+  aboutHeadingBold: string;
+  aboutSubheading: string;
+  aboutStats: AboutStat[];
+  experienceHeading: string;
+  experienceHeadingBold: string;
+  experienceSubheading: string;
+  projectsHeading: string;
+  projectsHeadingBold: string;
+  projectsSubheading: string;
+  skillsHeading: string;
+  skillsHeadingBold: string;
+  skillsSubheading: string;
 };
 
 export type Content = {
@@ -89,4 +116,5 @@ export type Content = {
   education: Education[];
   certifications: Certification[];
   projects: Project[];
+  siteCopy: SiteCopy;
 };

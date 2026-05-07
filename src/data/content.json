@@ -324,7 +324,7 @@
       "icon": "map-pin",
       "color": "from-cyan-500 to-blue-600",
       "summary": "Smart carpooling platform with route-matching algorithms and full-stack user management.",
-      "description": "End-to-end platform that matches travelers with overlapping itineraries to cut cost and emissions. Built user registration, trip-matching, and a CMS-backed admin layer; layered in market-research-driven personas and a CI/CD pipeline for smooth deploys.",
+      "description": "TripShare tackles the last-mile coordination problem in carpooling by matching travelers with overlapping itineraries in real time. The platform was built end-to-end: a route-matching algorithm compares origin–destination pairs and time windows to surface compatible rides, while a full user-management layer handles registration, profiles, and trip history. A CMS-backed admin interface lets operators monitor active trips and flag disputes, and a CI/CD pipeline on GitHub Actions keeps deployments smooth across environments. Market-research-driven personas shaped the UX, ensuring the interface works for both frequent commuters and occasional ride-sharers.",
       "tags": [
         "JavaScript",
         "Python",
@@ -340,7 +340,7 @@
       "icon": "bug",
       "color": "from-purple-500 to-pink-600",
       "summary": "Advanced fuzzing framework that surfaces blind spots in firmware specifications and legacy systems.",
-      "description": "Evolved the SAFIREFUZZ framework into a fuzzer that fuses specification, code, and test-suite signals to expose SPEC blind spots in firmware. Resolved core bugs and added legacy-system integrations.",
+      "description": "FAST Firmware Fuzzer extends SAFIREFUZZ, an academic mutation-based fuzzer, into a production-grade tool capable of surfacing specification blind spots that neither static analysis nor unit tests catch. It fuses three signal types — the device's formal specification, the compiled firmware binary, and its existing test suite — to intelligently mutate inputs and maximize code-path coverage in embedded targets. The framework resolves several upstream bugs that caused false negatives on edge-case inputs and adds integration shims for legacy systems that predate modern fuzzing harness conventions. Evaluation results were measured against a corpus of known firmware CVEs to validate detection recall.",
       "tags": [
         "Fuzzing",
         "Python",
@@ -356,7 +356,7 @@
       "icon": "pizza",
       "color": "from-red-500 to-orange-600",
       "summary": "Java + SQL backend simulating store operations, inventory, and order processing.",
-      "description": "OO-designed Java framework with a structured SQL schema for a simulated pizza chain, modular, scalable, and capable of handling multiple order types and inventory flows.",
+      "description": "Pizzeria Manager is a full object-oriented simulation of a multi-location pizza chain's back-office operations, designed to stress-test data-modeling decisions at moderate scale. The Java codebase is organized around domain entities — orders, inventory SKUs, toppings, and staff shifts — each mapped to a normalized SQL schema with referential integrity enforced at the database layer. Multiple order types (dine-in, takeout, delivery) flow through a shared processing pipeline, and inventory levels are decremented transactionally to prevent oversell. The project served as a practical exercise in layered architecture, separating persistence, business logic, and presentation into independent, testable modules.",
       "tags": [
         "Java",
         "SQL",
@@ -371,7 +371,7 @@
       "icon": "lock",
       "color": "from-rose-500 to-red-600",
       "summary": "Executed the DROWN attack against SSLv2 servers to recover keys and demonstrate protocol risk.",
-      "description": "Performed a full DROWN (Decrypting RSA with Obsolete and Weakened eNcryption) assessment: brute-forced SSLv2 to recover the server's private key, then implemented mitigation strategies.",
+      "description": "DROWN (Decrypting RSA with Obsolete and Weakened eNcryption) is a cross-protocol attack that exploits SSLv2's weak export-grade cipher suites to decrypt modern TLS sessions sharing the same RSA key pair. This project executed a full proof-of-concept assessment against a controlled SSLv2 server: leveraging the Bleichenbacher oracle to iteratively refine candidate plaintexts until the server's RSA private key material was recoverable. The implementation reproduced the 2016 disclosure methodology and quantified the number of oracle queries required under realistic network conditions. Mitigation steps — disabling SSLv2 globally, rotating affected key pairs, and enforcing separate key material per protocol — were documented and verified against a patched server configuration.",
       "tags": [
         "Cryptography",
         "RSA",
@@ -387,7 +387,7 @@
       "icon": "rocket",
       "color": "from-violet-500 to-fuchsia-600",
       "summary": "Flask + HTML5 web game that wires multiple external APIs into a celestial Hangman.",
-      "description": "Reimagined Hangman with a space theme. Flask backend, HTML5/CSS frontend, and several external APIs woven in to keep gameplay dynamic.",
+      "description": "Space Hangman reimagines the classic word game inside a NASA-themed universe, where every session pulls live data from external APIs to keep gameplay fresh. The Flask backend orchestrates calls to a celestial-object API for themed vocabulary, a space-image API for atmospheric visuals, and a hint API that surfaces fun astronomical facts mid-game. The HTML5/CSS frontend renders a responsive game board with progressive reveal animations for each incorrect guess, replacing the traditional gallows with a spacecraft-damage sequence. Session state is managed server-side so players can resume interrupted games, and a leaderboard persists top scores across sessions.",
       "tags": [
         "Python",
         "Flask",
@@ -403,7 +403,7 @@
       "icon": "activity",
       "color": "from-emerald-500 to-teal-600",
       "summary": "Python CLI for real-time tracking of CPU, memory, and network metrics with anomaly alerts.",
-      "description": "Built around psutil for collection and matplotlib for live visualization, the tool surfaces CPU load, memory pressure, and network activity, with alerting for anomalous behavior.",
+      "description": "This Python CLI tool provides a real-time dashboard for system health, surfacing CPU utilization, per-core load distribution, memory pressure, swap usage, and interface-level network throughput in a single terminal view. Built on psutil for cross-platform metric collection and matplotlib for live chart rendering, it samples at a configurable interval and maintains a rolling window of historical readings. A rule-based alerting layer compares each sample against configurable thresholds and emits color-coded warnings when CPU load, memory usage, or packet error rates exceed acceptable bounds. The tool was designed to run headlessly on servers, outputting structured logs alongside the interactive display for post-hoc analysis.",
       "tags": [
         "Python",
         "psutil",
@@ -418,7 +418,7 @@
       "icon": "mic",
       "color": "from-teal-500 to-emerald-600",
       "summary": "Voice-driven EMR interface using Amazon Alexa to automate clinical data entry.",
-      "description": "An Alexa-powered voice UI for Electronic Medical Records that automates data entry and updates so clinicians can interact with EMRs via voice, streamlining workflows and reducing administrative burden.",
+      "description": "VoiceRx addresses one of clinical computing's persistent pain points — manual data entry — by wiring Amazon Alexa into an Electronic Medical Records workflow. Clinicians dictate structured commands (\"Record patient weight: 82 kilograms\", \"Flag allergy: penicillin\") and the Alexa skill parses intent via a custom NLU model before writing the structured payload to the EMR via a REST API. The backend validates inputs against the patient's active record, prevents duplicate entries, and returns a spoken confirmation so the clinician can continue without breaking sterile field or eye contact with the patient. The system was prototyped against a sandbox EMR environment and evaluated for latency and recognition accuracy across medical terminology.",
       "tags": [
         "Alexa API",
         "HCI",
@@ -433,7 +433,7 @@
       "icon": "heart",
       "color": "from-lime-500 to-green-600",
       "summary": "Wellness app providing personalized daily caloric targets via REST APIs.",
-      "description": "Python + REST application that recommends daily caloric intake based on a user's weight management goals, backed by research-grounded heuristics and OAuth-secured endpoints.",
+      "description": "HealthFit takes a user's current weight, target weight, activity level, and timeline and translates those inputs into a personalized daily caloric target backed by the Mifflin–St Jeor equation and activity multipliers grounded in published nutritional research. The Python backend exposes a clean REST API secured with OAuth 2.0, allowing third-party fitness apps to query recommendations on behalf of authenticated users. Input validation enforces clinically sensible bounds — rejecting deficit targets that fall below safe thresholds — and the response payload includes a breakdown of recommended macronutrient ratios alongside the total caloric figure. The project was designed to be extensible: adding a new goal type (muscle gain, maintenance) requires only a new calculation strategy, leaving the API contract unchanged.",
       "tags": [
         "Python",
         "REST",
@@ -448,7 +448,7 @@
       "icon": "twitter",
       "color": "from-sky-500 to-blue-600",
       "summary": "NLP sentiment engine using RNNs to extract emotional structure from tweets.",
-      "description": "End-to-end NLP pipeline: text preprocessing, embeddings, and recurrent neural networks to surface emotional structure from tweet streams.",
+      "description": "TweetFeel is an end-to-end NLP sentiment-analysis system built to extract nuanced emotional structure from short, noisy social-media text. The pipeline begins with a custom preprocessing stage that strips URLs, normalizes slang, and handles emoji transliteration before feeding cleaned text into learned word embeddings. A bidirectional RNN (GRU variant) then captures long-range dependencies across the token sequence, outputting a probability distribution across six emotional categories — joy, sadness, anger, fear, surprise, and neutral — rather than the coarser positive/negative binary common in simpler models. The model was trained and evaluated on a labeled tweet corpus, with attention-weight visualization added to surface which tokens drove each classification.",
       "tags": [
         "Python",
         "NLP",
@@ -463,7 +463,7 @@
       "icon": "palette",
       "color": "from-pink-500 to-rose-600",
       "summary": "Deep-learning app that fuses content and style images for art and therapeutic use.",
-      "description": "Implemented neural style transfer in Python, combining a content image with the style of a reference image via deep networks and optimization, with explorations into therapeutic applications.",
+      "description": "This project implements Gatys et al.'s neural style transfer algorithm from scratch in Python, using a pre-trained VGG-19 network as the feature extractor for both content and style representations. Content loss is computed from a deep convolutional layer to preserve high-level structure, while style loss is derived from Gram matrices across multiple shallower layers to capture texture and color palette without imposing spatial structure. An L-BFGS optimizer iteratively updates a noise-initialized canvas until it minimizes the weighted sum of both losses, converging on an image that reads as the content scene rendered in the chosen artistic style. The project explored therapeutic applications — pairing patients' personal photographs with calming artistic styles as a non-pharmacological anxiety-reduction tool.",
       "tags": [
         "Python",
         "Deep Learning",
@@ -478,7 +478,7 @@
       "icon": "cpu",
       "color": "from-amber-500 to-orange-600",
       "summary": "Java-based NodeMCU firmware enabling remote control of traditional appliances.",
-      "description": "NodeMCU + Java firmware that brings legacy appliances onto the network at low cost, a take on accessible smart-home retrofitting.",
+      "description": "This project retrofits traditional household appliances with network connectivity using NodeMCU (ESP8266) microcontrollers flashed with custom Java-compatible firmware, bridging the gap between legacy hardware and modern smart-home ecosystems at minimal cost. Each NodeMCU unit connects to the home Wi-Fi network and registers with a lightweight MQTT broker, exposing appliance state (on/off, schedule, power reading) as subscribable topics. A Java control application on the local network subscribes to device topics and publishes command messages, allowing remote toggling, schedule programming, and state monitoring from any device on the LAN. The system was designed with non-technical users in mind: appliances appear as named entities in the control UI rather than raw MQTT topics, and a simple physical button always retains manual override.",
       "tags": [
         "IoT",
         "Java",
@@ -493,12 +493,44 @@
       "icon": "credit-card",
       "color": "from-blue-500 to-indigo-600",
       "summary": "ML pipeline using K-Nearest Neighbour tuned for highly imbalanced credit-transaction data.",
-      "description": "Built a KNN-based fraud detector with custom feature engineering, hyperparameter tuning, and tailored distance metrics. Evaluated with precision-recall curves and confusion matrices to maximize recall.",
+      "description": "This credit-card fraud detector addresses the fundamental challenge of extreme class imbalance — fraudulent transactions typically represent less than 0.2% of real-world datasets — by combining careful feature engineering with a tuned K-Nearest Neighbours classifier optimized for recall over accuracy. Custom distance metrics weight transaction velocity, geographic anomalies, and merchant category codes more heavily than raw amounts, reflecting domain knowledge about how fraudsters operate. SMOTE oversampling is applied to the minority class during training to prevent the model from defaulting to the majority class, and hyperparameter search explores K values, distance functions, and weighting schemes across cross-validation folds. Final evaluation uses precision-recall curves and F2 score (which penalizes missed fraud more than false alarms) rather than standard accuracy, better reflecting the asymmetric cost of each error type.",
       "tags": [
         "Python",
         "KNN",
         "ML"
       ]
     }
-  ]
+  ],
+  "siteCopy": {
+    "heroStatus": "Okta · Identity & CIAM",
+    "aboutHeading": "The identity layer\nbehind",
+    "aboutHeadingBold": "modern apps.",
+    "aboutSubheading": "Five years operating customer and workforce identity at scale. Now on the platform side at Okta, including the new patterns AI agents demand.",
+    "aboutStats": [
+      {
+        "key": "Now",
+        "value": "Technical Consultant",
+        "sub": "Okta · Auth0"
+      },
+      {
+        "key": "Specialty",
+        "value": "Auth0 & CIAM",
+        "sub": "OAuth · OIDC · SAML"
+      },
+      {
+        "key": "Frontier",
+        "value": "Auth0 for AI Agents",
+        "sub": "Identity for agentic workflows"
+      }
+    ],
+    "experienceHeading": "Five years,",
+    "experienceHeadingBold": "three chapters.",
+    "experienceSubheading": "Healthcare IAM, CIAM in financial services, and now Auth0 platform consulting at Okta.",
+    "projectsHeading": "Selected",
+    "projectsHeadingBold": "work.",
+    "projectsSubheading": "A mix of identity, security research, and full-stack engineering, built across grad school and personal time.",
+    "skillsHeading": "What I",
+    "skillsHeadingBold": "reach for.",
+    "skillsSubheading": "The protocols, platforms, and tools I use day-to-day."
+  }
 }

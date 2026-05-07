@@ -3,9 +3,10 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { ExternalLink, Lock, LogOut } from "lucide-react";
 
-import { getAdminStatus, getEditableContent, isAdminAuthenticated } from "@/lib/admin-content";
+import { getAdminStatus, getEditableContent, getDraftContent, getChangelog, isAdminAuthenticated } from "@/lib/admin-content";
+import type { ChangelogEntry } from "@/lib/admin-content";
 
-import { loginAction, logoutAction, saveContentAction } from "./actions";
+import { loginAction, logoutAction, saveContentAction, saveDraftAction } from "./actions";
 import { AdminEditor } from "./admin-editor";
 
 export const dynamic = "force-dynamic";
@@ -34,6 +35,8 @@ const savedText: Record<string, string> = {
   login: "Signed in.",
   postgres: "Saved to Postgres. The live site has been revalidated.",
   "local-json": "Saved to local JSON. Commit the JSON files when you are ready.",
+  draft: "Draft saved. Use 'Preview draft' to see it before publishing.",
+  published: "Draft published live. The site has been revalidated.",
 };
 
 export default async function AdminPage({ searchParams }: AdminPageProps) {
@@ -100,7 +103,12 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
     );
   }
 
-  const content = await getEditableContent();
+  const [content, draftContent, changelog] = await Promise.all([
+    getEditableContent(),
+    getDraftContent(),
+    getChangelog(),
+  ]);
+  const hasDraft = draftContent !== null;
 
   return (
     <AdminFrame>
@@ -149,7 +157,14 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </div>
         )}
 
-        <AdminEditor initialContent={content} saveAction={saveContentAction} storageLabel={status.storage} />
+        <AdminEditor
+          initialContent={content}
+          saveAction={saveContentAction}
+          saveDraftAction={saveDraftAction}
+          storageLabel={status.storage}
+          hasDraft={hasDraft}
+          changelog={changelog}
+        />
       </main>
     </AdminFrame>
   );
