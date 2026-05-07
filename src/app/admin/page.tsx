@@ -6,7 +6,7 @@ import { ExternalLink, Lock, LogOut } from "lucide-react";
 import { getAdminStatus, getEditableContent, getDraftContent, getChangelog, isAdminAuthenticated } from "@/lib/admin-content";
 import type { ChangelogEntry } from "@/lib/admin-content";
 
-import { loginAction, logoutAction, saveContentAction, saveDraftAction, publishDraftAction } from "./actions";
+import { loginAction, logoutAction, saveContentAction, saveDraftAction } from "./actions";
 import { AdminEditor } from "./admin-editor";
 
 export const dynamic = "force-dynamic";
@@ -119,16 +119,6 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             <h1 className="text-xl font-semibold text-white sm:text-2xl">Edit live content</h1>
           </div>
           <div className="flex items-center gap-2">
-            {hasDraft && (
-              <form action={publishDraftAction}>
-                <button
-                  type="submit"
-                  className="inline-flex h-10 items-center gap-2 rounded-2xl border border-emerald-300/30 bg-emerald-500/10 px-4 text-sm text-emerald-200 transition hover:border-emerald-300/60 hover:text-white"
-                >
-                  Publish draft live
-                </button>
-              </form>
-            )}
             <Link
               href="/"
               className="inline-flex h-10 items-center gap-2 rounded-2xl border border-white/10 px-4 text-sm text-white/80 transition hover:border-white/25 hover:text-white"
