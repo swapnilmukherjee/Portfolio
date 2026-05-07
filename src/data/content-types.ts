@@ -81,6 +81,8 @@ export type Project = {
   description: string;
   tags: string[];
   imageUrl?: string;
+  github?: string;
+  website?: string;
 };
 
 export type AboutStat = {

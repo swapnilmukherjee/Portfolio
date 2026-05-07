@@ -603,6 +603,10 @@ export function AdminEditor({ initialContent, saveAction, saveDraftAction, stora
                   <Textarea label="Summary (shown on card)" rows={3} value={project.summary} onChange={(summary) => updateProject(index, { summary })} />
                   <Textarea label="Description (detail view)" rows={5} value={project.description} onChange={(description) => updateProject(index, { description })} />
                   <LinesField label="Tags — one per line" value={project.tags} onChange={(tags) => updateProject(index, { tags })} rows={4} />
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <Field label="GitHub URL (optional)" value={project.github ?? ""} onChange={(github) => updateProject(index, { github: github || undefined })} placeholder="https://github.com/…" />
+                    <Field label="Website URL (optional)" value={project.website ?? ""} onChange={(website) => updateProject(index, { website: website || undefined })} placeholder="https://…" />
+                  </div>
                   <ImageUpload
                     label="Project screenshot (optional)"
                     currentUrl={project.imageUrl ?? ""}
