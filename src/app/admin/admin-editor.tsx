@@ -623,46 +623,74 @@ export function AdminEditor({ initialContent, saveAction, saveDraftAction, stora
           {/* ── Changelog ── */}
           {activeTab === "changelog" && (
             <div className="space-y-5">
-              <SectionHeading title="Changelog" detail="Every time you hit Save or Save as draft, an entry is recorded here." />
+              <SectionHeading title="Changelog" detail="Every save records exactly what changed, field by field." />
               {changelog.length === 0 ? (
                 <div className="rounded-[24px] border border-white/10 bg-white/[0.055] p-8 text-center backdrop-blur-xl">
                   <Clock className="mx-auto mb-3 h-8 w-8 text-white/20" />
                   <p className="text-sm text-white/45">No saves yet. Your first save will appear here.</p>
                 </div>
               ) : (
-                <div className="rounded-[24px] border border-white/10 bg-white/[0.055] backdrop-blur-xl divide-y divide-white/[0.06]">
+                <div className="space-y-4">
                   {changelog.map((entry) => {
                     const date = new Date(entry.saved_at);
                     const isLive = entry.save_type === "live";
-                    const now = Date.now();
-                    const diff = now - date.getTime();
-                    const relTime = diff < 60_000
-                      ? "just now"
-                      : diff < 3_600_000
-                      ? `${Math.floor(diff / 60_000)}m ago`
-                      : diff < 86_400_000
-                      ? `${Math.floor(diff / 3_600_000)}h ago`
-                      : diff < 604_800_000
-                      ? `${Math.floor(diff / 86_400_000)}d ago`
-                      : date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+                    const elapsed = Date.now() - date.getTime();
+                    const relTime = elapsed < 60_000 ? "just now"
+                      : elapsed < 3_600_000 ? `${Math.floor(elapsed / 60_000)}m ago`
+                      : elapsed < 86_400_000 ? `${Math.floor(elapsed / 3_600_000)}h ago`
+                      : elapsed < 604_800_000 ? `${Math.floor(elapsed / 86_400_000)}d ago`
+                      : date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+                    const diffItems = entry.diff ?? [];
+                    const noDiff = diffItems.length === 0;
                     return (
-                      <div key={entry.id} className="flex items-center justify-between gap-4 px-5 py-3.5">
-                        <div className="flex items-center gap-3">
-                          <span className={`inline-flex h-2 w-2 rounded-full ${isLive ? "bg-emerald-400" : "bg-amber-400"}`} />
-                          <span className="text-sm text-white/80">
-                            {isLive ? "Published live" : "Saved as draft"}
-                          </span>
-                          {entry.note && (
-                            <span className="text-xs text-white/35">— {entry.note}</span>
-                          )}
+                      <div key={entry.id} className="rounded-[20px] border border-white/10 bg-white/[0.055] backdrop-blur-xl overflow-hidden">
+                        {/* Header row */}
+                        <div className="flex items-center justify-between gap-3 px-5 py-3.5 border-b border-white/[0.06]">
+                          <div className="flex items-center gap-2.5">
+                            <span className={`inline-flex h-2 w-2 rounded-full ${isLive ? "bg-emerald-400" : "bg-amber-400"}`} />
+                            <span className={`text-xs font-semibold uppercase tracking-widest ${isLive ? "text-emerald-300" : "text-amber-300"}`}>
+                              {isLive ? "Live" : "Draft"}
+                            </span>
+                            <span className="text-sm text-white/70">
+                              {isLive ? "Published live" : "Saved as draft"}
+                            </span>
+                          </div>
+                          <time dateTime={date.toISOString()} title={date.toLocaleString()} className="shrink-0 text-xs text-white/35">
+                            {relTime}
+                          </time>
                         </div>
-                        <time
-                          dateTime={date.toISOString()}
-                          title={date.toLocaleString()}
-                          className="shrink-0 text-xs text-white/35"
-                        >
-                          {relTime}
-                        </time>
+                        {/* Diff items */}
+                        {noDiff ? (
+                          <p className="px-5 py-3 text-xs text-white/30 italic">No field changes detected (same content re-saved)</p>
+                        ) : (
+                          <div className="divide-y divide-white/[0.04]">
+                            {diffItems.map((item, i) => (
+                              <div key={i} className="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-5 py-2.5">
+                                <span className={`shrink-0 rounded-md px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-widest ${
+                                  item.action === "added" ? "bg-emerald-500/15 text-emerald-300"
+                                  : item.action === "removed" ? "bg-red-500/15 text-red-300"
+                                  : "bg-sky-500/15 text-sky-300"
+                                }`}>
+                                  {item.action}
+                                </span>
+                                <span className="text-xs font-medium text-white/75">{item.label}</span>
+                                {item.action === "changed" && (item.old || item.new) && (
+                                  <span className="flex flex-wrap items-center gap-1.5 text-xs text-white/40">
+                                    {item.old && <span className="line-through opacity-60">{item.old}</span>}
+                                    {item.old && item.new && <span className="opacity-40">→</span>}
+                                    {item.new && <span className="text-white/65">{item.new}</span>}
+                                  </span>
+                                )}
+                                {item.action === "added" && item.new && (
+                                  <span className="text-xs text-emerald-300/60">{item.new}</span>
+                                )}
+                                {item.action === "removed" && item.old && (
+                                  <span className="text-xs text-red-300/60 line-through">{item.old}</span>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     );
                   })}
