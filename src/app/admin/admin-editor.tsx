@@ -331,7 +331,7 @@ export function AdminEditor({ initialContent, saveAction, saveDraftAction, stora
                 onAction={() =>
                   setContent((c) => ({
                     ...c,
-                    highlights: [...c.highlights, { label: "New metric", value: "0", detail: "Short detail" }],
+                    highlights: [{ label: "New metric", value: "0", detail: "Short detail" }, ...c.highlights],
                   }))
                 }
               />
@@ -365,7 +365,6 @@ export function AdminEditor({ initialContent, saveAction, saveDraftAction, stora
                   setContent((c) => ({
                     ...c,
                     experience: [
-                      ...c.experience,
                       {
                         id: newId("role"),
                         role: "New role",
@@ -381,6 +380,7 @@ export function AdminEditor({ initialContent, saveAction, saveDraftAction, stora
                         highlights: ["Add a measurable accomplishment."],
                         tags: ["Skill"],
                       },
+                      ...c.experience,
                     ],
                   }))
                 }
@@ -429,7 +429,7 @@ export function AdminEditor({ initialContent, saveAction, saveDraftAction, stora
                 onAction={() =>
                   setContent((c) => ({
                     ...c,
-                    skills: [...c.skills, { category: "New skill group", icon: "shield", items: ["Skill"] }],
+                    skills: [{ category: "New skill group", icon: "shield", items: ["Skill"] }, ...c.skills],
                   }))
                 }
               />
@@ -463,7 +463,6 @@ export function AdminEditor({ initialContent, saveAction, saveDraftAction, stora
                   setContent((c) => ({
                     ...c,
                     education: [
-                      ...c.education,
                       {
                         id: newId("education"),
                         school: "School",
@@ -472,6 +471,7 @@ export function AdminEditor({ initialContent, saveAction, saveDraftAction, stora
                         location: "City, State",
                         accent: "rgba(108, 227, 255, 0.25)",
                       },
+                      ...c.education,
                     ],
                   }))
                 }
@@ -513,8 +513,8 @@ export function AdminEditor({ initialContent, saveAction, saveDraftAction, stora
                   setContent((c) => ({
                     ...c,
                     certifications: [
-                      ...c.certifications,
                       { name: "Certification name", issuer: "Issuer", status: "earned" },
+                      ...c.certifications,
                     ],
                   }))
                 }
@@ -559,7 +559,6 @@ export function AdminEditor({ initialContent, saveAction, saveDraftAction, stora
                   setContent((c) => ({
                     ...c,
                     projects: [
-                      ...c.projects,
                       {
                         id: newId("project"),
                         title: "New project",
@@ -571,6 +570,7 @@ export function AdminEditor({ initialContent, saveAction, saveDraftAction, stora
                         description: "Longer project description.",
                         tags: ["Skill"],
                       },
+                      ...c.projects,
                     ],
                   }))
                 }
