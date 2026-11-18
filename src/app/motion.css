@@ -74,3 +74,5 @@
 @media(min-width:761px){.motion-edition .menu-button{display:none}}
 @media(max-width:760px){.motion-edition .filter-list button{min-height:44px}.motion-edition .archive-toggle{min-height:44px}}
 @media(max-width:370px){.motion-edition .chapter-button{font-size:39px;gap:8px}.chapter-indicator svg{width:22px;height:22px}}
+@media(min-width:1000px) and (max-height:850px){.identity-story{min-height:calc(100svh - 96px);padding-top:24px;padding-bottom:24px;gap:18px}.motion-edition .chapter-button{font-size:56px}.story-titles>p{margin-bottom:14px}.chapter-meter{margin:16px 0}.journey-visual{max-height:350px}.chapter-copy{min-height:128px}.portfolio-shell .chapter-copy h2{font-size:24px}.chapter-copy p{font-size:13px;line-height:1.6}.access-playground{padding-top:17px;padding-bottom:17px}}
+
