@@ -1,18 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Manrope, JetBrains_Mono, Instrument_Serif } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
+import "./portfolio.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ProgressBar } from "@/components/progress-bar";
 import { getContent } from "@/lib/content";
 
-const inter = Inter({
+const inter = Manrope({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
-  axes: ["opsz"],
 });
+
+const display = Instrument_Serif({ subsets: ["latin"], weight: "400", variable: "--font-display", display: "swap" });
 
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
@@ -60,17 +61,16 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
-    { media: "(prefers-color-scheme: light)", color: "#f5f5f7" },
+    { media: "(prefers-color-scheme: dark)", color: "#171b24" },
+    { media: "(prefers-color-scheme: light)", color: "#f3f4f6" },
   ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrains.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrains.variable} ${display.variable}`}>
       <body className="min-h-screen bg-bg text-text antialiased overflow-x-hidden">
         <ThemeProvider>
-          <ProgressBar />
           {children}
         </ThemeProvider>
         <Analytics />
