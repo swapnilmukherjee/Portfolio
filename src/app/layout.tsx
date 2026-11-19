@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, JetBrains_Mono, Instrument_Serif } from "next/font/google";
+import { Manrope, JetBrains_Mono, Archivo } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
 import "./portfolio.css";
 import "./motion.css";
-import "./editorial.css";
+import "./fresh.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { getContent } from "@/lib/content";
 
@@ -15,7 +15,7 @@ const inter = Manrope({
   display: "swap",
 });
 
-const display = Instrument_Serif({ subsets: ["latin"], weight: "400", variable: "--font-display", display: "swap" });
+const display = Archivo({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-display", display: "swap" });
 
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
@@ -63,8 +63,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#171b24" },
-    { media: "(prefers-color-scheme: light)", color: "#f3f4f6" },
+    { media: "(prefers-color-scheme: dark)", color: "#163b3b" },
+    { media: "(prefers-color-scheme: light)", color: "#f2f6f4" },
   ],
 };
 
