@@ -1,15 +1,26 @@
-# Connection fieldbook
+# Connection fieldbook / supplied palettes
 
-The portfolio introduces Swapnil as a person, then lets the visitor follow his identity engineering work. No symbolic brand logo: the header uses his full name.
+A personal engineering portfolio. Full name in the header, no arbitrary logo. Archivo display and Manrope body. A borderless transparent portrait cutout sits directly in the colored, textured hero. There is no arch, card, border or sticker around the person. The three access cards sit in a separate identity scene below the introduction, so no UI covers the face or torso. Career descriptions remain visible beside a sticky employer index. Project diagrams explain actual mechanisms. Credentials are readable records rather than stamps.
 
-Three base colors: deep teal #163B3B, cool white #F2F6F4, coral #F18D74. Light and dark themes swap the two primaries. All UI secondary tones and borders are mixes of those colors. Teal/white contrast is 11.18:1 and teal/coral 5.11:1. Coral is a surface/accent, never small text on white. Real photos keep their natural colors.
+## Color
+Light: Sky Blue #0593C6 is the dominant page surface; White #FCFFFF is reserved for display type and glass highlights; Hot Pink #D83995 is the accent. No large white page fields.
+Dark: Midnight Black #02070A, Electric Blue #0297DE, Cantaloupe Orange #FC734D.
+Source: user-uploaded palette screenshots, IMG_1333.jpeg and IMG_1334.jpeg. No uploaded screenshot or person from those references is embedded in the site.
 
-Archivo display, Manrope body. Open composition with large headings, a full-color shoulder portrait and three access cards explaining People / Applications / AI agents. Equal 7% content edges, readable copy and generous vertical space. Phone layouts use one natural reading column.
+White and midnight are shared neutral text colors; midnight carries small body text on the sky-blue light surface. Reference sky blue / white is 3.48:1, suitable for large type rather than small text. Pink / midnight is 4.76:1; orange / midnight is 7.42:1. Accent fills use midnight text. Border, secondary-text and surface shades derive from the palette.
 
-Motion: hero cards separate with scroll; connection paths draw; career introduction remains in view as complete role summaries progress beside it; titles reveal and the current employer is tracked in the index. Projects use one short mechanism-specific animation when first seen. Credentials wipe into place as readable records. Contact type traverses with scroll. No scroll hijacking, timed carousels, cursor replacement or infinite animated logos. Reduced motion skips all GSAP choreography and keeps content visible.
+## Glass
+Only the theme/menu controls and three floating hero access cards get translucent material, inset highlights, a soft shadow and restrained press feedback. The selected access card stays solid for contrast. Other access cards use small SVG backdrop displacement where supported, plus blur/saturation as a Safari/Firefox fallback. The text remains sharp. No glass on job descriptions, project tables, credentials or contact fields. Reduced transparency and increased contrast restore solid surfaces. The glass tint changes with the selected palette.
 
-Project graphics are explanatory diagrams, not invented branding or screenshots. Route overlap for TripShare; mutation/execution/result for FAST; a permissions matrix for TenantGuard; named input/process/output flows for other projects. Facts and content remain CMS-driven.
+Guidance: https://github.com/Ghoscro/liquid-glass-design-skill and Apple's HIG Materials. Downloaded in design-tools/liquid-glass and linked from the local agent skills directory. CSS-first, no new runtime dependency.
 
-References studied: Dennis Snellenberg (large-scale restrained motion), Brittany Chiang (career readability), Rauno Freiberg (interaction discipline), Adham Dannaway (clear personal identity). Downloaded guidance: Impeccable, UI UX Pro Max and Taste Skill. The UI UX database's portfolio storytelling result informed sequencing; its default blue palette, generic marketing structure, and brutalism were rejected to honor the brief.
+## Motion and function
+Hero separation; connection-path drawing; current-job tracking; short project-specific mechanism animations; credential wipe reveals; scroll-linked contact type. Native scroll, no cursor replacement or endless logo loops. Reduced motion keeps content visible and skips GSAP choreography. CMS content, project details, resume route, contact endpoint and draft mode remain intact.
 
-Figma's Starter-plan MCP allowance was exhausted during this redesign. The older Figma boards do not represent this delivered design. The responsive implementation and this document are current.
+Figma Starter MCP allowance was exhausted in the prior redesign. The older Figma boards are not current; implementation and this document are authoritative.
+
+## Texture and color balance
+The reference websites use color as illuminated fields, rather than isolated accents. Light mode is blue-led with a pink light falloff. Dark mode uses a midnight ground, electric-blue light and a smaller orange falloff. A static fine-grain SVG and vertical optical ridges give the hero tactile depth. Text stays on the calmer left side; the stronger texture sits behind the portrait. Project and contact surfaces carry a much quieter version of the grain. Increased contrast removes texture and transparency. No animated noise, grain on text glyphs, or heavy full-page blur.
+
+## Portrait asset
+public/portrait-cutout.webp is a transparent extraction from the original public/headshot.jpg. Background removed using the built-in image tool with instructions to preserve identity, pose, clothes and photographic appearance; no new portrait was requested. Converted to WebP for delivery. The original remains unchanged. Generation prompt: remove only the gray studio background, preserve the exact person, face, hair, expression, proportions, jacket, shirt, lighting and crop; no retouching, added text, border, shadow or halo.

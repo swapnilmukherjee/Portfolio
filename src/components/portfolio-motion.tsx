@@ -7,11 +7,11 @@ export function PortfolioMotion({revision=""}:{revision?:string}){
  mm.add('(prefers-reduced-motion: no-preference)',()=>{const ctx=gsap.context(()=>{
  if(!revision || revision==='Selected'){
  gsap.from('.hero-word h1>span',{y:30,opacity:.3,duration:.9,stagger:.12,ease:'power3.out'});
- gsap.from('.hero-photo',{clipPath:'inset(12% 0 12% 0 round 140px)',duration:1.2,ease:'power3.out'});
+ gsap.from('.hero-photo',{y:25,opacity:.5,duration:1.1,ease:'power3.out'});
  }
- gsap.to('.frame-one',{x:-65,y:40,rotate:-28,ease:'none',scrollTrigger:{trigger:'.fresh-hero',start:'top top',end:'bottom top',scrub:1}});
- gsap.to('.frame-two',{y:90,rotate:8,ease:'none',scrollTrigger:{trigger:'.fresh-hero',start:'top top',end:'bottom top',scrub:1}});
- gsap.to('.frame-three',{x:65,y:10,rotate:30,ease:'none',scrollTrigger:{trigger:'.fresh-hero',start:'top top',end:'bottom top',scrub:1}});
+ gsap.to('.frame-one',{x:-15,y:12,rotate:-9,ease:'none',scrollTrigger:{trigger:'.connection-section',start:'top 85%',end:'bottom 30%',scrub:1}});
+ gsap.to('.frame-two',{y:-16,rotate:3,ease:'none',scrollTrigger:{trigger:'.connection-section',start:'top 85%',end:'bottom 30%',scrub:1}});
+ gsap.to('.frame-three',{x:15,y:12,rotate:9,ease:'none',scrollTrigger:{trigger:'.connection-section',start:'top 85%',end:'bottom 30%',scrub:1}});
  gsap.to('.hero-photo',{yPercent:-6,ease:'none',scrollTrigger:{trigger:'.fresh-hero',start:'top top',end:'bottom top',scrub:1}});
  gsap.from('.connection-track path',{strokeDashoffset:160,ease:'none',scrollTrigger:{trigger:'.connection-section',start:'top 75%',end:'bottom 60%',scrub:.7}});
  gsap.utils.toArray<HTMLElement>('.job').forEach((el,i)=>{

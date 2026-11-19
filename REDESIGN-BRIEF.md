@@ -2,7 +2,7 @@
 
 ## Direction contract
 THESIS: A personal engineering fieldbook. Clear human introduction, then tangible systems and career history; no invented emblem or product sales narrative.
-OWN-WORLD: Deep teal #163B3B and cool white #F2F6F4 are primary colors. Coral #F18D74 accents selected states and interactive objects. All other UI tones are transparent mixes of these three. Archivo display and Manrope reading text. Large rounded image windows, open layouts, crisp full borders, no stamp distortions.
+OWN-WORLD: Light mode is color-drenched, with blue covering the page and very little white surface. User-supplied light palette: sky blue #0593C6, white #FCFFFF, hot pink #D83995. Dark palette: midnight #02070A, electric blue #0297DE, orange #FC734D. Neutral and darker blue mixes preserve small-text contrast. Glass is limited to header controls and the floating access cards. Archivo display and Manrope reading text. Large rounded image windows, open layouts, crisp full borders, no stamp distortions.
 STORY: Meet Swapnil, follow his identity work, read his career, understand his projects, inspect learning records, make contact.
 FIRST VIEWPORT: Oversized two-line name on the left, full-color shoulder portrait on the right, concise role and current employer below the name. A scroll-linked set of three access frames underneath the portrait begins to open as the page moves. Navigation and theme control are immediately visible.
 FORM: Personal engineering fieldbook; seed: none (unavailable). Native scroll remains in control. Desktop career introduction stays in view while jobs progress past it. On mobile everything reads in natural order.
