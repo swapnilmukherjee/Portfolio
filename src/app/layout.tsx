@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import "./portfolio.css";
 import "./motion.css";
+import "./editorial.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { getContent } from "@/lib/content";
 
