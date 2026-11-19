@@ -9,3 +9,5 @@ FORM: Personal engineering fieldbook; seed: none (unavailable). Native scroll re
 FINISH: Browser checks at desktop and phone sizes, both themes, keyboard and reduced-motion fallback; design documentation and Figma updated to the delivered result.
 
 References: Dennis Snellenberg for restrained large-scale movement; Brittany Chiang for career clarity; Rauno Freiberg for small responsive interactions. Guidance downloaded: Impeccable, UI UX Pro Max, Taste Skill. UI UX Pro Max search matched scroll storytelling but its blue and brutalist defaults conflict with the user's explicit brief and are not applied.
+
+Mobile revision: preserve original photo pixels, ship no generative assets, replace straight stripes with soft code-only glass texture, make the connection prompt interactive, and provide readable mobile project diagrams with a compact responsive type scale.

@@ -22,5 +22,11 @@ Figma Starter MCP allowance was exhausted in the prior redesign. The older Figma
 ## Texture and color balance
 The reference websites use color as illuminated fields, rather than isolated accents. Light mode is blue-led with a pink light falloff. Dark mode uses a midnight ground, electric-blue light and a smaller orange falloff. A static fine-grain SVG and vertical optical ridges give the hero tactile depth. Text stays on the calmer left side; the stronger texture sits behind the portrait. Project and contact surfaces carry a much quieter version of the grain. Increased contrast removes texture and transparency. No animated noise, grain on text glyphs, or heavy full-page blur.
 
-## Portrait asset
-public/portrait-cutout.webp is a transparent extraction from the original public/headshot.jpg. Background removed using the built-in image tool with instructions to preserve identity, pose, clothes and photographic appearance; no new portrait was requested. Converted to WebP for delivery. The original remains unchanged. Generation prompt: remove only the gray studio background, preserve the exact person, face, hair, expression, proportions, jacket, shirt, lighting and crop; no retouching, added text, border, shadow or halo.
+## Original photo and code-only treatment
+The site displays the unchanged original public/headshot.jpg. A deterministic SVG silhouette in public/portrait-mask.svg masks its studio backdrop. scripts/create-portrait-mask.py builds that silhouette with classical OpenCV color/edge optimization. No generative image or altered portrait RGB pixels are shipped. The earlier generated cutout is removed from the repository.
+
+## Mobile behavior
+At 320–760px, the hero has an intentional phone layout: name, side-by-side introduction and original portrait, actions, then a full-width Explore the connections link. That link targets the identity scene using a native anchor. Heading and body type use a compact hierarchy. Project SVG text is replaced with readable HTML labels, permission rows use larger labels, and other flows stack vertically. Controls are at least 44px high and form inputs use 16px type. Mobile animations use short, small movements; the portrait has no parallax or opacity animation. Filtering projects no longer restarts page-wide GSAP effects. Reduced motion and transparency keep solid, visible content.
+
+## Texture
+The straight stripe overlay is replaced by broad refracted light using CSS gradients and an inline SVG displacement filter. Fine grain remains a small procedural SVG. No generated raster texture or image is used.
