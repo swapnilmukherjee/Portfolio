@@ -6,6 +6,7 @@ import "./globals.css";
 import "./portfolio.css";
 import "./motion.css";
 import "./fresh.css";
+import "./mobile.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { getContent } from "@/lib/content";
 

@@ -1,0 +1,112 @@
+/* Original-photo pixels, deterministic SVG alpha, and code-only optical texture. */
+.fresh-folio .hero-photo{mask-image:linear-gradient(#000 94%,transparent);-webkit-mask-image:linear-gradient(#000 94%,transparent)}
+.fresh-folio .hero-photo img{mask-image:url('/portrait-mask.svg');-webkit-mask-image:url('/portrait-mask.svg');mask-size:100% 100%;-webkit-mask-size:100% 100%;mask-repeat:no-repeat;-webkit-mask-repeat:no-repeat}
+.fresh-folio .hero-scroll{font-size:14px;color:var(--fg);min-height:54px;padding-bottom:4px;transition:color .2s}
+.fresh-folio .hero-scroll:hover{color:var(--accent)}
+.fresh-folio .hero-scroll:focus-visible{outline-offset:-3px}
+.mobile-diagram-legend{display:none}
+/* Replace the drawn stripe overlay with broad, refracted light. */
+.fresh-folio .fresh-hero::after{background:none;mask-image:none;opacity:1;inset:0 0 0 40%;border-radius:0;background:radial-gradient(ellipse 55% 90% at 70% 60%,color-mix(in srgb,var(--white) 10%,transparent),transparent 70%),radial-gradient(ellipse 35% 100% at 50% 65%,color-mix(in srgb,var(--blue) 34%,transparent),transparent 72%);filter:url('#glass-surface') blur(12px);pointer-events:none}
+.fresh-folio .fresh-hero::before{filter:blur(16px)}
+@media(max-width:760px){
+ .fresh-folio h2{font-size:clamp(32px,8.8vw,43px);letter-spacing:-.035em;line-height:1.08}
+ .fresh-folio .fresh-header{padding:14px 20px;min-height:76px;gap:12px}
+ .fresh-folio .name-link{font-size:14px;min-width:0;max-width:calc(100% - 105px)}
+ .fresh-folio .name-link>span{font-size:11px}
+ .fresh-folio .header-controls{gap:8px;flex-shrink:0}
+ .fresh-folio .fresh-header nav{max-height:calc(100svh - 76px);overflow-y:auto}
+ .fresh-folio .fresh-header nav a{font-size:21px;min-height:48px}
+ .fresh-folio .fresh-hero{grid-template-columns:minmax(0,1fr) minmax(0,.85fr);grid-template-areas:'name name' 'description portrait' 'actions actions' 'scroll scroll';gap:24px 12px;padding:30px 20px 20px;min-height:0;align-items:start}
+ .fresh-folio .hero-word{display:contents}
+ .fresh-folio .hero-word h1{grid-area:name;font-size:clamp(42px,10.8vw,60px);line-height:1.03;letter-spacing:-.045em}
+ .fresh-folio .hero-word h1>span{padding-bottom:4px}
+ .fresh-folio .hero-description{grid-area:description;margin-top:0;align-self:center}
+ .fresh-folio .hero-description>p{font-size:17px;line-height:1.5;letter-spacing:-.025em}
+ .fresh-folio .hero-description>span{font-size:12px;line-height:1.65;margin-top:16px}
+ .fresh-folio .hero-description br{display:none}
+ .fresh-folio .hero-object{grid-area:portrait;width:100%;max-width:220px;margin:0;align-self:center;justify-self:end}
+ .fresh-folio .hero-photo{width:100%;height:auto;aspect-ratio:1122/1402;transform:none!important}
+ .fresh-folio .hero-actions{grid-area:actions;margin:0;gap:8px 16px;align-items:center}
+ .fresh-folio .hero-actions>a{min-height:46px;font-size:13px}
+ .fresh-folio .solid-button{padding:13px 16px;gap:16px}
+ .fresh-folio .hero-scroll{grid-area:scroll;width:100%;margin:0;padding-top:14px;font-size:13px;min-height:52px;grid-column:1/-1}
+ .fresh-folio .fresh-hero::after{inset:15% 0 0 40%;opacity:.65}
+ .fresh-folio .connection-section{padding:50px 20px}
+ .fresh-folio .connection-intro{gap:22px}
+ .fresh-folio .connection-intro>p{font-size:16px;line-height:1.75}
+ .fresh-folio .connection-track{min-height:120px;margin-top:32px;gap:6px}
+ .fresh-folio .connection-track>.access-frame{height:108px;border-radius:17px;gap:10px;backdrop-filter:blur(6px) saturate(120%);-webkit-backdrop-filter:blur(6px) saturate(120%)}
+ .fresh-folio .connection-track>.access-frame>span{font-size:12px}
+ .fresh-folio .connection-track>.access-frame>svg{width:28px;height:28px}
+ .fresh-folio .experience-section,.fresh-folio .projects-section-new,.fresh-folio .about-section-new,.fresh-folio .skills-section-new,.fresh-folio .credentials-section-new{padding:56px 20px}
+ .fresh-folio .experience-intro>p,.fresh-folio .section-title>p{font-size:15px;line-height:1.7;margin-top:20px}
+ .fresh-folio .experience-list{margin-top:36px}
+ .fresh-folio .job{margin-bottom:36px;padding-bottom:36px}
+ .fresh-folio .job h3{font-size:30px;line-height:1.1}
+ .fresh-folio .job-meta{font-size:12px;gap:8px;line-height:1.6}
+ .fresh-folio .job-role{font-size:16px;line-height:1.5}
+ .fresh-folio .job-summary{font-size:16px;line-height:1.75;margin-top:18px!important}
+ .fresh-folio .job ul{font-size:15px;line-height:1.75;margin:20px 0}
+ .fresh-folio .tags>span{font-size:12px;padding:6px 8px}
+ .fresh-folio .section-title{margin-bottom:28px}
+ .fresh-folio .project-filters{gap:6px;padding-bottom:20px;margin-bottom:24px}
+ .fresh-folio .project-filters button{font-size:13px;padding:10px 12px;min-height:44px}
+ .fresh-folio .project-entry{margin-bottom:36px}
+ .fresh-folio .project-visual,.fresh-folio .project-entry:first-child .project-visual{height:auto;min-height:250px;aspect-ratio:auto;padding:18px;gap:16px;border-radius:16px;justify-content:flex-start}
+ .fresh-folio .visual-caption,.fresh-folio .visual-bottom{font-size:12px;line-height:1.5;gap:8px;flex-wrap:wrap}
+ .fresh-folio .visual-caption>span{margin-left:auto}
+ .fresh-folio .visual-bottom{margin-top:auto;padding-top:12px}
+ .fresh-folio .project-visual>svg{position:relative;inset:auto;width:100%;height:auto;aspect-ratio:600/310;min-height:135px;max-height:180px;flex:none}
+ .fresh-folio .project-visual>svg text{display:none}
+ .fresh-folio .mobile-diagram-legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:center;text-align:center;font-size:13px;line-height:1.45;margin-top:-8px}
+ .mobile-diagram-legend>strong{font-weight:600}
+ .fresh-folio .permission-study{width:100%;margin:0;font-size:14px}
+ .fresh-folio .permission-head{font-size:18px;padding-bottom:12px}
+ .fresh-folio .permission-row{padding:11px 10px;gap:10px}
+ .fresh-folio .permission-row:nth-child(2){font-size:13px}
+ .fresh-folio .permission-note{font-size:12px;line-height:1.5;margin-top:14px}
+ .fresh-folio .project-heading{margin-top:17px;gap:18px}
+ .fresh-folio .project-heading h3{font-size:25px;line-height:1.2}
+ .fresh-folio .project-toggle>p,.fresh-folio .project-detail{font-size:16px;line-height:1.75}
+ .fresh-folio .project-note{font-size:12px!important;line-height:1.65}
+ .fresh-folio .semantic-flow{display:grid;grid-template-columns:1fr;gap:8px;width:100%;height:auto;justify-items:center;padding:4px 0;font-size:14px}
+ .fresh-folio .semantic-flow>span,.fresh-folio .semantic-flow>strong{max-width:none;width:100%;padding:11px 12px;font-size:14px;line-height:1.5}
+ .fresh-folio .semantic-flow>i{width:1px;height:15px}
+ .fresh-folio .semantic-flow>i:after{animation-name:flow-dot-mobile;left:-2px;top:0}
+ .fresh-folio .about-section-new>div{margin-top:26px}
+ .fresh-folio .about-lead{font-size:18px;line-height:1.75}
+ .fresh-folio .skills-tabs button{font-size:14px;min-height:52px;line-height:1.5}
+ .fresh-folio .skills-panel{padding:24px 18px}
+ .fresh-folio .skills-panel h3{font-size:23px;line-height:1.3}
+ .fresh-folio .skills-panel>div>span{font-size:14px;padding:9px 11px;line-height:1.5}
+ .fresh-folio .credential-record{padding-top:22px;padding-bottom:22px}
+ .fresh-folio .credential-record h3{font-size:17px;line-height:1.45}
+ .fresh-folio .credential-issuer,.fresh-folio .credential-status{font-size:12px}
+ .fresh-folio .studying summary{min-height:48px}
+ .fresh-folio .education-grid h3{font-size:22px;line-height:1.3}
+ .fresh-folio .contact-line{font-size:24px;white-space:normal;line-height:1.25;padding:22px 20px}
+ .fresh-folio .contact-line>span{width:auto;transform:none!important}
+ .fresh-folio .contact-grid{padding:42px 20px 0}
+ .fresh-folio .contact-grid h2{font-size:36px}
+ .fresh-folio .contact-links a{min-height:44px}
+ .fresh-folio .folio-form{margin-top:34px}
+ .fresh-folio .folio-form input,.fresh-folio .folio-form textarea{font-size:16px;line-height:1.5;min-height:48px}
+ .fresh-folio .folio-form button{min-height:48px}
+ .fresh-folio .fresh-footer{padding:24px 20px}
+ .fresh-folio section[id],.fresh-folio .job[id]{scroll-margin-top:96px}
+}
+@keyframes flow-dot-mobile{from{top:0}to{top:100%}}
+@media(prefers-reduced-motion:reduce){.fresh-folio .hero-photo,.fresh-folio .hero-word h1>span{transform:none!important;opacity:1!important}.fresh-folio .semantic-flow>i:after{animation:none!important}}
+@media(prefers-reduced-transparency:reduce),(prefers-contrast:more){.fresh-folio .fresh-hero::after{display:none}.fresh-folio .connection-track>.access-frame{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--base)}.fresh-folio .connection-track>.frame-two{background:var(--accent)}}
+@media(min-width:761px) and (max-width:900px){
+ .fresh-folio .project-gallery{grid-template-columns:1fr}
+ .fresh-folio .project-visual,.fresh-folio .project-entry:first-child .project-visual{height:auto;min-height:300px;padding:24px;gap:18px}
+ .fresh-folio .project-visual>svg{position:relative;inset:auto;width:100%;height:200px;flex:none}
+ .fresh-folio .project-visual>svg text{display:none}
+ .fresh-folio .mobile-diagram-legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;font-size:15px;text-align:center}
+ .fresh-folio .visual-caption,.fresh-folio .visual-bottom,.fresh-folio .permission-note{font-size:13px}
+ .fresh-folio .permission-study{width:90%;font-size:16px}
+ .fresh-folio .permission-row:nth-child(2){font-size:14px}
+ .fresh-folio .semantic-flow{font-size:15px;min-height:200px}
+ .fresh-folio .semantic-flow>span,.fresh-folio .semantic-flow>strong{font-size:15px;max-width:180px}
+}
