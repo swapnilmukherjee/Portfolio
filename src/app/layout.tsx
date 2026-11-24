@@ -1,28 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, JetBrains_Mono, Archivo } from "next/font/google";
+import { Hanken_Grotesk, IBM_Plex_Mono, Archivo } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
-import "./portfolio.css";
-import "./motion.css";
-import "./fresh.css";
-import "./mobile.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { getContent } from "@/lib/content";
 
-const inter = Manrope({
+const sans = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
+
+const display = Archivo({
   subsets: ["latin"],
-  variable: "--font-sans",
+  axes: ["wdth"],
+  variable: "--font-archivo",
   display: "swap",
 });
 
-const display = Archivo({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-display", display: "swap" });
-
-const jetbrains = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-});
+const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono", display: "swap" });
 
 export async function generateMetadata(): Promise<Metadata> {
   const { profile } = await getContent();
@@ -64,15 +57,19 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#02070a" },
-    { media: "(prefers-color-scheme: light)", color: "#0593c6" },
+    { media: "(prefers-color-scheme: dark)", color: "#090b0d" },
+    { media: "(prefers-color-scheme: light)", color: "#e9eef1" },
   ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrains.variable} ${display.variable}`}>
-      <body className="min-h-screen bg-bg text-text antialiased overflow-x-hidden">
+    <html lang="en" suppressHydrationWarning className={`${sans.variable} ${mono.variable} ${display.variable}`}>
+      <head>
+        {/* Marks JS as available before paint so scroll scenes can opt in without hiding no-JS content. */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+      </head>
+      <body className="min-h-screen bg-bg text-text antialiased">
         <ThemeProvider>
           {children}
         </ThemeProvider>

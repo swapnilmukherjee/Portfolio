@@ -1,49 +1,6 @@
 {
-  "profile": {
-    "name": "Swapnil Mukherjee",
-    "firstName": "Swapnil",
-    "title": "Technical Consultant @ Okta",
-    "tagline": "Identity, secured.",
-    "headline": "I build the identity layer behind modern apps, from CIAM at scale to IAM for AI agents.",
-    "shortBio": "Technical Consultant at Okta helping enterprises design and deploy secure CIAM and IAM architectures, including identity patterns for AI agents, OAuth/OIDC, MFA, and Zero Trust access.",
-    "about": "Technical Consultant at Okta focused on Auth0, CIAM, and IAM for AI agents. I design secure authentication, authorization, MFA, federation, and extensibility patterns across modern app and API workloads. Previously owned production Auth0 operations for Fifth Third Bank’s Newline platform and supported enterprise IAM at Cardinal Health across 22,000+ identities and 100+ federated applications.",
-    "location": "Charlotte, North Carolina",
-    "email": "swapnilmukherjee.jobs@gmail.com",
-    "publicEmail": "swapnilmukherjee.jobs@gmail.com",
-    "phone": "+1 (864) 765-4851",
-    "availability": "Open to consulting conversations and CIAM architecture reviews.",
-    "socials": {
-      "github": "https://github.com/swapnilmukherjee",
-      "linkedin": "https://www.linkedin.com/in/swapnilmukherjee24/",
-      "email": "mailto:swapnilmukherjee.jobs@gmail.com"
-    },
-    "resume": "/Swapnil_Mukherjee_Resume.pdf"
-  },
-  "highlights": [
-    {
-      "label": "Years in identity",
-      "value": "5+",
-      "detail": "CIAM & workforce IAM"
-    },
-    {
-      "label": "Apps federated",
-      "value": "100+",
-      "detail": "B2E, B2B, B2C across Okta and Auth0"
-    },
-    {
-      "label": "Identities operated",
-      "value": "22k+",
-      "detail": "Workforce + customer at scale"
-    },
-    {
-      "label": "Platforms",
-      "value": "Okta · Auth0 · IAM",
-      "detail": "CIAM, workforce IAM, and AI identity"
-    }
-  ],
   "skills": [
     {
-      "category": "CIAM & Customer Identity",
       "icon": "shield",
       "items": [
         "Auth0",
@@ -53,11 +10,12 @@
         "Actions / Rules / Hooks",
         "MFA",
         "Attack Protection",
-        "Custom Domains"
-      ]
+        "Custom Domains",
+        "Passkeys"
+      ],
+      "category": "CIAM & Customer Identity"
     },
     {
-      "category": "Workforce IAM & IGA",
       "icon": "key",
       "items": [
         "Okta Workforce Identity",
@@ -68,10 +26,10 @@
         "Active Directory",
         "LDAP",
         "Joiner-Mover-Leaver"
-      ]
+      ],
+      "category": "Workforce IAM & IGA"
     },
     {
-      "category": "Protocols & Authorization",
       "icon": "lock",
       "items": [
         "OAuth 2.0",
@@ -82,11 +40,14 @@
         "RBAC",
         "ABAC",
         "Token Design",
-        "API Authorization"
-      ]
+        "API Authorization",
+        "FAPI 2.0",
+        "DPoP",
+        "PKCE"
+      ],
+      "category": "Protocols & Authorization"
     },
     {
-      "category": "AI Identity & Zero Trust",
       "icon": "activity",
       "items": [
         "IAM for AI Agents",
@@ -97,10 +58,10 @@
         "Fine-Grained Access",
         "Zero Trust",
         "Adaptive Access"
-      ]
+      ],
+      "category": "AI Identity & Zero Trust"
     },
     {
-      "category": "Engineering & Automation",
       "icon": "code",
       "items": [
         "JavaScript",
@@ -111,10 +72,10 @@
         "GitHub Actions",
         "Jenkins",
         "CI/CD for IAM Config"
-      ]
+      ],
+      "category": "Engineering & Automation"
     },
     {
-      "category": "Observability & Compliance",
       "icon": "terminal",
       "items": [
         "Splunk",
@@ -128,151 +89,425 @@
         "SOX",
         "GLBA",
         "GDPR"
-      ]
+      ],
+      "category": "Observability & Compliance"
+    }
+  ],
+  "profile": {
+    "name": "Swapnil Mukherjee",
+    "about": "Five years building identity for banks, hospitals and SaaS. At Okta I lead Auth0 rollouts and migrations, including one that moved 300 million users with zero unplanned downtime. I also advise teams on how AI agents should sign in, get scoped access and ask for consent.",
+    "email": "swapnilmukherjee.jobs@gmail.com",
+    "phone": "+1 (864) 765-4851",
+    "title": "Technical Consultant @ Okta",
+    "resume": "/Swapnil_Mukherjee_Resume.pdf",
+    "socials": {
+      "email": "mailto:swapnilmukherjee.jobs@gmail.com",
+      "github": "https://github.com/swapnilmukherjee",
+      "linkedin": "https://www.linkedin.com/in/swapnilmukherjee24/"
+    },
+    "tagline": "Identity, secured.",
+    "headline": "I migrate hundreds of millions of users between identity platforms with zero unplanned login downtime.",
+    "location": "Seattle, WA",
+    "shortBio": "Technical Consultant at Okta in Seattle. Auth0, CIAM and identity for AI agents, with a 300M+ user migration behind me.",
+    "firstName": "Swapnil",
+    "headshotUrl": "/headshot.jpg",
+    "publicEmail": "swapnilmukherjee.jobs@gmail.com",
+    "availability": "Based in Seattle, WA and not open to relocation. Happy to talk identity architecture, CIAM, or securing AI agents."
+  },
+  "projects": [
+    {
+      "id": "project-movzuup5",
+      "date": "May 2026",
+      "icon": "sparkles",
+      "tags": [
+        "Auth0",
+        "IAM",
+        "RBAC",
+        "OAuth 2.0",
+        "OIDC",
+        "Next.js",
+        "TypeScript",
+        "API Security",
+        "Authorization",
+        "Vercel"
+      ],
+      "color": "from-cyan-500 to-blue-600",
+      "title": "TenantGuard",
+      "github": "https://github.com/swapnilmukherjee/tenantguard",
+      "summary": "B2B admin console where four roles see different things, enforced by Auth0 RBAC and permission-checked APIs.",
+      "website": "https://tenantguard-beryl.vercel.app",
+      "category": "Cybersecurity",
+      "description": "A multi-tenant admin console that shows how B2B SaaS authorization should work with Auth0. Users sign in through branded Universal Login and get one of four roles: Tenant Admin, Security Analyst, Billing Manager or Viewer.\n\nEvery API route checks permissions from the access token and returns an explicit allow or deny, so you can watch authorization decisions happen. A Token Inspector shows the session, granted permissions and custom claims from an Auth0 Action without exposing raw tokens.\n\nRuns on Vercel with separate staging and production tenants. Next up: Organizations, MFA and Management API tenant admin."
+    },
+    {
+      "id": "tripshare",
+      "date": "May 2024",
+      "icon": "map-pin",
+      "tags": [
+        "JavaScript",
+        "Python",
+        "CMS",
+        "CI/CD"
+      ],
+      "color": "from-cyan-500 to-blue-600",
+      "title": "TripShare",
+      "summary": "Carpool matching that pairs travelers on overlapping routes to split cost and cut emissions.",
+      "website": "https://ridetripshare.wixstudio.com/tripshare",
+      "category": "Web Engineering",
+      "description": "Matches travelers whose itineraries overlap so they can share a ride. I built registration, the trip matching logic and a CMS-backed admin layer, shaped by persona research, and shipped it through a CI/CD pipeline."
+    },
+    {
+      "id": "fast-fuzzer",
+      "date": "Feb 2024",
+      "icon": "bug",
+      "tags": [
+        "Fuzzing",
+        "Python",
+        "C++",
+        "Security Research"
+      ],
+      "color": "from-purple-500 to-pink-600",
+      "title": "FAST Firmware Fuzzer",
+      "summary": "Extended the SAFIREFUZZ firmware fuzzer to find gaps between what a spec says and what the code does.",
+      "category": "Cybersecurity",
+      "description": "Firmware drifts from its specification. I extended the SAFIREFUZZ framework to combine signals from the spec, the code and the existing test suite, so the fuzzer goes after those blind spots. Fixed core bugs along the way and added support for legacy systems."
+    },
+    {
+      "id": "pizzeria",
+      "date": "Oct 2023",
+      "icon": "pizza",
+      "tags": [
+        "Java",
+        "SQL",
+        "AWS RDS"
+      ],
+      "color": "from-red-500 to-orange-600",
+      "title": "Pizzeria Manager",
+      "summary": "Java and SQL backend that runs orders and inventory for a simulated pizza chain.",
+      "category": "Web Engineering",
+      "description": "An object-oriented Java backend over a normalized SQL schema on AWS RDS. Handles dine-in, pickup and delivery orders and keeps inventory in sync as orders come in."
+    },
+    {
+      "id": "drown",
+      "date": "Sep 2023",
+      "icon": "lock",
+      "tags": [
+        "Cryptography",
+        "RSA",
+        "C",
+        "TLS"
+      ],
+      "color": "from-rose-500 to-red-600",
+      "title": "DROWN Attack",
+      "summary": "Ran the DROWN attack on an SSLv2 server, recovered its RSA private key, then shut the hole.",
+      "category": "Cybersecurity",
+      "description": "DROWN abuses servers that still speak SSLv2 to break modern TLS. I used SSLv2 as an oracle to recover the server's RSA private key, showed what that exposes, then applied and verified the mitigations."
+    },
+    {
+      "id": "space-hangman",
+      "date": "Sep 2023",
+      "icon": "rocket",
+      "tags": [
+        "Python",
+        "Flask",
+        "HTML5",
+        "CSS"
+      ],
+      "color": "from-violet-500 to-fuchsia-600",
+      "title": "Space Hangman",
+      "summary": "Space-themed hangman on Flask, wired to several external APIs.",
+      "category": "Web Engineering",
+      "description": "Classic hangman with a space theme. Flask backend, HTML5 and CSS frontend, and several external APIs feeding the game so rounds stay fresh."
+    },
+    {
+      "id": "sysmon",
+      "date": "Apr 2023",
+      "icon": "activity",
+      "tags": [
+        "Python",
+        "psutil",
+        "Monitoring"
+      ],
+      "color": "from-emerald-500 to-teal-600",
+      "title": "System Monitoring Tool",
+      "summary": "Python CLI that tracks CPU, memory and network in real time and flags anomalies.",
+      "category": "Cybersecurity",
+      "description": "Collects system metrics with psutil, plots them live with matplotlib and raises an alert when CPU, memory or network activity crosses a threshold."
+    },
+    {
+      "id": "voicerx",
+      "date": "Sep 2022",
+      "icon": "mic",
+      "tags": [
+        "Alexa API",
+        "HCI",
+        "Healthcare"
+      ],
+      "color": "from-teal-500 to-emerald-600",
+      "title": "VoiceRx",
+      "summary": "Alexa voice interface that lets clinicians update medical records hands free.",
+      "category": "Automation & IoT",
+      "description": "Clinicians lose hours to data entry. VoiceRx lets them read and update electronic medical records by talking to Amazon Alexa, taking the clicks out of routine updates."
+    },
+    {
+      "id": "healthfit",
+      "date": "Jun 2022",
+      "icon": "heart",
+      "tags": [
+        "Python",
+        "REST",
+        "OAuth"
+      ],
+      "color": "from-lime-500 to-green-600",
+      "title": "HealthFit",
+      "summary": "REST API that turns a weight goal into a daily calorie target.",
+      "category": "Web Engineering",
+      "description": "A Python REST service that takes a user's weight goal and returns a daily calorie target based on published nutrition research. Endpoints are secured with OAuth."
+    },
+    {
+      "id": "tweetfeel",
+      "date": "Nov 2019",
+      "icon": "twitter",
+      "tags": [
+        "Python",
+        "NLP",
+        "RNN"
+      ],
+      "color": "from-sky-500 to-blue-600",
+      "title": "TweetFeel",
+      "summary": "RNN sentiment model that reads the emotion behind tweets.",
+      "category": "AI & Data",
+      "description": "A full NLP pipeline: cleaning, embeddings and a recurrent neural network that classifies the emotion behind each tweet."
+    },
+    {
+      "id": "neural-style",
+      "date": "May 2019",
+      "icon": "palette",
+      "tags": [
+        "Python",
+        "Deep Learning",
+        "Computer Vision"
+      ],
+      "color": "from-pink-500 to-rose-600",
+      "title": "Neural Style Transfer",
+      "summary": "Deep learning app that repaints a photo in the style of another image.",
+      "category": "AI & Data",
+      "description": "Neural style transfer in Python. A network optimizes a new image to keep the content of one photo and the style of another. I also explored its use in art therapy."
+    },
+    {
+      "id": "iot-automation",
+      "date": "Jan 2019",
+      "icon": "cpu",
+      "tags": [
+        "IoT",
+        "Java",
+        "NodeMCU"
+      ],
+      "color": "from-amber-500 to-orange-600",
+      "title": "IoT Home Automation",
+      "summary": "NodeMCU firmware that puts ordinary appliances on Wi-Fi at low cost.",
+      "category": "Automation & IoT",
+      "description": "A NodeMCU board and a relay, driven by Java firmware, switch regular household appliances over Wi-Fi. A cheap retrofit instead of buying new smart devices."
+    },
+    {
+      "id": "fraud",
+      "date": "Jun 2018",
+      "icon": "credit-card",
+      "tags": [
+        "Python",
+        "KNN",
+        "ML"
+      ],
+      "color": "from-blue-500 to-indigo-600",
+      "title": "Fraud Detection",
+      "summary": "KNN fraud detector tuned for heavily imbalanced credit card data.",
+      "category": "AI & Data",
+      "description": "Fraud is rare, which makes it easy to miss. I built a K-Nearest Neighbors classifier with custom features and tuned distance metrics, and judged it on precision and recall instead of accuracy to catch as much fraud as possible."
+    }
+  ],
+  "siteCopy": {
+    "aboutStats": [
+      {
+        "key": "Now",
+        "sub": "Okta · Auth0",
+        "value": "Technical Consultant"
+      },
+      {
+        "key": "Specialty",
+        "sub": "OAuth · OIDC · SAML",
+        "value": "Auth0 & CIAM"
+      },
+      {
+        "key": "Frontier",
+        "sub": "Identity for agentic workflows",
+        "value": "Auth0 for AI Agents"
+      }
+    ],
+    "heroStatus": "Okta · Identity & CIAM",
+    "aboutHeading": "The identity layer\nbehind",
+    "skillsHeading": "What I",
+    "aboutSubheading": "Customer and workforce identity across healthcare, financial services, and enterprise applications. Now helping Auth0 customers build what comes next.",
+    "projectsHeading": "Selected",
+    "aboutHeadingBold": "modern apps.",
+    "skillsSubheading": "The protocols, platforms, and tools I use day-to-day.",
+    "experienceHeading": "Identity in",
+    "skillsHeadingBold": "reach for.",
+    "projectsSubheading": "A mix of identity, security research, and full-stack engineering, built across grad school and personal time.",
+    "projectsHeadingBold": "work.",
+    "experienceSubheading": "Healthcare IAM, CIAM in financial services, and now Auth0 platform consulting at Okta.",
+    "experienceHeadingBold": "practice."
+  },
+  "education": [
+    {
+      "id": "clemson",
+      "accent": "rgba(245, 102, 0, 0.25)",
+      "degree": "M.S. Computer Science",
+      "period": "Aug 2022 – May 2024",
+      "school": "Clemson University",
+      "location": "Clemson, SC"
+    },
+    {
+      "id": "iem",
+      "accent": "rgba(0, 86, 179, 0.25)",
+      "degree": "B.Tech. Computer Science and Engineering",
+      "period": "Apr 2016 – Jul 2020",
+      "school": "Institute of Engineering and Management",
+      "location": "Kolkata, India"
     }
   ],
   "experience": [
     {
       "id": "okta",
-      "role": "Technical Consultant",
-      "company": "Okta",
-      "contractInfo": null,
       "logo": "okta",
-      "period": "Feb 2026 – Present",
-      "location": "Charlotte, NC · Remote",
+      "role": "Technical Consultant",
+      "tags": [
+        "Auth0",
+        "Auth0 for AI Agents",
+        "CIAM",
+        "OAuth 2.0",
+        "OIDC",
+        "Passkeys"
+      ],
       "type": "Full-time",
       "color": "from-blue-500 to-indigo-600",
       "accent": "rgba(59, 130, 246, 0.25)",
-      "summary": "Technical Consultant supporting enterprise Auth0 and CIAM implementations, with a focus on secure authentication, authorization, extensibility, and IAM patterns for AI agents.",
+      "period": "Feb 2026 – Present",
+      "company": "Okta",
+      "summary": "I lead Auth0 deployments and migrations for enterprise customers and am the go-to on Auth0 for AI Agents.",
+      "location": "Seattle, WA · Remote",
       "highlights": [
-        "Lead customer consultation and integrations sessions for Auth0 CIAM across web, mobile, SPA, API, B2B, and B2C workloads, translating business requirements into secure implementation plans.",
-        "Advise on IAM for AI agents, including agent authorization, delegated access, token exchange patterns, consent, scoped API access, and secure user-to-agent interactions.",
-        "Implement and optimize Universal Login, Organizations, Actions, MFA, Attack Protection, RBAC, custom domains, and enterprise/social identity provider integrations.",
-        "Troubleshoot OAuth 2.0, OpenID Connect, SAML, token claims, sessions, redirects, extensibility code, and federation issues across production Auth0 tenants.",
-        "Partner with Sales, Solutions Engineering, Support, and Product to unblock deployments, improve adoption, and feed customer requirements back into platform teams.",
-        "Create reusable implementation guidance for CIAM security, Zero Trust access, API authorization, and operational readiness."
+        "Led a 300M+ user migration from public to private Auth0 cloud with phased cutover and zero unplanned downtime to login and MFA.",
+        "Run onboarding workshops on Universal Login, Organizations, Actions, MFA, Passkeys and Attack Protection for web, mobile and API teams.",
+        "Advise customers on identity for AI agents: token vaulting, scoped delegation, machine to machine auth and consent.",
+        "Wrote migration playbooks and reference builds that the consulting org now uses to onboard customers faster."
       ],
-      "tags": [
-        "Auth0",
-        "CIAM",
-        "IAM for AI Agents",
-        "OAuth 2.0",
-        "OIDC",
-        "SAML"
-      ]
+      "contractInfo": null
     },
     {
       "id": "fifth-third",
-      "role": "Security Engineer II, CIAM",
-      "company": "Fifth Third Bank",
-      "contractInfo": "Contractor via CBTS",
       "logo": "fifth-third",
-      "period": "Jun 2024 – Dec 2025",
-      "location": "Charlotte, NC · Remote",
-      "type": "Contract",
-      "color": "from-emerald-500 to-teal-600",
-      "accent": "rgba(16, 185, 129, 0.25)",
-      "summary": "CIAM engineer for the Newline commercial banking platform. Owned production Auth0 operations, hardened authentication flows, and planned the target-state migration architecture from Auth0 to Ping Identity with zero unplanned downtime.",
-      "highlights": [
-        "Owned production Auth0 tenant operations for Newline, including tenant configuration, custom domains, application onboarding, release support, and day-two operations.",
-        "Designed and operated SSO and MFA journeys using OAuth 2.0, OpenID Connect, and SAML, aligned to Zero Trust principles and financial-services security standards.",
-        "Planned and architected the Auth0-to-Ping Identity migration strategy, covering gap analysis, target-state design, schema planning, attribute mapping, claim design, user profile migration, app re-onboarding, and cutover testing.",
-        "Built Auth0 Actions, Rules, and Hooks in JavaScript and REST APIs for token enrichment, registration, credential recovery, and step-up authentication.",
-        "Implemented Terraform-based CI/CD for IAM configuration using GitHub and Jenkins, creating version-controlled, auditable, approval-gated promotion paths across environments.",
-        "Partnered with application, infrastructure, HR, and security teams to improve lifecycle access patterns, reduce CIAM incidents, and support audit readiness."
-      ],
+      "role": "Security Engineer II, CIAM",
       "tags": [
         "Auth0",
         "CIAM",
+        "Adaptive MFA",
         "OAuth 2.0",
-        "OIDC",
         "SAML",
         "Terraform"
-      ]
+      ],
+      "type": "Contract",
+      "color": "from-emerald-500 to-teal-600",
+      "accent": "rgba(16, 185, 129, 0.25)",
+      "period": "Jun 2024 – Dec 2025",
+      "company": "Fifth Third Bank",
+      "summary": "Owned production Auth0 for Newline, Fifth Third's commercial banking platform, and planned its move to a new identity platform.",
+      "location": "Charlotte, NC · Remote",
+      "highlights": [
+        "Stood up and ran the production Auth0 tenant for external banking customers and internal staff.",
+        "Designed SSO, adaptive MFA and step-up flows over OAuth 2.0, OIDC and SAML, tuned to commercial banking risk.",
+        "Built Auth0 Actions, Rules and Hooks for token enrichment, registration, credential recovery and risk checks.",
+        "Moved identity config to Terraform with GitHub and Jenkins CI/CD and watched auth health in Splunk and Dynatrace, cutting incidents and audit findings."
+      ],
+      "contractInfo": "Contractor via CBTS"
     },
     {
       "id": "cardinal",
-      "role": "IAM Systems Engineer",
-      "company": "Cardinal Health",
-      "contractInfo": "Consultant via TCS",
       "logo": "cardinal",
-      "period": "Jul 2020 – Aug 2022",
-      "location": "Kolkata, India · Remote",
-      "type": "Consultant",
-      "color": "from-rose-500 to-red-600",
-      "accent": "rgba(244, 63, 94, 0.25)",
-      "summary": "Okta SME and IAM platform engineer for a regulated healthcare enterprise, supporting 22,000+ workforce identities, 100+ federated applications, and core access governance workflows.",
-      "highlights": [
-        "Served as Okta subject matter expert for 22,000+ workforce identities across cloud, on-prem, B2E, B2B, and B2C application environments.",
-        "Led an 8-engineer team through migration of legacy applications to Okta-based SSO, federating 100+ applications with SAML and Active Directory integrations.",
-        "Operated SailPoint IdentityIQ for account aggregation, connector configuration, access governance, and joiner-mover-leaver workflows across AD, Okta, and enterprise systems.",
-        "Partnered with CyberArk and SailPoint teams to improve privileged access patterns, reduce unmanaged administrator access, and strengthen identity governance controls.",
-        "Supported Linux and Red Hat infrastructure, proxy services, and IAM platform operations, automating upgrade routines and reducing change-window risk.",
-        "Deployed and tuned MFA and adaptive access policies across legacy and cloud platforms aligned to HIPAA, SOC 2, ISO 27001, and enterprise security requirements."
-      ],
+      "role": "IAM Systems Engineer",
       "tags": [
         "Okta",
         "SailPoint IIQ",
         "CyberArk",
         "SAML",
         "MFA",
-        "Identity Governance"
-      ]
+        "HIPAA"
+      ],
+      "type": "Consultant",
+      "color": "from-rose-500 to-red-600",
+      "accent": "rgba(244, 63, 94, 0.25)",
+      "period": "Jul 2020 – Aug 2022",
+      "company": "Cardinal Health",
+      "summary": "Okta lead for 22,000+ healthcare workforce identities. Ran the move off CA SiteMinder.",
+      "location": "Kolkata, India · Remote",
+      "highlights": [
+        "Led 8 engineers migrating from CA SiteMinder to Okta, federating 100+ B2E, B2B and B2C apps.",
+        "Designed SSO with SAML 2.0, OIDC and OAuth 2.0 across on-prem and cloud apps, aligned to SOC 2, ISO 27001 and HIPAA.",
+        "Ran SailPoint IdentityIQ joiner, mover and leaver workflows and worked with CyberArk teams to cut orphaned admin access.",
+        "Rolled out MFA and adaptive MFA across legacy and cloud platforms."
+      ],
+      "contractInfo": "Consultant via TCS"
     },
     {
       "id": "nokia",
-      "role": "Software Development Intern",
-      "company": "Nokia Networks",
-      "contractInfo": null,
       "logo": "nokia",
-      "period": "Jan 2019 – Feb 2019",
-      "location": "New Delhi, India",
-      "type": "Internship",
-      "color": "from-sky-500 to-blue-600",
-      "accent": "rgba(14, 165, 233, 0.25)",
-      "summary": "Software development intern building automation and internal tooling for network operations, with an early focus on secure APIs, logging, and credential handling.",
-      "highlights": [
-        "Built JavaScript and Python automation scripts and internal APIs to streamline deployment, environment setup, and operational workflows for network tooling.",
-        "Designed routines for logging, health checks, credential handling, and access control, building a foundation for later IAM and security engineering work."
-      ],
+      "role": "Software Development Intern",
       "tags": [
         "JavaScript",
         "Python",
         "Automation",
         "APIs"
-      ]
+      ],
+      "type": "Internship",
+      "color": "from-sky-500 to-blue-600",
+      "accent": "rgba(14, 165, 233, 0.25)",
+      "period": "Jan 2019 – Feb 2019",
+      "company": "Nokia Networks",
+      "summary": "Two-month internship building automation and internal tools for network operations.",
+      "location": "New Delhi, India",
+      "highlights": [
+        "Wrote JavaScript and Python scripts and internal APIs that sped up deployments and environment setup.",
+        "Added logging, health checks and credential handling to internal tools. My first real security work."
+      ],
+      "contractInfo": null
     }
   ],
-  "education": [
+  "highlights": [
     {
-      "id": "clemson",
-      "school": "Clemson University",
-      "degree": "M.S. Computer Science",
-      "period": "Aug 2022 – May 2024",
-      "location": "Clemson, SC",
-      "accent": "rgba(245, 102, 0, 0.25)"
+      "label": "Users migrated",
+      "value": "300M+",
+      "detail": "Public to private Auth0 cloud, zero unplanned login downtime"
     },
     {
-      "id": "iem",
-      "school": "Institute of Engineering and Management",
-      "degree": "B.Tech. Computer Science and Engineering",
-      "period": "Apr 2016 – Jul 2020",
-      "location": "Kolkata, India",
-      "accent": "rgba(0, 86, 179, 0.25)"
+      "label": "Workforce identities",
+      "value": "22,000+",
+      "detail": "Run on Okta for a global healthcare company"
+    },
+    {
+      "label": "Apps federated",
+      "value": "100+",
+      "detail": "Moved off CA SiteMinder, leading 8 engineers"
+    },
+    {
+      "label": "Years in identity",
+      "value": "5",
+      "detail": "Auth0 and Okta across banking, healthcare and SaaS"
     }
   ],
   "certifications": [
     {
       "name": "Auth0 Certified Developer",
-      "issuer": "Okta / Auth0",
-      "status": "in-progress",
-      "expected": "May 2026"
-    },
-    {
-      "name": "CISSP, Certified Information Systems Security Professional",
-      "issuer": "(ISC)²",
-      "status": "in-progress",
-      "expected": "Q3 2026"
+      "issuer": "Okta",
+      "status": "earned"
     },
     {
       "name": "Secure AI Workflows with Auth0 for AI Agents",
@@ -313,192 +548,6 @@
       "name": "Microsoft Azure: Identity and Access Management",
       "issuer": "LinkedIn Learning",
       "status": "earned"
-    }
-  ],
-  "projects": [
-    {
-      "id": "tripshare",
-      "title": "TripShare",
-      "date": "May 2024",
-      "category": "Web Engineering",
-      "icon": "map-pin",
-      "color": "from-cyan-500 to-blue-600",
-      "summary": "Smart carpooling platform with route-matching algorithms and full-stack user management.",
-      "description": "End-to-end platform that matches travelers with overlapping itineraries to cut cost and emissions. Built user registration, trip-matching, and a CMS-backed admin layer; layered in market-research-driven personas and a CI/CD pipeline for smooth deploys.",
-      "tags": [
-        "JavaScript",
-        "Python",
-        "CMS",
-        "CI/CD"
-      ]
-    },
-    {
-      "id": "fast-fuzzer",
-      "title": "FAST Firmware Fuzzer",
-      "date": "Feb 2024",
-      "category": "Cybersecurity",
-      "icon": "bug",
-      "color": "from-purple-500 to-pink-600",
-      "summary": "Advanced fuzzing framework that surfaces blind spots in firmware specifications and legacy systems.",
-      "description": "Evolved the SAFIREFUZZ framework into a fuzzer that fuses specification, code, and test-suite signals to expose SPEC blind spots in firmware. Resolved core bugs and added legacy-system integrations.",
-      "tags": [
-        "Fuzzing",
-        "Python",
-        "C++",
-        "Security Research"
-      ]
-    },
-    {
-      "id": "pizzeria",
-      "title": "Pizzeria Manager",
-      "date": "Oct 2023",
-      "category": "Web Engineering",
-      "icon": "pizza",
-      "color": "from-red-500 to-orange-600",
-      "summary": "Java + SQL backend simulating store operations, inventory, and order processing.",
-      "description": "OO-designed Java framework with a structured SQL schema for a simulated pizza chain, modular, scalable, and capable of handling multiple order types and inventory flows.",
-      "tags": [
-        "Java",
-        "SQL",
-        "AWS RDS"
-      ]
-    },
-    {
-      "id": "drown",
-      "title": "DROWN Attack",
-      "date": "Sep 2023",
-      "category": "Cybersecurity",
-      "icon": "lock",
-      "color": "from-rose-500 to-red-600",
-      "summary": "Executed the DROWN attack against SSLv2 servers to recover keys and demonstrate protocol risk.",
-      "description": "Performed a full DROWN (Decrypting RSA with Obsolete and Weakened eNcryption) assessment: brute-forced SSLv2 to recover the server's private key, then implemented mitigation strategies.",
-      "tags": [
-        "Cryptography",
-        "RSA",
-        "C",
-        "TLS"
-      ]
-    },
-    {
-      "id": "space-hangman",
-      "title": "Space Hangman",
-      "date": "Sep 2023",
-      "category": "Web Engineering",
-      "icon": "rocket",
-      "color": "from-violet-500 to-fuchsia-600",
-      "summary": "Flask + HTML5 web game that wires multiple external APIs into a celestial Hangman.",
-      "description": "Reimagined Hangman with a space theme. Flask backend, HTML5/CSS frontend, and several external APIs woven in to keep gameplay dynamic.",
-      "tags": [
-        "Python",
-        "Flask",
-        "HTML5",
-        "CSS"
-      ]
-    },
-    {
-      "id": "sysmon",
-      "title": "System Monitoring Tool",
-      "date": "Apr 2023",
-      "category": "Cybersecurity",
-      "icon": "activity",
-      "color": "from-emerald-500 to-teal-600",
-      "summary": "Python CLI for real-time tracking of CPU, memory, and network metrics with anomaly alerts.",
-      "description": "Built around psutil for collection and matplotlib for live visualization, the tool surfaces CPU load, memory pressure, and network activity, with alerting for anomalous behavior.",
-      "tags": [
-        "Python",
-        "psutil",
-        "Monitoring"
-      ]
-    },
-    {
-      "id": "voicerx",
-      "title": "VoiceRx",
-      "date": "Sep 2022",
-      "category": "Automation & IoT",
-      "icon": "mic",
-      "color": "from-teal-500 to-emerald-600",
-      "summary": "Voice-driven EMR interface using Amazon Alexa to automate clinical data entry.",
-      "description": "An Alexa-powered voice UI for Electronic Medical Records that automates data entry and updates so clinicians can interact with EMRs via voice, streamlining workflows and reducing administrative burden.",
-      "tags": [
-        "Alexa API",
-        "HCI",
-        "Healthcare"
-      ]
-    },
-    {
-      "id": "healthfit",
-      "title": "HealthFit",
-      "date": "Jun 2022",
-      "category": "Web Engineering",
-      "icon": "heart",
-      "color": "from-lime-500 to-green-600",
-      "summary": "Wellness app providing personalized daily caloric targets via REST APIs.",
-      "description": "Python + REST application that recommends daily caloric intake based on a user's weight management goals, backed by research-grounded heuristics and OAuth-secured endpoints.",
-      "tags": [
-        "Python",
-        "REST",
-        "OAuth"
-      ]
-    },
-    {
-      "id": "tweetfeel",
-      "title": "TweetFeel",
-      "date": "Nov 2019",
-      "category": "AI & Data",
-      "icon": "twitter",
-      "color": "from-sky-500 to-blue-600",
-      "summary": "NLP sentiment engine using RNNs to extract emotional structure from tweets.",
-      "description": "End-to-end NLP pipeline: text preprocessing, embeddings, and recurrent neural networks to surface emotional structure from tweet streams.",
-      "tags": [
-        "Python",
-        "NLP",
-        "RNN"
-      ]
-    },
-    {
-      "id": "neural-style",
-      "title": "Neural Style Transfer",
-      "date": "May 2019",
-      "category": "AI & Data",
-      "icon": "palette",
-      "color": "from-pink-500 to-rose-600",
-      "summary": "Deep-learning app that fuses content and style images for art and therapeutic use.",
-      "description": "Implemented neural style transfer in Python, combining a content image with the style of a reference image via deep networks and optimization, with explorations into therapeutic applications.",
-      "tags": [
-        "Python",
-        "Deep Learning",
-        "Computer Vision"
-      ]
-    },
-    {
-      "id": "iot-automation",
-      "title": "IoT Home Automation",
-      "date": "Jan 2019",
-      "category": "Automation & IoT",
-      "icon": "cpu",
-      "color": "from-amber-500 to-orange-600",
-      "summary": "Java-based NodeMCU firmware enabling remote control of traditional appliances.",
-      "description": "NodeMCU + Java firmware that brings legacy appliances onto the network at low cost, a take on accessible smart-home retrofitting.",
-      "tags": [
-        "IoT",
-        "Java",
-        "NodeMCU"
-      ]
-    },
-    {
-      "id": "fraud",
-      "title": "Fraud Detection",
-      "date": "Jun 2018",
-      "category": "AI & Data",
-      "icon": "credit-card",
-      "color": "from-blue-500 to-indigo-600",
-      "summary": "ML pipeline using K-Nearest Neighbour tuned for highly imbalanced credit-transaction data.",
-      "description": "Built a KNN-based fraud detector with custom feature engineering, hyperparameter tuning, and tailored distance metrics. Evaluated with precision-recall curves and confusion matrices to maximize recall.",
-      "tags": [
-        "Python",
-        "KNN",
-        "ML"
-      ]
     }
   ]
 }

@@ -1,16 +1,17 @@
 {
   "name": "swapnil-portfolio-web",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "private": true,
   "scripts": {
     "dev": "node scripts/dev.mjs",
-    "prebuild": "node scripts/sync-content.mjs && node scripts/migrate-profile-20261118.mjs",
+    "prebuild": "node scripts/sync-content.mjs && node scripts/migrate-profile-20261118.mjs && node scripts/migrate-certs-20261123.mjs && node scripts/content-refresh-20261124.mjs && node scripts/migrate-headshot-20261124.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "sync:content": "node scripts/sync-content.mjs"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@vercel/analytics": "^1.4.1",
     "@vercel/blob": "^2.3.3",
     "framer-motion": "^11.11.17",

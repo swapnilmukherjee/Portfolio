@@ -1,0 +1,242 @@
+.section {
+  padding-top: clamp(96px, 14vh, 180px);
+  padding-bottom: clamp(96px, 14vh, 180px);
+}
+
+.head { display: grid; gap: 20px; margin-bottom: clamp(40px, 6vh, 72px); }
+.intro { margin: 0; color: var(--text-2); font-size: clamp(17px, 1.4vw, 20px); max-width: 60ch; }
+
+/* ---- Desktop default: horizontal flex row, GSAP adds the pin ---- */
+.pin {
+  overflow: clip;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(20px, 4vh, 40px);
+  min-height: 100svh;
+  padding-block: clamp(24px, 5vh, 56px);
+}
+
+.timeline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.line {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  background: var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.fill {
+  position: absolute;
+  inset: 0;
+  background: var(--c2);
+  transform-origin: left center;
+  transform: scaleX(1);
+  will-change: transform;
+}
+
+.track {
+  list-style: none;
+  margin: 0;
+  position: relative;
+  display: flex;
+  gap: 24px;
+  padding: 0;
+  padding-inline-start: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
+  will-change: transform;
+}
+
+.card {
+  position: relative;
+  flex: 0 0 auto;
+  width: min(860px, 62vw);
+  display: flex;
+  flex-direction: column;
+  padding: clamp(22px, 2.2vw, 32px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: transparent;
+  transition: background-color 300ms var(--ease-out), border-color 300ms var(--ease-out);
+}
+.card:last-child { margin-inline-end: var(--gutter); }
+.card[data-active="true"] { background: var(--raised); border-color: var(--line-strong); }
+
+.meta { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+.company {
+  margin: clamp(18px, 3vh, 32px) 0 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 118%;
+  font-size: clamp(44px, 4.4vw, 70px);
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  color: var(--text);
+  transition: color 300ms var(--ease-out);
+}
+.card[data-active="true"] .company { color: var(--c2); }
+
+.role { margin: 12px 0 0; font-size: 18px; font-weight: 600; color: var(--text); }
+.contract { margin: 6px 0 0; }
+.summary { margin: 16px 0 0; color: var(--text-2); font-size: 16px; line-height: 1.55; }
+
+.toggle { display: none; }
+
+.hl {
+  display: grid;
+  grid-template-rows: 1fr;
+  margin-top: 18px;
+}
+.hlInner { overflow: hidden; min-height: 0; }
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 28px;
+}
+.list li {
+  position: relative;
+  padding-inline-start: 20px;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+.list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  background: var(--c2);
+}
+
+.tags {
+  list-style: none;
+  margin: auto 0 0;
+  padding: 20px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tags li {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-2);
+}
+
+.dots { display: none; }
+
+/* ---- Rail: mobile, and desktop with reduced motion (no pin) ---- */
+@media (max-width: 799px), (prefers-reduced-motion: reduce) {
+  .list { grid-template-columns: 1fr; gap: 10px; }
+  .pin { min-height: 0; padding-block: 0; display: block; overflow: clip; }
+  .timeline { display: none; }
+
+  .track {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    padding-inline: var(--gutter);
+    gap: 12px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    align-items: stretch;
+  }
+  .track::-webkit-scrollbar { display: none; }
+  .track { will-change: auto; }
+
+  .card {
+    width: 86vw;
+    scroll-snap-align: start;
+    background: var(--raised);
+    padding: 22px;
+  }
+  .card:last-child { margin-inline-end: 0; }
+  .card[data-active="true"] { border-color: var(--line); }
+  .card[data-active="true"] .company { color: var(--text); }
+
+  .company { font-size: 40px; margin-top: 20px; }
+  .summary { font-size: 16px; }
+
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    min-height: 44px;
+    margin-top: 14px;
+    padding: 0 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text);
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 150ms var(--ease-out);
+  }
+  .toggle:active { background: var(--raised-2); }
+
+  .hl {
+    grid-template-rows: 0fr;
+    margin-top: 0;
+    visibility: hidden;
+    transition: grid-template-rows 300ms var(--ease-out), margin-top 300ms var(--ease-out), visibility 0s linear 300ms;
+  }
+  .hl[data-open="true"] {
+    grid-template-rows: 1fr;
+    margin-top: 14px;
+    visibility: visible;
+    transition: grid-template-rows 300ms var(--ease-out), margin-top 300ms var(--ease-out), visibility 0s;
+  }
+  .list li { font-size: 16px; }
+
+  .dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    margin-top: 16px;
+  }
+  .dot {
+    display: grid;
+    place-items: center;
+    min-width: 28px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .dot span {
+    display: block;
+    width: 8px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line-strong);
+    transition: width 300ms var(--ease-out), background-color 300ms var(--ease-out);
+  }
+  .dot[data-on="true"] span { width: 20px; background: var(--c2); }
+}
+
+@media (min-width: 800px) and (prefers-reduced-motion: reduce) {
+  .card { width: min(560px, 80vw); }
+  .dots { padding-inline: var(--gutter); }
+}
+
+@media (max-width: 799px) {
+  .section { padding-bottom: calc(clamp(96px, 14vh, 180px) + 16px); }
+}
+
+.num { font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+.card[data-active="true"] .num { color: var(--c2); }

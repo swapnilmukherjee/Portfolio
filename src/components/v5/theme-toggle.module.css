@@ -1,0 +1,36 @@
+.toggle {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  background: var(--raised);
+  color: var(--text);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  transition: transform 140ms var(--ease-out), border-color 200ms var(--ease-out);
+}
+.toggle:active { transform: scale(0.94); }
+@media (hover: hover) and (pointer: fine) {
+  .toggle:hover { border-color: var(--line-strong); }
+}
+
+.pill { width: 44px; height: 44px; border-radius: 999px; }
+.tab { width: 48px; height: 48px; border-radius: 16px; background: var(--text); color: var(--bg); border-color: transparent; }
+
+.icon { width: 20px; height: 20px; overflow: visible; }
+
+.core { transform-origin: 12px 12px; transition: transform 500ms var(--ease-out); }
+.bite { transition: transform 500ms var(--ease-out); }
+.rays { transform-origin: 12px 12px; transition: transform 500ms var(--ease-out), opacity 300ms var(--ease-out); }
+
+/* Dark: crescent moon, no rays */
+.toggle[data-dark="true"] .core { transform: scale(1.35); }
+.toggle[data-dark="true"] .bite { transform: translate(0, 0); }
+.toggle[data-dark="true"] .rays { opacity: 0; transform: rotate(-60deg) scale(0.6); }
+
+/* Light: full sun with rays */
+.toggle[data-dark="false"] .core { transform: scale(1); }
+.toggle[data-dark="false"] .bite { transform: translate(9px, -9px); }
+.toggle[data-dark="false"] .rays { opacity: 1; transform: rotate(0deg) scale(1); }
