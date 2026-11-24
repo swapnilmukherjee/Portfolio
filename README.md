@@ -198,10 +198,9 @@ want to overwrite Postgres from the bundled JSON seed.
 
 ## Design notes (v5)
 
-See `DESIGN.md`. The hero shows a real HS256 JWT built from CMS content and decodes it on scroll.
+The hero shows a real HS256 JWT built from CMS content and decodes it on scroll.
 Dark "Night shift" and light "Fog" themes, token tricolor (orange header, blue payload, teal signature),
-Archivo variable display type, Hanken Grotesk body, IBM Plex Mono for code. Everything is code-drawn;
-the only image is the headshot. Mobile gets its own UI: bottom tab bar, tap-to-decode, swipe rails,
+Archivo variable display type, Hanken Grotesk body, IBM Plex Mono for code. Mobile gets its own UI: bottom tab bar, tap-to-decode, swipe rails,
 bottom-sheet project details. In-progress certifications are hidden on the page and removed from
 Postgres by `scripts/migrate-certs-20261123.mjs` on the next production build.
 

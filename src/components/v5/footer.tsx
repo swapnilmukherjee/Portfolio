@@ -8,7 +8,7 @@ export function Footer({ name }: { name: string }) {
     <footer className={styles.footer}>
       <div className={`wrap ${styles.row}`}>
         <span>
-          {name}, {new Date().getFullYear()}. Built in code, no generated assets.
+          © {new Date().getFullYear()} {name}
         </span>
         <VaultButton />
       </div>
