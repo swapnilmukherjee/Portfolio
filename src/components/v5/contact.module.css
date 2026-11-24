@@ -25,7 +25,8 @@
   margin-top: clamp(40px, 7vh, 72px);
 }
 
-.channel { position: relative; }
+.channel { position: relative; --acc: var(--c2); }
+.channel[data-kind="phone"] { --acc: var(--c1); }
 
 .big {
   display: grid;
@@ -47,7 +48,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--c2);
+  background: var(--acc, var(--c2));
   transform: translateY(101%);
   transition: transform 450ms var(--ease-out);
 }
@@ -75,7 +76,7 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .big:hover { color: var(--on-accent); border-color: var(--c2); }
+  .big:hover { color: var(--on-accent); border-color: var(--acc, var(--c2)); }
   .big:hover::before { transform: translateY(0); }
   .big:hover .kind { color: var(--on-accent); }
   .big:hover .arrow { transform: translate(3px, -3px); }
@@ -137,7 +138,7 @@
   .big { padding: 20px; padding-right: 20px; padding-bottom: 76px; row-gap: 12px; }
   .value { font-size: clamp(16px, 4.8vw, 22px); font-stretch: 88%; letter-spacing: -0.01em; overflow-wrap: normal; }
   .channel[data-kind="phone"] { order: -1; }
-  .channel[data-kind="phone"] .big { background: var(--c2); border-color: transparent; color: var(--on-accent); }
+  .channel[data-kind="phone"] .big { background: var(--acc); border-color: transparent; color: var(--on-accent); }
   .channel[data-kind="phone"] .kind { color: var(--on-accent); }
   .channel[data-kind="phone"] .copy { background: transparent; border-color: color-mix(in srgb, var(--on-accent) 35%, transparent); color: var(--on-accent); }
   .big::before { display: none; }

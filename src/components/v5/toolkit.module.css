@@ -30,8 +30,8 @@
   left: 0;
   bottom: 0;
   width: 56px;
-  height: 2px;
-  background: var(--c3);
+  height: 3px;
+  background: var(--acc, var(--c3));
   transform-origin: left center;
 }
 .catBtn { all: unset; }
@@ -57,7 +57,7 @@
   cursor: default;
   transition: border-color 150ms var(--ease-out), color 150ms var(--ease-out);
 }
-.tok:hover { border-color: var(--c2); color: var(--c2); }
+.tok:hover { border-color: var(--acc, var(--c2)); color: var(--acc, var(--c2)); }
 
 .chev { display: none; }
 
@@ -86,7 +86,7 @@
     transition: transform 300ms var(--ease-out);
     color: var(--muted);
   }
-  .open .chev { transform: rotate(180deg); color: var(--c3); }
+  .open .chev { transform: rotate(180deg); color: var(--acc, var(--c3)); }
   .panel {
     display: grid;
     grid-template-rows: 0fr;

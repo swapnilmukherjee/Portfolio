@@ -20,6 +20,8 @@ function withNumbers(text: string) {
   return parts.map((part, i) => (i % 2 ? <strong key={i} className={s.num}>{part}</strong> : part));
 }
 
+const ACCENTS = ["var(--c2)", "var(--c1)", "var(--c3)"];
+
 export function Sessions({ experience }: { experience: Experience[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
@@ -145,7 +147,7 @@ export function Sessions({ experience }: { experience: Experience[] }) {
         <p className={s.intro}>Five years of identity work across healthcare, banking and Okta.</p>
       </div>
 
-      <div className={s.pin} ref={pinRef}>
+      <div className={s.pin} ref={pinRef} style={{ ["--acc" as string]: ACCENTS[Math.max(active, 0) % ACCENTS.length] } as React.CSSProperties}>
         <div className={`wrap ${s.timeline}`} aria-hidden="true">
           <span className="t-meta">iat {iat}</span>
           <span className={s.line}>
@@ -159,7 +161,7 @@ export function Sessions({ experience }: { experience: Experience[] }) {
             const isOpen = !!open[e.id];
             const hlId = `hl-${e.id}`;
             return (
-              <li key={e.id} className={s.card} data-active={active === i ? "true" : "false"}>
+              <li key={e.id} className={s.card} data-active={active === i ? "true" : "false"} style={{ ["--acc" as string]: ACCENTS[i % ACCENTS.length] } as React.CSSProperties}>
                 <div className={`t-meta ${s.meta}`}>
                   <span>{e.period}</span>
                   <span>{e.location}</span>

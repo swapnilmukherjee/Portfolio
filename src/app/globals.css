@@ -27,6 +27,7 @@
 
   /* legacy channels (admin + tailwind tokens) */
   --bg-rgb: 9 11 13;
+  --glass-hi: rgb(255 255 255 / 0.07);
   --text-rgb: 232 236 239;
   color-scheme: dark;
 }
@@ -48,6 +49,7 @@
   --selection: rgb(11 102 184 / 0.22);
 
   --bg-rgb: 233 238 241;
+  --glass-hi: rgb(255 255 255 / 0.75);
   --text-rgb: 12 17 22;
   color-scheme: light;
 }

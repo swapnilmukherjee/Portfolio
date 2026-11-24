@@ -33,8 +33,9 @@
 .fill {
   position: absolute;
   inset: 0;
-  background: var(--c2);
+  background: var(--acc, var(--c2));
   transform-origin: left center;
+  transition: background-color 400ms var(--ease-out);
   transform: scaleX(1);
   will-change: transform;
 }
@@ -78,7 +79,7 @@
   color: var(--text);
   transition: color 300ms var(--ease-out);
 }
-.card[data-active="true"] .company { color: var(--c2); }
+.card[data-active="true"] .company { color: var(--acc, var(--c2)); }
 
 .role { margin: 12px 0 0; font-size: 18px; font-weight: 600; color: var(--text); }
 .contract { margin: 6px 0 0; }
@@ -114,7 +115,7 @@
   top: 0.55em;
   width: 6px;
   height: 6px;
-  background: var(--c2);
+  background: var(--acc, var(--c2));
 }
 
 .tags {
@@ -239,4 +240,4 @@
 }
 
 .num { font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
-.card[data-active="true"] .num { color: var(--c2); }
+.card[data-active="true"] .num { color: var(--acc, var(--c2)); }

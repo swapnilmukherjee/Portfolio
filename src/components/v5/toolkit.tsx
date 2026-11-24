@@ -57,7 +57,7 @@ export function Toolkit({ skills }: { skills: SkillGroup[] }) {
             const open = i === openIdx;
             const pid = `toolkit-panel-${i}`;
             return (
-              <li key={g.category} data-row className={`${styles.row} ${open ? styles.open : ""}`}>
+              <li key={g.category} data-row className={`${styles.row} ${open ? styles.open : ""}`} style={{ ["--acc" as string]: ["var(--c2)", "var(--c1)", "var(--c3)"][i % 3] } as React.CSSProperties}>
                 <h3 className={styles.cat}>
                   {mobile ? (
                     <button

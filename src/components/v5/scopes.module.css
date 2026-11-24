@@ -89,6 +89,8 @@
   transition: color 200ms var(--ease-out);
 }
 .metaYear { opacity: 0.8; }
+.metaCat { display: inline-flex; align-items: center; gap: 8px; }
+.catDot { width: 7px; height: 7px; border-radius: 2px; background: var(--accent, var(--c2)); flex: 0 0 auto; }
 .row:focus-visible { outline-offset: -3px; border-radius: 0; }
 
 .listDim .row { color: var(--muted); }
