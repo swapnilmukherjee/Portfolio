@@ -34,7 +34,8 @@
   background: var(--line-strong);
   transform-origin: left center;
 }
-.metric:first-child .rule { background: var(--c2); }
+.rule { background: var(--acc, var(--line-strong)); height: 3px; }
+.suffix { color: var(--acc, var(--text)); }
 .label {
   order: 2;
   margin: 10px 0 0;

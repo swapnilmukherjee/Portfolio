@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import styles from "./nav.module.css";
 import { ThemeToggle } from "./theme-toggle";
@@ -17,6 +17,22 @@ export function Nav({ name }: { name: string }) {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const taps = useRef<number[]>([]);
+  const tabbarRef = useRef<HTMLElement>(null);
+  const [lens, setLens] = useState({ x: 0, w: 0, on: false });
+
+  // Glide the glass lens under the active tab (re-measured on resize).
+  useLayoutEffect(() => {
+    const bar = tabbarRef.current;
+    if (!bar) return;
+    const place = () => {
+      const tab = active ? bar.querySelector<HTMLElement>(`a[href="#${active}"]`) : null;
+      // Off: fade out in place rather than sliding back to the start.
+      setLens((prev) => (tab && tab.offsetWidth ? { x: tab.offsetLeft, w: tab.offsetWidth, on: true } : { ...prev, on: false }));
+    };
+    place();
+    window.addEventListener("resize", place);
+    return () => window.removeEventListener("resize", place);
+  }, [active]);
 
   // Hide the desktop bar on scroll down, bring it back on scroll up.
   useEffect(() => {
@@ -97,7 +113,13 @@ export function Nav({ name }: { name: string }) {
         </button>
       </div>
 
-      <nav aria-label="Sections" className={styles.tabbar}>
+      <nav aria-label="Sections" className={styles.tabbar} ref={tabbarRef}>
+        <span
+          className={styles.lens}
+          aria-hidden="true"
+          data-on={lens.on ? "true" : "false"}
+          style={{ ["--lx" as string]: `${lens.x}px`, ["--lw" as string]: `${lens.w}px` } as React.CSSProperties}
+        />
         {LINKS.map((l) => (
           <a key={l.id} href={`#${l.id}`} className={styles.tab} aria-current={active === l.id ? "true" : undefined}>
             <svg viewBox="0 0 24 24" aria-hidden="true">

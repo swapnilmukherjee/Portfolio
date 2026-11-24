@@ -22,6 +22,11 @@ function format(p: NonNullable<ReturnType<typeof parseMetric>>, v: number) {
   return `${p.prefix}${body}${p.suffix}`;
 }
 
+/** "300M+" -> "300", "22,000+" -> "22,000": the part that counts up. */
+function numberPart(value: string) {
+  return value.match(/^[^\d]*[\d,.]+/)?.[0] ?? value;
+}
+
 /** The about paragraph, read word by word, then the numbers that back it up. */
 export function Statement({ text, metrics }: { text: string; metrics: Highlight[] }) {
   const root = useRef<HTMLElement>(null);
@@ -100,12 +105,13 @@ export function Statement({ text, metrics }: { text: string; metrics: Highlight[
 
         {metrics.length > 0 && (
           <dl className={styles.metrics}>
-            {metrics.map((m) => (
-              <div key={m.label} className={styles.metric}>
+            {metrics.map((m, i) => (
+              <div key={m.label} className={styles.metric} style={{ ["--acc" as string]: ["var(--c2)", "var(--c1)", "var(--c3)"][i % 3] } as React.CSSProperties}>
                 <span className={styles.rule} aria-hidden="true" />
                 <dt className={styles.label}>{m.label}</dt>
-                <dd className={styles.value} data-value={m.value}>
-                  {m.value}
+                <dd className={styles.value}>
+                  <span data-value={numberPart(m.value)}>{numberPart(m.value)}</span>
+                  <span className={styles.suffix}>{m.value.slice(numberPart(m.value).length)}</span>
                 </dd>
                 <dd className={styles.detail}>{m.detail}</dd>
               </div>

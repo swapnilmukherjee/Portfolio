@@ -284,7 +284,7 @@ export function Scopes({ projects }: { projects: Project[] }) {
                 >
                   <span className={styles.title}>{p.title}</span>
                   <span className={`${styles.meta} t-meta`}>
-                    <span className={styles.metaCat}>{p.category}</span>
+                    <span className={styles.metaCat}><span className={styles.catDot} aria-hidden="true" />{p.category}</span>
                     <span className={styles.metaYear}>{year(p.date)}</span>
                   </span>
                 </button>
