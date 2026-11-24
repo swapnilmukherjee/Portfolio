@@ -1,32 +1,62 @@
-# Connection fieldbook / supplied palettes
+# Design: v5 "Signed token"
 
-A personal engineering portfolio. Full name in the header, no arbitrary logo. Archivo display and Manrope body. A borderless transparent portrait cutout sits directly in the colored, textured hero. There is no arch, card, border or sticker around the person. The three access cards sit in a separate identity scene below the introduction, so no UI covers the face or torso. Career descriptions remain visible beside a sticky employer index. Project diagrams explain actual mechanisms. Credentials are readable records rather than stamps.
+Research inputs: anthropics/skills frontend-design, pbakaus/impeccable, Leonxlnx/taste-skill,
+emilkowalski/skills, greensock/gsap-skills, nextlevelbuilder/ui-ux-pro-max-skill.
 
-## Color
-Light: Sky Blue #0593C6 is the dominant page surface; White #FCFFFF is reserved for display type and glass highlights; Hot Pink #D83995 is the accent. No large white page fields.
-Dark: Midnight Black #02070A, Electric Blue #0297DE, Cantaloupe Orange #FC734D.
-Source: user-uploaded palette screenshots, IMG_1333.jpeg and IMG_1334.jpeg. No uploaded screenshot or person from those references is embedded in the site.
+## Easter eggs
+1. Click the teal signature in the hero token: it is verified in the browser with SubtleCrypto (HS256).
+2. Backtick, typing `whoami`, or tapping the mobile monogram five times opens the access terminal.
+3. Konami code (or the swipe version on touch) grants admin scope for 12 seconds.
+4. Hold the theme toggle for Seattle rain.
+5. Open dev tools and call `swapnil.decode()`.
+6. Stay until the footer session timer expires.
+The hero token is a real JWT built from CMS content in `src/lib/token.ts`.
 
-White and midnight are shared neutral text colors; midnight carries small body text on the sky-blue light surface. Reference sky blue / white is 3.48:1, suitable for large type rather than small text. Pink / midnight is 4.76:1; orange / midnight is 7.42:1. Accent fills use midnight text. Border, secondary-text and surface shades derive from the palette.
+## Contributor rules
 
-## Glass
-Only the theme/menu controls and three floating hero access cards get translucent material, inset highlights, a soft shadow and restrained press feedback. The selected access card stays solid for contrast. Other access cards use small SVG backdrop displacement where supported, plus blur/saturation as a Safari/Firefox fallback. The text remains sharp. No glass on job descriptions, project tables, credentials or contact fields. Reduced transparency and increased contrast restore solid surfaces. The glass tint changes with the selected palette.
+Concept: "Signed token". Swapnil is an identity engineer (Okta / Auth0, CIAM, IAM for AI agents).
+The page is a JWT being decoded. Hero shows a real HS256 token; scroll decodes it into his claims.
+Sections borrow identity vocabulary, lightly: "Session history" (experience), "Granted scopes" (projects),
+"Toolkit" (skills), "Verified credentials" (certs + education), "Contact me".
 
-Guidance: https://github.com/Ghoscro/liquid-glass-design-skill and Apple's HIG Materials. Downloaded in design-tools/liquid-glass and linked from the local agent skills directory. CSS-first, no new runtime dependency.
+## Hard rules
+- Everything is code: CSS, inline SVG, canvas. No generated images, no stock assets, no icon fonts, no emoji.
+  The only raster image on the site is the real headshot (profile.headshotUrl or /headshot.jpg).
+- Content comes from props (CMS). Never invent facts, numbers, dates, links or testimonials.
+- Next.js 14 App Router, React 18, TypeScript strict. Client components start with "use client".
+- Styling: one CSS Module per component (`name.module.css`) next to it. Use the CSS variables from
+  `src/app/globals.css` only — never hard-code theme colors:
+  `--bg --raised --raised-2 --line --line-strong --text --text-2 --muted --c1 --c2 --c3 --on-accent`
+  `--font-display --font-body --font-code --ease-out --ease-inout --ease-drawer --ease-arrive --gutter --max --radius --radius-sm`
+  Global helpers: `.wrap` (centered max-width container with gutters), `.t-section` (section heading), `.t-meta`, `.t-code`, `.sr-only`.
+  Display type: `font-family: var(--font-display)` is Archivo variable with `font-stretch` 62%–125% and weight 100–900.
+- Theme is a class on <html> (`dark` / `light`); the variables already switch. Both themes must look right.
+- Mobile breakpoint: `@media (max-width: 799px)` in CSS, `"(max-width: 799px)"` in gsap.matchMedia.
+  Mobile is a DIFFERENT UI, not a squished desktop: horizontal swipe rails with scroll-snap, bottom sheets,
+  big tap targets (≥44px), 16px+ body text. A fixed bottom tab bar ~80px tall exists on mobile:
+  leave `padding-bottom` room for it in anything fixed/sticky at the bottom.
+- Motion: GSAP 3 + ScrollTrigger via `import { gsap, ScrollTrigger, useGSAP } from "@/components/v5/gsap"`
+  (already registered). Use `useGSAP(() => { const mm = gsap.matchMedia(); mm.add({...}) }, { scope: ref })`.
+  Only animate transform / opacity / clip-path (and font-stretch on display type sparingly).
+  Easing: ease-out `cubic-bezier(0.23,1,0.32,1)` (GSAP: "power3.out" / "expo.out"), never ease-in for UI, no bounce.
+  UI transitions 150–300ms, overlays 300–500ms. Scrub with a number (`scrub: 0.6`).
+  `prefers-reduced-motion: reduce` → no spatial movement, content fully visible. Content must be visible with JS off
+  (set initial hidden states inside GSAP, not in CSS).
+  Do NOT add fade-up-on-scroll to every block. Each section gets ONE authored, purposeful motion idea.
+- Framer Motion v11 is available for gesture/drawer UI (bottom sheets) if useful.
+- Accessibility: real <button>/<a>, aria-labels on icon buttons, visible focus (global :focus-visible exists),
+  Escape closes overlays, focus returns to the trigger.
+- Copy: no eyebrow/kicker labels above headings, no "01/02/03" numbering, no em dashes, no exclamation marks,
+  no "seamless/robust/unlock/elevate", no tracked ALL-CAPS labels, no gradient text, no glassmorphism,
+  no identical icon+heading+text card grids, no hover-lift on every card.
+- Easter eggs: `import { unlockSecret } from "@/lib/secrets"` and call `unlockSecret("id")` when found.
+- Don't edit files you weren't assigned. Don't run `npm run dev`/`next build`/`next start`.
+  Check types with `npx tsc --noEmit -p .` (errors from other contributors' in-progress files are OK; fix yours).
 
-## Motion and function
-Hero separation; connection-path drawing; current-job tracking; short project-specific mechanism animations; credential wipe reveals; scroll-linked contact type. Native scroll, no cursor replacement or endless logo loops. Reduced motion keeps content visible and skips GSAP choreography. CMS content, project details, resume route, contact endpoint and draft mode remain intact.
+## Palette (for reference; use the variables)
+Dark: bg #090B0D, raised #111417, line #22272C, text #E8ECEF, muted #8E979F, c1 #FF7A4D (orange), c2 #4FB8FF (blue), c3 #2BD4B4 (teal)
+Light "Fog": bg #E9EEF1, raised #F7F9FA, line #C9D2D8, text #0C1116, muted #4D5963, c1 #C2410C, c2 #0B66B8, c3 #0A7F6C
 
-Figma Starter MCP allowance was exhausted in the prior redesign. The older Figma boards are not current; implementation and this document are authoritative.
-
-## Texture and color balance
-The reference websites use color as illuminated fields, rather than isolated accents. Light mode is blue-led with a pink light falloff. Dark mode uses a midnight ground, electric-blue light and a smaller orange falloff. A static fine-grain SVG and vertical optical ridges give the hero tactile depth. Text stays on the calmer left side; the stronger texture sits behind the portrait. Project and contact surfaces carry a much quieter version of the grain. Increased contrast removes texture and transparency. No animated noise, grain on text glyphs, or heavy full-page blur.
-
-## Original photo and code-only treatment
-The site displays the unchanged original public/headshot.jpg. A deterministic SVG silhouette in public/portrait-mask.svg masks its studio backdrop. scripts/create-portrait-mask.py builds that silhouette with classical OpenCV color/edge optimization. No generative image or altered portrait RGB pixels are shipped. The earlier generated cutout is removed from the repository.
-
-## Mobile behavior
-At 320–760px, the hero has an intentional phone layout: name, side-by-side introduction and original portrait, actions, then a full-width Explore the connections link. That link targets the identity scene using a native anchor. Heading and body type use a compact hierarchy. Project SVG text is replaced with readable HTML labels, permission rows use larger labels, and other flows stack vertically. Controls are at least 44px high and form inputs use 16px type. Mobile animations use short, small movements; the portrait has no parallax or opacity animation. Filtering projects no longer restarts page-wide GSAP effects. Reduced motion and transparency keep solid, visible content.
-
-## Texture
-The straight stripe overlay is replaced by broad refracted light using CSS gradients and an inline SVG displacement filter. Fine grain remains a small procedural SVG. No generated raster texture or image is used.
+## Types
+`import type { Content, Experience, Project, SkillGroup, Certification, Education } from "@/data/content-types"`.
+Sample data: `src/data/content.json`.

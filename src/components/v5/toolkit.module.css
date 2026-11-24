@@ -1,0 +1,103 @@
+.section {
+  padding-block: clamp(96px, 14vh, 180px);
+}
+.list {
+  list-style: none;
+  margin: clamp(40px, 6vw, 80px) 0 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: clamp(24px, 4vw, 64px);
+  padding-block: clamp(28px, 3.4vw, 44px);
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+}
+.cat {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-stretch: 108%;
+  font-size: clamp(22px, 2.2vw, 28px);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.catText { position: relative; display: inline-block; padding-bottom: 12px; }
+.rule {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 56px;
+  height: 2px;
+  background: var(--c3);
+  transform-origin: left center;
+}
+.catBtn { all: unset; }
+
+.panel { min-width: 0; }
+.scope {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tok {
+  display: inline-block;
+  font-family: var(--font-code);
+  font-size: 15px;
+  line-height: 1.5;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text-2);
+  cursor: default;
+  transition: border-color 150ms var(--ease-out), color 150ms var(--ease-out);
+}
+.tok:hover { border-color: var(--c2); color: var(--c2); }
+
+.chev { display: none; }
+
+@media (max-width: 799px) {
+  .section { padding-block: clamp(72px, 12vh, 120px); }
+  .list { margin-top: 36px; }
+  .row { display: block; padding-block: 0; }
+  .cat { font-size: 22px; }
+  .catBtn {
+    all: unset;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    min-height: 64px;
+    cursor: pointer;
+  }
+  .catBtn:focus-visible { outline: 2px solid var(--c2); outline-offset: -2px; border-radius: 6px; }
+  .catText { padding-bottom: 0; }
+  .rule { display: none; }
+  .chev {
+    display: block;
+    flex-shrink: 0;
+    transition: transform 300ms var(--ease-out);
+    color: var(--muted);
+  }
+  .open .chev { transform: rotate(180deg); color: var(--c3); }
+  .panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 300ms var(--ease-out);
+  }
+  .open .panel { grid-template-rows: 1fr; }
+  .panelInner { overflow: hidden; min-height: 0; }
+  .scope { padding-bottom: 24px; }
+  .tok { font-size: 15px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel, .chev { transition: none; }
+}

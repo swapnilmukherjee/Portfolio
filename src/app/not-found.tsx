@@ -2,15 +2,13 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <main className="grid min-h-screen place-items-center px-6 text-center">
+    <main style={{ minHeight: "100svh", display: "grid", placeItems: "center", padding: "24px", textAlign: "center" }}>
       <div>
-        <p className="eyebrow">404</p>
-        <h1 className="display-section mt-6">
-          That page <b className="ir-text">doesn&rsquo;t exist.</b>
-        </h1>
-        <p className="mt-4 text-sm text-text/55">Looks like you took a wrong turn.</p>
-        <Link href="/" className="btn-primary mt-8 inline-flex">
-          Take me home
+        <p className="t-meta">{`{ "error": "invalid_request", "status": 404 }`}</p>
+        <h1 className="t-section" style={{ marginTop: 24 }}>This route was never granted.</h1>
+        <p style={{ marginTop: 16, color: "var(--text-2)" }}>The page you asked for is not in scope.</p>
+        <Link href="/" style={{ display: "inline-flex", alignItems: "center", minHeight: 48, marginTop: 32, padding: "0 22px", borderRadius: 14, background: "var(--text)", color: "var(--bg)", fontWeight: 600, textDecoration: "none" }}>
+          Back to the start
         </Link>
       </div>
     </main>

@@ -1,0 +1,22 @@
+.section { padding-block: clamp(96px, 18vh, 220px) clamp(48px, 8vh, 96px); }
+
+.text {
+  margin: 0;
+  max-width: 26ch;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-stretch: 100%;
+  font-size: clamp(28px, 3.2vw, 48px);
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+}
+
+.w { display: inline; }
+
+@media (min-width: 800px) {
+  .text { max-width: 30ch; margin-left: calc((100% / 12) * 2); }
+}
+
+@media (max-width: 799px) {
+  .text { font-size: clamp(24px, 7vw, 32px); line-height: 1.2; }
+}

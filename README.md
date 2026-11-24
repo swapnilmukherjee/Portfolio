@@ -23,6 +23,7 @@ Personal portfolio for **Swapnil Mukherjee**, Technical Consultant at Okta.
 │   └── sync-content.mjs              Build-time hook: seeds content.json into Postgres when empty
 ├── src/
 │   ├── app/                          Next.js App Router (layout, page, sitemap, robots)
+│   ├── components/v5/                Signed-token redesign (hero, sessions, scopes, toolkit, credentials, contact, eggs)
 │   ├── components/
 │   │   ├── spatial-stage.tsx         CSS-3D scene (lock cube + IAM satellites)
 │   │   ├── nav.tsx                   Top bar + side rail
@@ -195,13 +196,14 @@ want to overwrite Postgres from the bundled JSON seed.
 
 ---
 
-## Design notes (v4)
+## Design notes (v5)
 
-- Pure black background, iridescent **violet → rose → cyan** as the only accent. No warm tones, no glass tint.
-- A CSS-3D **glass padlock cube** is pinned to the viewport. Three IAM satellites — **key**, **shield**, **fingerprint** — orbit at independent radii and tilts. Section-driven camera presets (translate / rotate / blur / scale / opacity) reposition the cube as you scroll.
-- Display headline is **variable-weight Inter**: ultra-thin (200) at the top of the page, animates to bold (700) as you scroll the first viewport. Same trick Apple uses on Vision Pro / iPhone Pro reveals.
-- Glass primitives (`glass`, `glass-strong`) used on nav pills, theme toggle, certs, marquees.
-- Dark + light themes share the gradient. Light mode: off-white `#f5f5f7` à la Apple.
+See `DESIGN.md`. The hero shows a real HS256 JWT built from CMS content and decodes it on scroll.
+Dark "Night shift" and light "Fog" themes, token tricolor (orange header, blue payload, teal signature),
+Archivo variable display type, Hanken Grotesk body, IBM Plex Mono for code. Everything is code-drawn;
+the only image is the headshot. Mobile gets its own UI: bottom tab bar, tap-to-decode, swipe rails,
+bottom-sheet project details. In-progress certifications are hidden on the page and removed from
+Postgres by `scripts/migrate-certs-20261123.mjs` on the next production build.
 
 ---
 

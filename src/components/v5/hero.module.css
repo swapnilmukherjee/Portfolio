@@ -1,0 +1,297 @@
+/* ---------- Base (flow) layout: no JS, reduced motion, and the foundation for both scenes ---------- */
+.hero {
+  --fs: clamp(64px, min(11.5vw, 19vh), 176px);
+  position: relative;
+}
+
+.stage { position: relative; }
+
+.frame {
+  position: relative;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding: clamp(120px, 15vh, 150px) var(--gutter) 64px;
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 125%;
+  font-size: var(--fs);
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.line { display: block; overflow: hidden; padding: 0.08em 0.04em 0.16em 0; margin: -0.08em 0 -0.16em; }
+.line > span { display: block; }
+
+.lede {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  margin-top: clamp(28px, 5vh, 56px);
+}
+.headline {
+  grid-column: 1 / span 6;
+  margin: 0;
+  font-size: clamp(19px, 1.55vw, 23px);
+  line-height: 1.45;
+  color: var(--text-2);
+  max-width: 34ch;
+}
+.meta {
+  grid-column: 9 / span 4;
+  margin: 0;
+  font-family: var(--font-code);
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+/* Token */
+.tokenBlock { margin-top: clamp(32px, 6vh, 72px); }
+.token {
+  margin: 0;
+  font-family: var(--font-code);
+  font-size: clamp(14px, 1.35vw, 20px);
+  line-height: 1.6;
+  word-break: break-all;
+  max-width: 100%;
+}
+.seg { transition: opacity 200ms var(--ease-out); }
+.segH { color: var(--c1); }
+.segP { color: var(--c2); }
+.segS {
+  all: unset;
+  color: var(--c3);
+  cursor: pointer;
+  word-break: break-all;
+  border-radius: 4px;
+  transition: background-color 200ms var(--ease-out);
+}
+.segS:focus-visible { outline: 2px solid var(--c3); outline-offset: 2px; }
+@media (hover: hover) and (pointer: fine) {
+  .segS:hover { background: color-mix(in srgb, var(--c3) 14%, transparent); }
+}
+.dot { color: var(--muted); }
+.short { display: none; }
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 22px;
+  margin-top: 14px;
+  font-family: var(--font-code);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.legend > span:not(.status)::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  margin-right: 8px;
+  vertical-align: 0;
+}
+.lgH::before { background: var(--c1); }
+.lgP::before { background: var(--c2); }
+.lgS::before { background: var(--c3); }
+
+.status { display: inline-flex; align-items: center; gap: 6px; color: var(--c3); }
+.status[data-state="invalid"] { color: var(--c1); }
+.status svg, .verified svg {
+  width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.status[data-state="checking"] svg { animation: spin 900ms linear infinite; stroke-dasharray: 22 12; }
+.status[data-state="valid"] svg path { stroke-dasharray: 16; stroke-dashoffset: 16; animation: draw 450ms var(--ease-out) forwards; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+.decodeBtn { display: none; }
+
+/* Decoded claims + portrait */
+.decoded { margin-top: 56px; }
+.decodedInner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  height: 100%;
+  align-items: stretch;
+}
+.card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--raised);
+  padding: clamp(22px, 2.6vw, 36px) clamp(22px, 2.8vw, 40px);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.cardHead {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-code);
+  font-size: 12.5px;
+  color: var(--muted);
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.cardHead span:first-child { color: var(--c2); }
+.json {
+  margin: 0;
+  font-family: var(--font-code);
+  font-size: clamp(13px, 1.15vw, 16.5px);
+  line-height: 1.85;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--text);
+}
+.jl { display: block; }
+.jl[data-indent="1"] { padding-left: 2ch; }
+.punct { color: var(--muted); }
+.key { color: var(--c2); }
+.str { color: var(--text); }
+.num { color: var(--c1); }
+
+.verified {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: auto 0 0;
+  padding-top: 18px;
+  font-family: var(--font-code);
+  font-size: 12.5px;
+  color: var(--c3);
+}
+
+.portrait { margin: 0; position: relative; height: 100%; }
+.portrait img {
+  height: 100%;
+  max-height: 560px;
+  width: auto;
+  aspect-ratio: 1122 / 1402;
+  object-fit: cover;
+  border-radius: var(--radius);
+  transform-origin: 50% 30%;
+  background: var(--raised);
+}
+.portrait figcaption {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--muted);
+  font-family: var(--font-code);
+  font-size: 12px;
+}
+
+.hint {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+.hintLine {
+  position: relative;
+  width: 1px;
+  height: 36px;
+  background: var(--line);
+  overflow: hidden;
+}
+.hintLine::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -12px;
+  width: 1px;
+  height: 12px;
+  background: var(--text);
+  animation: drip 1.8s var(--ease-inout) infinite;
+}
+@keyframes drip { to { transform: translateY(48px); } }
+
+/* ---------- Desktop scene (JS + motion allowed): sticky stage, overlays driven by GSAP ---------- */
+@media (min-width: 800px) and (prefers-reduced-motion: no-preference) {
+  :global(.js) .hero { height: 320vh; }
+  :global(.js) .stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+  :global(.js) .frame { height: 100%; padding-top: 13vh; padding-bottom: 0; }
+  :global(.js) .tokenBlock { margin-top: clamp(28px, 5vh, 60px); }
+  :global(.js) .decoded {
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    top: calc(13vh + var(--fs) * 0.74 + 30px);
+    bottom: 36px;
+    margin: 0;
+  }
+  :global(.js) .decodedInner {
+    --ph: calc(100svh - 13vh - var(--fs) * 0.74 - 66px);
+    grid-template-columns: minmax(0, 1fr) min(calc(var(--ph) * 0.8), 40%);
+  }
+  :global(.js) .portrait img { max-height: none; width: 100%; height: 100%; }
+  :global(.js) .hint {
+    display: flex;
+    position: absolute;
+    left: var(--gutter);
+    bottom: 32px;
+  }
+}
+
+/* ---------- Mobile: a different UI. Tap to decode instead of a pinned scene ---------- */
+@media (max-width: 799px) {
+  .hero { --fs: clamp(52px, 17vw, 88px); }
+  .frame { padding-top: 96px; padding-bottom: 40px; }
+  .name { font-stretch: 100%; letter-spacing: -0.04em; }
+  .lede { display: block; margin-top: 24px; }
+  .headline { font-size: 18px; max-width: none; }
+  .meta { margin-top: 18px; font-size: 12.5px; }
+  .tokenBlock { margin-top: 28px; }
+  .token { font-size: 13.5px; line-height: 1.55; }
+  .full { display: none; }
+  .short { display: inline; }
+  .legend { font-size: 12px; gap: 8px 16px; }
+
+  .decodeBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 52px;
+    margin-top: 20px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 120ms var(--ease-out), opacity 300ms var(--ease-out), background-color 300ms var(--ease-out);
+  }
+  .decodeBtn:active { transform: scale(0.97); }
+  .decodeBtn[aria-expanded="true"] { background: var(--raised); color: var(--c3); border: 1px solid var(--line); }
+
+  .decoded { margin-top: 20px; }
+  :global(.js) .decoded {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 600ms var(--ease-drawer);
+  }
+  :global(.js) .decoded[data-open="true"] { grid-template-rows: 1fr; }
+  :global(.js) .decodedInner { overflow: hidden; min-height: 0; }
+
+  .decodedInner { grid-template-columns: 1fr; gap: 14px; }
+  .portrait { order: -1; display: flex; align-items: flex-end; gap: 14px; }
+  .portrait img { width: 46%; height: auto; max-height: none; }
+  .portrait figcaption { position: static; background: none; padding: 0; }
+  .json { font-size: 13px; line-height: 1.75; }
+}

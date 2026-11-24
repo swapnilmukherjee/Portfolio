@@ -1,0 +1,18 @@
+.timer {
+  font-family: var(--font-code);
+  font-size: 13px;
+  color: var(--muted);
+}
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.ring {
+  flex: none;
+  animation: spin 800ms linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
