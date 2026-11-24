@@ -41,7 +41,7 @@ export function Site({ content, token, isDraft }: Props) {
       <Nav name={profile.name} />
       <main id="main">
         <Hero profile={profile} token={token} />
-        <Statement text={profile.about} />
+        <Statement text={profile.about} metrics={content.highlights} />
         <Sessions experience={content.experience} />
         <Scopes projects={content.projects} />
         <Toolkit skills={content.skills} />

@@ -9,7 +9,8 @@ emilkowalski/skills, greensock/gsap-skills, nextlevelbuilder/ui-ux-pro-max-skill
 3. Konami code (or the swipe version on touch) grants admin scope for 12 seconds.
 4. Hold the theme toggle for Seattle rain.
 5. Open dev tools and call `swapnil.decode()`.
-6. Stay until the footer session timer expires.
+6. Select and copy the hero token (then paste it into jwt.io to decode it).
+Unlocks show a card with what you found; the footer "Secrets n of 6" button opens the vault.
 The hero token is a real JWT built from CMS content in `src/lib/token.ts`.
 
 ## Contributor rules

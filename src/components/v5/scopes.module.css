@@ -97,7 +97,13 @@
 .rowOn .title { transform: translateX(12px); color: var(--accent, var(--c2)); }
 
 /* ---------- preview ---------- */
-.previewCol { position: relative; }
+.previewCol {
+  position: relative;
+  align-self: stretch;
+  /* Run the sticky track into the section's bottom padding so the preview stays
+     fully on screen while the last rows are hovered. */
+  margin-bottom: calc(24px - clamp(96px, 14vh, 180px));
+}
 .preview {
   position: sticky;
   top: 96px;

@@ -237,3 +237,6 @@
 @media (max-width: 799px) {
   .section { padding-bottom: calc(clamp(96px, 14vh, 180px) + 16px); }
 }
+
+.num { font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+.card[data-active="true"] .num { color: var(--c2); }

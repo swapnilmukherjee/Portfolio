@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import type { Certification, Education } from "@/data/content-types";
-import { gsap, useGSAP } from "@/components/v5/gsap";
+import { gsap, ScrollTrigger, useGSAP } from "@/components/v5/gsap";
 import s from "./credentials.module.css";
 
 type Pass = { key: string; issuer: string; title: string; period?: string };
@@ -73,6 +73,8 @@ export function Credentials({
     ...education.map((e) => ({ key: `edu-${e.id}`, issuer: e.school, title: e.degree, period: e.period })),
     ...certifications
       .filter((c) => c.status !== "in-progress")
+      // The Auth0 developer cert is the most relevant one: always first after the degrees.
+      .sort((a, b) => Number(/auth0 certified developer/i.test(b.name)) - Number(/auth0 certified developer/i.test(a.name)))
       .map((c, i) => ({ key: `cert-${i}-${c.name}`, issuer: c.issuer, title: c.name })),
   ];
 
@@ -89,30 +91,28 @@ export function Credentials({
           if (cards.length < 2) return;
           const first = cards[0];
 
-          // FLIP: the grid is the final layout; start every pass stacked on the first one.
-          gsap.fromTo(
+          // FLIP: the grid is the final layout; passes start stacked on the first one and
+          // deal out once, as a played animation (not scrubbed), so any scroll position,
+          // including a nav jump, ends on the full grid.
+          const stacked = {
+            x: (i: number) => first.offsetLeft - cards[i].offsetLeft,
+            y: (i: number) => first.offsetTop - cards[i].offsetTop + Math.min(i, 7) * 10,
+            rotation: (i: number) => ((i % 5) - 2) * 1.1,
+          };
+          gsap.set(cards, { zIndex: (i: number) => cards.length - i });
+          const deal = gsap.fromTo(
             cards,
-            {
-              x: (i: number) => first.offsetLeft - cards[i].offsetLeft,
-              y: (i: number) => first.offsetTop - cards[i].offsetTop + Math.min(i, 7) * 10,
-              rotation: (i: number) => ((i % 5) - 2) * 1.1,
-              zIndex: (i: number) => cards.length - i,
-            },
-            {
-              x: 0,
-              y: 0,
-              rotation: 0,
-              ease: "power3.out",
-              stagger: { each: 0.05 },
-              scrollTrigger: {
-                trigger: list,
-                start: "top 75%",
-                end: "top 15%",
-                scrub: 0.6,
-                invalidateOnRefresh: true,
-              },
-            }
+            stacked,
+            { x: 0, y: 0, rotation: 0, ease: "power3.out", duration: 0.9, stagger: 0.045, paused: true, immediateRender: true },
           );
+          ScrollTrigger.create({
+            trigger: list,
+            start: "top 85%",
+            onEnter: () => deal.play(),
+            onLeaveBack: () => deal.reverse(),
+          });
+          // Already past the trigger (reload mid-page or anchor jump): show the grid.
+          if (list.getBoundingClientRect().top < window.innerHeight * 0.85) deal.progress(1);
         }
       );
       return () => mm.revert();

@@ -14,6 +14,12 @@ function earliestYear(items: Experience[]): string {
   return Number.isFinite(min) ? String(min) : "";
 }
 
+/** Makes the hard numbers ("300M+", "22,000+", "100+") pop inside running text. */
+function withNumbers(text: string) {
+  const parts = text.split(/(\b\d[\d,]*M?\+)/);
+  return parts.map((part, i) => (i % 2 ? <strong key={i} className={s.num}>{part}</strong> : part));
+}
+
 export function Sessions({ experience }: { experience: Experience[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
@@ -42,6 +48,10 @@ export function Sessions({ experience }: { experience: Experience[] }) {
           let centers: number[] = [];
           let lastIdx = -2;
           const distance = () => Math.max(0, track.scrollWidth - track.clientWidth);
+          // Extra scroll that keeps the last card pinned before the page moves on,
+          // so a fast scroller still gets to read it.
+          const hold = () => window.innerHeight * 0.6;
+          const HOLD = distance() > 0 ? hold() / distance() : 0; // timeline units after the 1-unit move
           const measure = () => {
             centers = cards.map((c) => c.offsetLeft + c.offsetWidth / 2);
           };
@@ -53,7 +63,7 @@ export function Sessions({ experience }: { experience: Experience[] }) {
               trigger: pin,
               pin: true,
               start: "top top",
-              end: () => "+=" + distance(),
+              end: () => "+=" + (distance() + hold()),
               scrub: 0.6,
               invalidateOnRefresh: true,
               onRefreshInit: measure,
@@ -76,8 +86,9 @@ export function Sessions({ experience }: { experience: Experience[] }) {
               }
             },
           });
-          tl.fromTo(track, { x: 0 }, { x: () => -distance() }, 0);
-          tl.fromTo(fill, { scaleX: 0 }, { scaleX: 1 }, 0);
+          tl.fromTo(track, { x: 0 }, { x: () => -distance(), duration: 1 }, 0);
+          tl.fromTo(fill, { scaleX: 0 }, { scaleX: 1, duration: 1 }, 0);
+          tl.to({}, { duration: HOLD });
 
           return () => {
             setActive(-1);
@@ -131,7 +142,7 @@ export function Sessions({ experience }: { experience: Experience[] }) {
         <h2 id="work-title" className="t-section">
           Session history
         </h2>
-        <p className={s.intro}>Healthcare IAM, CIAM in banking, and now Auth0 platform work at Okta.</p>
+        <p className={s.intro}>Five years of identity work across healthcare, banking and Okta.</p>
       </div>
 
       <div className={s.pin} ref={pinRef}>
@@ -156,7 +167,7 @@ export function Sessions({ experience }: { experience: Experience[] }) {
                 <h3 className={s.company}>{e.company}</h3>
                 <p className={s.role}>{e.role}</p>
                 {e.contractInfo ? <p className={`t-meta ${s.contract}`}>{e.contractInfo}</p> : null}
-                <p className={s.summary}>{e.summary}</p>
+                <p className={s.summary}>{withNumbers(e.summary)}</p>
 
                 <button
                   type="button"
@@ -172,7 +183,7 @@ export function Sessions({ experience }: { experience: Experience[] }) {
                   <div className={s.hlInner}>
                     <ul className={s.list} role="list">
                       {e.highlights.map((h, k) => (
-                        <li key={k}>{h}</li>
+                        <li key={k}>{withNumbers(h)}</li>
                       ))}
                     </ul>
                   </div>

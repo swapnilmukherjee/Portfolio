@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node scripts/dev.mjs",
-    "prebuild": "node scripts/sync-content.mjs && node scripts/migrate-profile-20261118.mjs && node scripts/migrate-certs-20261123.mjs",
+    "prebuild": "node scripts/sync-content.mjs && node scripts/migrate-profile-20261118.mjs && node scripts/migrate-certs-20261123.mjs && node scripts/content-refresh-20261124.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

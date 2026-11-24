@@ -185,12 +185,12 @@ export function Hero({ profile, token }: { profile: Profile; token: TokenParts }
               {role}
               {org ? `, ${org}` : ""}
               <br />
-              Auth0, CIAM, IAM for AI agents
+              Auth0 Certified Developer
             </p>
           </div>
 
           <div className={styles.tokenBlock}>
-            <p className={styles.token} aria-label="A signed JSON Web Token describing Swapnil">
+            <p className={styles.token} data-token="" aria-label="A signed JSON Web Token describing Swapnil">
               <span className={`${styles.seg} ${styles.segH}`}>{token.header}</span>
               <span className={styles.dot}>.</span>
               <span className={`${styles.seg} ${styles.segP}`}>

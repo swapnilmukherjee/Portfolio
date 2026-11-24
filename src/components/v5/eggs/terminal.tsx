@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 
 import type { Content } from "@/data/content-types";
-import { SECRETS, unlockSecret, useSecrets, SECRET_COUNT, type SecretId } from "@/lib/secrets";
+import { SECRETS, SECRET_IDS, unlockSecret, useSecrets, SECRET_COUNT } from "@/lib/secrets";
 
 import type { TokenInfo } from "./types";
 import styles from "./terminal.module.css";
@@ -127,6 +127,7 @@ export function Terminal({ content, token }: { content: Content; token: TokenInf
               "theme [dark|light]  switch theme",
               "rain                check the forecast",
               "secrets             list what you have found",
+              "vault               open the secrets vault",
               "clear, exit",
             ].join("\n"),
           ),
@@ -197,9 +198,12 @@ export function Terminal({ content, token }: { content: Content; token: TokenInf
         window.dispatchEvent(new Event("sm:rain"));
         return [out("Checking the forecast...")];
       case "secrets": {
-        const lines = (Object.keys(SECRETS) as SecretId[]).map((id) => `  ${found.includes(id) ? SECRETS[id] : "???"}`);
+        const lines = SECRET_IDS.map((id) => `  ${found.includes(id) ? SECRETS[id].title : `???  ${SECRETS[id].hint}`}`);
         return [out(`Found ${found.length} of ${SECRET_COUNT}\n${lines.join("\n")}`)];
       }
+      case "vault":
+        window.dispatchEvent(new Event("sm:vault"));
+        return [out("Opening the vault...")];
       case "clear":
         return "clear";
       case "exit":

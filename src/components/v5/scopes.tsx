@@ -242,7 +242,7 @@ export function Scopes({ projects }: { projects: Project[] }) {
       <div className="wrap">
         <header className={styles.head}>
           <h2 id="projects-title" className="t-section">Granted scopes</h2>
-          <p className={styles.intro}>Identity, security research and full-stack work, built across grad school and personal time.</p>
+          <p className={styles.intro}>Side projects and grad school work in identity, security and full stack. Pick one to see how it works.</p>
         </header>
 
         <div className={styles.chips} role="group" aria-label="Filter projects by category">

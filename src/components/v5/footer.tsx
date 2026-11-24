@@ -1,7 +1,6 @@
 "use client";
 
-import { SecretsCounter } from "./eggs/secrets-counter";
-import { SessionTimer } from "./eggs/session-timer";
+import { VaultButton } from "./eggs/vault-button";
 import styles from "./footer.module.css";
 
 export function Footer({ name }: { name: string }) {
@@ -11,8 +10,7 @@ export function Footer({ name }: { name: string }) {
         <span>
           {name}, {new Date().getFullYear()}. Built in code, no generated assets.
         </span>
-        <SessionTimer />
-        <SecretsCounter />
+        <VaultButton />
       </div>
     </footer>
   );

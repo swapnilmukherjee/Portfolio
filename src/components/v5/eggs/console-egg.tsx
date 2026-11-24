@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-import { SECRETS, unlockSecret } from "@/lib/secrets";
+import { SECRETS, SECRET_IDS, SECRETS_STORAGE_KEY, unlockSecret } from "@/lib/secrets";
 
 import type { TokenInfo } from "./types";
 
@@ -44,8 +44,8 @@ export function ConsoleEgg({ token }: { token: TokenInfo }) {
         return full;
       },
       secrets() {
-        const found = JSON.parse(localStorage.getItem("sm:secrets:v5") || "[]") as string[];
-        const list = Object.entries(SECRETS).map(([id, label]) => (found.includes(id) ? label : "???"));
+        const found = JSON.parse(localStorage.getItem(SECRETS_STORAGE_KEY) || "[]") as string[];
+        const list = SECRET_IDS.map((id) => (found.includes(id) ? SECRETS[id].title : `??? ${SECRETS[id].hint}`));
         console.log(list.join("\n"));
         return list;
       },
