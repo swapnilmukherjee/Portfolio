@@ -110,7 +110,7 @@
     "location": "Seattle, WA",
     "shortBio": "Technical Consultant at Okta in Seattle. Auth0, CIAM and identity for AI agents, with a 300M+ user migration behind me.",
     "firstName": "Swapnil",
-    "headshotUrl": "https://8fp6hlqltbjt6eck.public.blob.vercel-storage.com/portfolio/1778167944433-vuodd9m13o.jpg",
+    "headshotUrl": "/headshot.jpg",
     "publicEmail": "swapnilmukherjee.jobs@gmail.com",
     "availability": "Based in Seattle, WA and not open to relocation. Happy to talk identity architecture, CIAM, or securing AI agents."
   },
