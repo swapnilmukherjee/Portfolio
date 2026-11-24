@@ -57,7 +57,140 @@
   cursor: default;
   transition: border-color 150ms var(--ease-out), color 150ms var(--ease-out);
 }
-.tok:hover { border-color: var(--acc, var(--c2)); color: var(--acc, var(--c2)); }
+
+/* ---- header ---- */
+.intro {
+  margin: 20px 0 0;
+  color: var(--text-2);
+  font-size: clamp(17px, 1.4vw, 20px);
+  max-width: 48ch;
+}
+.claim {
+  margin: 18px 0 0;
+  font-family: var(--font-code);
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--muted);
+}
+.claimKey { color: var(--text-2); }
+.claimTok {
+  all: unset;
+  cursor: pointer;
+  color: var(--acc);
+  border-bottom: 1px dashed color-mix(in srgb, var(--acc) 55%, transparent);
+  transition: border-color 150ms var(--ease-out);
+}
+.claimTok:hover { border-bottom-style: solid; border-color: var(--acc); }
+.claimTok:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; border-radius: 3px; }
+
+/* ---- skill chips ---- */
+.tokBtn {
+  font: inherit;
+  font-family: var(--font-code);
+  font-size: 15px;
+  background: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+  border-color: var(--line-strong);
+  transition: border-color 150ms var(--ease-out), color 150ms var(--ease-out), background-color 150ms var(--ease-out);
+}
+.tokBtn:hover { border-color: var(--acc, var(--c2)); color: var(--acc, var(--c2)); }
+.tokBtn:focus-visible { outline: 2px solid var(--acc, var(--c2)); outline-offset: 2px; }
+.n {
+  font-size: 11px;
+  line-height: 1;
+  min-width: 18px;
+  padding: 3px 4px;
+  border-radius: 5px;
+  text-align: center;
+  color: var(--acc, var(--c2));
+  background: color-mix(in srgb, var(--acc, var(--c2)) 14%, transparent);
+}
+.tokOn, .tokOn:hover { background: var(--acc); border-color: var(--acc); color: var(--on-accent); }
+.tokOn .n { color: var(--on-accent); background: rgb(0 0 0 / 0.16); }
+
+/* ---- proof panel ---- */
+.proof { margin-top: 28px; }
+.proofHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  margin: 0 0 18px;
+  animation: proofIn 420ms var(--ease-out) both;
+}
+.proofSkill {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+}
+.jobs { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+.job {
+  position: relative;
+  padding-left: 18px;
+  border-left: 2px solid var(--acc);
+  animation: proofIn 420ms var(--ease-out) both;
+}
+.jobHead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 0 0 4px; }
+.jobCo { font-weight: 600; }
+.via {
+  font-family: var(--font-code);
+  font-size: 11.5px;
+  padding: 2px 7px;
+  border-radius: 5px;
+  border: 1px solid var(--line-strong);
+  color: var(--muted);
+}
+.jobLine { margin: 0; color: var(--text-2); font-size: 16px; line-height: 1.5; max-width: 62ch; }
+.hit {
+  background: none;
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: inset 0 -0.42em 0 color-mix(in srgb, var(--acc) 26%, transparent);
+}
+.extras {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+  animation: proofIn 420ms var(--ease-out) both;
+}
+.extraGroup { display: grid; gap: 8px; }
+.pills { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.pill {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--raised);
+  font-size: 14px;
+  transition: border-color 150ms var(--ease-out), color 150ms var(--ease-out);
+}
+.pill:hover { border-color: var(--acc); color: var(--acc); }
+.pill:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+.cert {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--acc) 12%, transparent);
+  font-size: 14px;
+}
+.cert svg { color: var(--acc); flex-shrink: 0; }
+
+@keyframes proofIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
 
 .chev { display: none; }
 
@@ -96,8 +229,14 @@
   .panelInner { overflow: hidden; min-height: 0; }
   .scope { padding-bottom: 24px; }
   .tok { font-size: 15px; }
+  .tokBtn { min-height: 40px; }
+  .proof { margin-top: 22px; padding-bottom: 28px; }
+  .jobLine { font-size: 15px; }
+  .pill, .cert { font-size: 13.5px; }
+  .claim { font-size: 13px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .panel, .chev { transition: none; }
+  .proofHead, .job, .extras { animation: none; }
 }

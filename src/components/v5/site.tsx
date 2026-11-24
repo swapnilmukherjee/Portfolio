@@ -44,7 +44,7 @@ export function Site({ content, token, isDraft }: Props) {
         <Statement text={profile.about} metrics={content.highlights} />
         <Sessions experience={content.experience} />
         <Scopes projects={content.projects} />
-        <Toolkit skills={content.skills} />
+        <Toolkit skills={content.skills} experience={content.experience} projects={content.projects} certifications={content.certifications} />
         <Credentials certifications={content.certifications} education={content.education} />
         <Contact profile={profile} />
       </main>

@@ -18,15 +18,15 @@ const MIGRATION = "content-refresh-2026-11-24";
 const PROFILE = {
   headline: "I migrate hundreds of millions of users between identity platforms with zero unplanned login downtime.",
   about:
-    "Five years building identity for banks, hospitals and SaaS. At Okta I lead Auth0 rollouts and migrations, including one that moved 300 million users with zero unplanned downtime. I also advise teams on how AI agents should sign in, get scoped access and ask for consent.",
-  shortBio: "Technical Consultant at Okta in Seattle. Auth0, CIAM and identity for AI agents, with a 300M+ user migration behind me.",
+    "Five years building identity for banks, hospitals and SaaS. At Okta I lead Auth0 rollouts and migrations, including one that moved a combined 200 million users with zero unplanned downtime. I also advise teams on how AI agents should sign in, get scoped access and ask for consent.",
+  shortBio: "Technical Consultant at Okta in Seattle. Auth0, CIAM and identity for AI agents, with a 200M+ user migration behind me.",
   location: "Seattle, WA",
   availability: "Based in Seattle, WA and not open to relocation. Happy to talk identity architecture, CIAM, or securing AI agents.",
   resume: "/Swapnil_Mukherjee_Resume.pdf",
 };
 
 const HIGHLIGHTS = [
-  { label: "Users migrated", value: "300M+", detail: "Public to private Auth0 cloud, zero unplanned login downtime" },
+  { label: "Users migrated", value: "200M+", detail: "Public to private Auth0 cloud, zero unplanned login downtime" },
   { label: "Workforce identities", value: "22,000+", detail: "Run on Okta for a global healthcare company" },
   { label: "Apps federated", value: "100+", detail: "Moved off CA SiteMinder, leading 8 engineers" },
   { label: "Years in identity", value: "5", detail: "Auth0 and Okta across banking, healthcare and SaaS" },
@@ -37,7 +37,7 @@ const EXPERIENCE = {
     location: "Seattle, WA · Remote",
     summary: "I lead Auth0 deployments and migrations for enterprise customers and am the go-to on Auth0 for AI Agents.",
     highlights: [
-      "Led a 300M+ user migration from public to private Auth0 cloud with phased cutover and zero unplanned downtime to login and MFA.",
+      "Led a combined 200M+ user migration from public to private Auth0 cloud with phased cutover and zero unplanned downtime to login and MFA.",
       "Run onboarding workshops on Universal Login, Organizations, Actions, MFA, Passkeys and Attack Protection for web, mobile and API teams.",
       "Advise customers on identity for AI agents: token vaulting, scoped delegation, machine to machine auth and consent.",
       "Wrote migration playbooks and reference builds that the consulting org now uses to onboard customers faster.",

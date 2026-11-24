@@ -95,7 +95,7 @@
   ],
   "profile": {
     "name": "Swapnil Mukherjee",
-    "about": "Five years building identity for banks, hospitals and SaaS. At Okta I lead Auth0 rollouts and migrations, including one that moved 300 million users with zero unplanned downtime. I also advise teams on how AI agents should sign in, get scoped access and ask for consent.",
+    "about": "Five years building identity for banks, hospitals and SaaS. At Okta I lead Auth0 rollouts and migrations, including one that moved a combined 200 million users with zero unplanned downtime. I also advise teams on how AI agents should sign in, get scoped access and ask for consent.",
     "email": "swapnilmukherjee.jobs@gmail.com",
     "phone": "+1 (864) 765-4851",
     "title": "Technical Consultant @ Okta",
@@ -108,7 +108,7 @@
     "tagline": "Identity, secured.",
     "headline": "I migrate hundreds of millions of users between identity platforms with zero unplanned login downtime.",
     "location": "Seattle, WA",
-    "shortBio": "Technical Consultant at Okta in Seattle. Auth0, CIAM and identity for AI agents, with a 300M+ user migration behind me.",
+    "shortBio": "Technical Consultant at Okta in Seattle. Auth0, CIAM and identity for AI agents, with a 200M+ user migration behind me.",
     "firstName": "Swapnil",
     "headshotUrl": "/headshot.jpg",
     "publicEmail": "swapnilmukherjee.jobs@gmail.com",
@@ -396,7 +396,7 @@
       "summary": "I lead Auth0 deployments and migrations for enterprise customers and am the go-to on Auth0 for AI Agents.",
       "location": "Seattle, WA · Remote",
       "highlights": [
-        "Led a 300M+ user migration from public to private Auth0 cloud with phased cutover and zero unplanned downtime to login and MFA.",
+        "Led a combined 200M+ user migration from public to private Auth0 cloud with phased cutover and zero unplanned downtime to login and MFA.",
         "Run onboarding workshops on Universal Login, Organizations, Actions, MFA, Passkeys and Attack Protection for web, mobile and API teams.",
         "Advise customers on identity for AI agents: token vaulting, scoped delegation, machine to machine auth and consent.",
         "Wrote migration playbooks and reference builds that the consulting org now uses to onboard customers faster."
@@ -484,7 +484,7 @@
   "highlights": [
     {
       "label": "Users migrated",
-      "value": "300M+",
+      "value": "200M+",
       "detail": "Public to private Auth0 cloud, zero unplanned login downtime"
     },
     {
