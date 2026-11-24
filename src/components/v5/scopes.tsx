@@ -231,6 +231,18 @@ export function Scopes({ projects }: { projects: Project[] }) {
     };
   }, [open]);
 
+  // Other sections (the toolkit) can open a project's detail without scrolling here.
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      const { id, el } = (e as CustomEvent<{ id: string; el?: HTMLElement }>).detail;
+      if (!projects.some((p) => p.id === id)) return;
+      triggerRef.current = el ?? null;
+      setOpenId(id);
+    };
+    window.addEventListener("sm:project", onOpen);
+    return () => window.removeEventListener("sm:project", onOpen);
+  }, [projects]);
+
   const openProject = (p: Project, el: HTMLElement) => {
     triggerRef.current = el;
     setOpenId(p.id);
